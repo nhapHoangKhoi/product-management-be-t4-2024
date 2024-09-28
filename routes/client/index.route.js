@@ -1,3 +1,5 @@
+// route cha, route cap cao nhat
+
 // viet ham, cu phap ES6
 // export const index = () => {...}
 //
