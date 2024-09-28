@@ -3,13 +3,13 @@
 //
 // viet ham, cu phap common JS
 // de viet JS o trong NodeJS
+
+const homeRoute = require("./home.route.js");
+const productRoute = require("./product.route.js");
+
 module.exports.index = (app) =>
 {
-   app.get("/", (request, response) => {
-      response.render("client/pages/home/index.pug");
-   });
-   
-   app.get("/products", (request, response) => {
-      response.render("client/pages/products/index.pug");
-   });
+   app.use("/", homeRoute);
+
+   app.use("/products", productRoute);
 }
