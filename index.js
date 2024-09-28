@@ -1,17 +1,14 @@
 const express = require('express');
+
+const routeClient = require("./routes/client/index.route.js"); // nhúng file index.route.js vao trong day
+
 const app = express();  // khoi tao ung dung web su dung express
 const port = 3000;
 
 app.set("views", "./views"); // folder nao cung duoc, vd: app.set("views", "./abc")
 app.set("view engine", "pug");
 
-app.get("/", (request, response) => {
-   response.render("client/pages/home/index.pug");
-});
-
-app.get("/products", (request, response) => {
-   response.render("client/pages/products/index.pug");
-});
+routeClient.index(app); // goi den ham index cua file index.route.js
 
 
 
