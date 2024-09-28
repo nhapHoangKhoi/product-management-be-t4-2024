@@ -2,12 +2,15 @@ const express = require('express');
 const app = express();  // khoi tao ung dung web su dung express
 const port = 3000;
 
+app.set("views", "./views"); // folder nao cung duoc, vd: app.set("views", "./abc")
+app.set("view engine", "pug");
+
 app.get("/", (request, response) => {
-   response.send("Trang chủ");
+   response.render("client/pages/home/index.pug");
 });
 
 app.get("/products", (request, response) => {
-   response.send("Trang danh sách sản phẩm");
+   response.render("client/pages/products/index.pug");
 });
 
 
