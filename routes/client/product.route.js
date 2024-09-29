@@ -1,9 +1,9 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router(); // ham Router() de dinh nghia ra cac route con
+
+const controllerProduct = require("../../controllers/client/product.controller.js");
 
 // giong nhu noi chuoi
-router.get("/", (request, response) => {
-   response.render("client/pages/products/index.pug");
-});
+router.get("/", controllerProduct.index);
 
 module.exports = router;

@@ -1,8 +1,8 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router(); // ham Router() de dinh nghia ra cac route con
 
-router.get("/", (request, response) => {
-   response.render("client/pages/home/index.pug");
-});
+const controllerHome = require("../../controllers/client/home.controller.js");
+
+router.get("/", controllerHome.index);
 
 module.exports = router;
