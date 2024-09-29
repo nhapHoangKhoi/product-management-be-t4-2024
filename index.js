@@ -1,6 +1,9 @@
 const express = require('express');
 require("dotenv").config();
 
+const database = require("./config/database.js");
+database.connectDatabase();
+
 const routeClient = require("./routes/client/index.route.js"); // nhúng file index.route.js vao trong day
 
 const app = express();  // khoi tao ung dung web su dung express
