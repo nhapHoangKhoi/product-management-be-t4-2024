@@ -5,6 +5,7 @@ const database = require("./config/database.js");
 database.connectDatabase();
 
 const routeClient = require("./routes/client/index.route.js"); // nhúng file index.route.js vao trong day
+const routeAdmin = require("./routes/admin/index.route.js");
 
 const app = express();  // khoi tao ung dung web su dung express
 // const port = 3000;
@@ -16,7 +17,7 @@ app.set("view engine", "pug");
 app.use(express.static("public")); // nhung cac file tinh, tuc la folder public, mac dinh tu di vao folder public
 
 routeClient.index(app); // goi den ham index cua file index.route.js
-
+routeAdmin.index(app);
 
 
 app.listen(port, () => {

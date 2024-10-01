@@ -11,7 +11,7 @@ module.exports.index = async (request, response) =>
    );
 
    for(aProduct of listOfProducts) {
-      aProduct.priceNew = ( aProduct.price - (aProduct.price*aProduct.discountPercentage/100) ).toFixed(0);
+      aProduct.priceNew = (aProduct.price - (aProduct.price * aProduct.discountPercentage/100)).toFixed(0);
    }
 
    response.render("client/pages/products/index.pug", {
