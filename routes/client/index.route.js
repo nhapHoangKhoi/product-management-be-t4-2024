@@ -9,6 +9,7 @@
 const homeRoute = require("./home.route.js");
 const productRoute = require("./product.route.js");
 
+// tao route
 module.exports.index = (app) =>
 {
    app.use("/", homeRoute);

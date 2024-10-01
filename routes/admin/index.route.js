@@ -1,8 +1,12 @@
+const systemConfigs = require("../../config/system.js");
 const dashboardRoute = require("./dashboard.route.js");
 const productAdminRoute = require("./product.route.js");
 
+// tao route
 module.exports.index = (app) =>
 {
-   app.use("/admin/dashboard", dashboardRoute);
-   app.use("/admin/products", productAdminRoute);
+   const path = `/${systemConfigs.prefixAdmin}`;
+
+   app.use(`${path}/dashboard`, dashboardRoute);
+   app.use(`${path}/products`, productAdminRoute);
 }

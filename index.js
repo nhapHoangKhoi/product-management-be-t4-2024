@@ -4,6 +4,7 @@ require("dotenv").config();
 const database = require("./config/database.js");
 database.connectDatabase();
 
+const systemConfigs = require("./config/system.js");
 const routeClient = require("./routes/client/index.route.js"); // nhúng file index.route.js vao trong day
 const routeAdmin = require("./routes/admin/index.route.js");
 
@@ -15,6 +16,10 @@ app.set("views", "./views"); // doi voi response.render(), mac dinh di vao folde
 app.set("view engine", "pug");
 
 app.use(express.static("public")); // nhung cac file tinh, tuc la folder public, mac dinh tu di vao folder public
+
+
+// app global variables for pug only
+app.locals.prefixAdmin = systemConfigs.prefixAdmin;
 
 routeClient.index(app); // goi den ham index cua file index.route.js
 routeAdmin.index(app);
