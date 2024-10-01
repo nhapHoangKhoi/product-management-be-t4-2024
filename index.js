@@ -5,7 +5,7 @@ const database = require("./config/database.js");
 database.connectDatabase();
 
 const systemConfigs = require("./config/system.js");
-const routeClient = require("./routes/client/index.route.js"); // nhúng file index.route.js vao trong day
+const routeClient = require("./routes/client/index.route.js");
 const routeAdmin = require("./routes/admin/index.route.js");
 
 const app = express();  // khoi tao ung dung web su dung express
