@@ -1,0 +1,62 @@
+/* header */
+
+.header
+{
+   background: #202020;
+   padding: 10px 0;
+
+   position: sticky;
+   top: 0;
+   z-index: 999;
+}
+
+.header .inner-logo a
+{
+   font-size: 24px;
+   font-weight: 700;
+   color: #fff;
+}
+
+/* End header */
+
+
+/* body */
+
+.body .sider
+{
+   width: 150px;
+   background: #323232;
+   color: #fff;
+
+   position: fixed;
+   top: 56px;
+   left: 0;
+   height: calc(100vh - 56px);
+}
+
+.body .sider .inner-menu ul
+{
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+}
+
+.body .sider .inner-menu ul li a
+{
+   color: #fff;
+
+   display: block;
+   padding: 6px 10px;
+   border-bottom: 1px solid #515151;
+}
+
+.body .main
+{
+   margin: 15px 15px;
+
+   position: relative;
+   left: 150px;
+   width: calc(100% - (150px + 15px + 15px));
+}
+
+/* End body */
