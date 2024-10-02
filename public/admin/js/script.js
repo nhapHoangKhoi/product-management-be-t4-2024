@@ -1,4 +1,4 @@
-// Button status
+// ----- Button status
 
 const listButtonStatus = document.querySelectorAll("[button-status]");
 
@@ -38,4 +38,34 @@ if(listButtonStatus.length > 0)
    }
 }
 
-// End button status
+// ----- End button status
+
+
+// ----- Form search
+
+const formSearch = document.querySelector("[form-search]"); // neu ko co thi formSearch tra ve null
+
+if(formSearch)
+{
+   let newURL = new URL(window.location.href);
+
+   formSearch.addEventListener("submit", (event) => 
+      {
+         event.preventDefault();
+
+         const searchedKeyword = event.target.elements.inputKeyword.value;
+
+         if(searchedKeyword) {
+            newURL.searchParams.set("inputKeyword", searchedKeyword);
+         }
+         else {
+            newURL.searchParams.delete("inputKeyword");
+         }
+
+         // http://localhost:3000/admin333/products?keyword=iPhone
+         window.location.href = newURL.href;
+      }
+   );
+}
+
+// ----- End form search
