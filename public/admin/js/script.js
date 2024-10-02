@@ -54,6 +54,7 @@ if(formSearch)
          event.preventDefault();
 
          const searchedKeyword = event.target.elements.inputKeyword.value;
+         newURL.searchParams.delete("page");
 
          if(searchedKeyword) {
             newURL.searchParams.set("inputKeyword", searchedKeyword);
@@ -69,3 +70,32 @@ if(formSearch)
 }
 
 // ----- End form search
+
+
+// ----- Pagination
+
+const listButtonPagination = document.querySelectorAll("[button-pagination]");
+
+if(listButtonPagination.length > 0)
+{
+   let newURL = new URL(window.location.href);
+
+   listButtonPagination.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {
+            const page = eachButton.getAttribute("button-pagination");
+            
+            if(page) {
+               newURL.searchParams.set("page", page);
+            }
+            else {
+               newURL.searchParams.delete("page");
+            }
+
+            window.location.href = newURL.href;
+         }
+      );
+   });
+}
+
+// ----- End pagination
