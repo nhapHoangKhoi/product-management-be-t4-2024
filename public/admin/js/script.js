@@ -13,6 +13,7 @@ if(listButtonStatus.length > 0)
       eachButton.addEventListener("click", () => 
          {
             const statusOfButton = eachButton.getAttribute("button-status");
+            newURL.searchParams.delete("page");
 
             if(statusOfButton != "") {
                newURL.searchParams.set("status", statusOfButton);

@@ -1,20 +1,14 @@
 const ProductModel = require("../../models/product.model.js");
+const paginationHelper = require("../../helpers/pagination.helper.js");
+const filterStatusHelper = require("../../helpers/filterByStatus.helper.js");
+const searchCoBanHelper = require("../../helpers/searchCoBan.helper.js");
 
 // [GET] /admin/products/
 module.exports.index = async (request, response) => 
 {
    // ----- Filter by status
 
-   const productFind = {
-      deleted: false
-   };
-
-   // {status: "active"}
-   // {status: "inactive"}
-   // {status: undefined}
-   if(request.query.status) {
-      productFind.status = request.query.status;
-   }
+   const productFind = filterStatusHelper.filterByStatus(request);
 
    const filterStatusForFE = [
       {
@@ -36,37 +30,20 @@ module.exports.index = async (request, response) =>
 
    // ----- Search products
 
+   const objectSearchResult = searchCoBanHelper.search(request, productFind);
    let keyword = "";
-   
-   if(request.query.inputKeyword) 
-   {
-      const regex = new RegExp(request.query.inputKeyword, "i");
-      productFind.title = regex;
 
-      keyword = request.query.inputKeyword;
+   if(objectSearchResult) {
+      productFind.title = objectSearchResult.productFindTitle;
+      keyword = objectSearchResult.keyword;
    }
 
    // ----- End search products
 
 
    // ----- Pagination
-
-   // { currentPage: 1, limitItems: 4, startIndex: 0, totalPage: 5 }
-   const pagination = {
-      currentPage: 1,
-      limitItems: 4
-   };
-
-   if(request.query.page) {
-      pagination.currentPage = parseInt(request.query.page);
-   }
-
-   pagination.startIndex = (pagination.currentPage - 1) * pagination.limitItems;
-
-   const totalProductsCounted = await ProductModel.countDocuments(productFind);
-   const totalPage = Math.ceil(totalProductsCounted / pagination.limitItems);
-   pagination.totalPage = totalPage;
-
+   
+   const pagination = await paginationHelper.paging(request, productFind); // { currentPage: 1, limitItems: 4, startIndex: 0, totalPage: 5 }
 
    // ----- End pagination
 
