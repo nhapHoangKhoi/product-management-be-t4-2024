@@ -34,7 +34,7 @@ module.exports.index = async (request, response) =>
    // ----- End filter by status
 
 
-   // ----- Search item
+   // ----- Search products
 
    let keyword = "";
    
@@ -46,7 +46,7 @@ module.exports.index = async (request, response) =>
       keyword = request.query.inputKeyword;
    }
 
-   // ----- End search item
+   // ----- End search products
 
 
    const listOfProducts = await ProductModel.find(productFind);
