@@ -7,6 +7,9 @@ module.exports.index = async (request, response) =>
       deleted: false
    };
 
+   // {status: "active"}
+   // {status: "inactive"}
+   // {status: undefined}
    if(request.query.status) {
       productFind.status = request.query.status;
    }
