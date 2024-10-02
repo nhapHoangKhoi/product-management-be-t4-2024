@@ -65,5 +65,24 @@ module.exports.index = async (request, response) =>
    );
 }
 
+// [GET] /admin/products/change-status/:statusChange/:idProduct
+module.exports.changeStatus = async (request, response) =>
+{
+   // console.log(request.params); 
+   // { statusChange: '...', idProduct: '...' }
+   const { idProduct, statusChange } = request.params;
+   await ProductModel.updateOne(
+      {
+         _id: idProduct
+      }, 
+      {
+         status: (statusChange == "active") ? "inactive" : "active"
+      }
+   );
+
+   response.redirect("back");
+}
+
+
 // [POST] /admin/products/create
 // ...

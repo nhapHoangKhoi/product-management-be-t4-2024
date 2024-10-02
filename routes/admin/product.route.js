@@ -5,4 +5,6 @@ const controllerProductAdmin = require("../../controllers/admin/product.controll
 
 router.get("/", controllerProductAdmin.index);
 
+router.get("/change-status/:statusChange/:idProduct", controllerProductAdmin.changeStatus);
+
 module.exports = router;
