@@ -16,6 +16,21 @@ module.exports.index = async (request, response) =>
       productFind.status = request.query.status;
    }
 
+   const filterStatusForFE = [
+      {
+         label: "Tất cả",
+         value: ""
+      },
+      {
+         label: "Hoạt động",
+         value: "active"
+      },
+      {
+         label: "Dừng hoạt động",
+         value: "inactive"
+      }
+   ];
+
    // ----- End filter by status
 
 
@@ -41,7 +56,8 @@ module.exports.index = async (request, response) =>
       {
          pageTitle: "Quản lý sản phẩm",
          listOfProducts: listOfProducts,
-         keyword: keyword
+         keyword: keyword,
+         filterStatusForFE: filterStatusForFE
       }
    );
 }
