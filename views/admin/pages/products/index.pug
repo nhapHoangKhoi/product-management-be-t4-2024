@@ -42,14 +42,16 @@ block main
                      td #{aProduct.price}$
                      td
                         if(aProduct.status == "active")
-                           a(
-                              href=`/${prefixAdmin}/products/change-status/${aProduct.status}/${aProduct.id}` 
-                              class="badge badge-success"
+                           button(
+                              link=`/${prefixAdmin}/products/change-status/${aProduct.status}/${aProduct.id}`  
+                              class="badge badge-success" 
+                              button-change-status=""
                            ) Hoạt động
                         else
-                           a(
-                              href=`/${prefixAdmin}/products/change-status/${aProduct.status}/${aProduct.id}` 
+                           button(
+                              link=`/${prefixAdmin}/products/change-status/${aProduct.status}/${aProduct.id}` 
                               class="badge badge-danger"
+                              button-change-status=""
                            ) Dừng hoạt động 
                      td
                         button(class="btn btn-warning btn-sm") Sửa

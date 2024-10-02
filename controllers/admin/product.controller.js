@@ -65,12 +65,14 @@ module.exports.index = async (request, response) =>
    );
 }
 
-// [GET] /admin/products/change-status/:statusChange/:idProduct
+// [PATCH] /admin/products/change-status/:statusChange/:idProduct
+// cap nhat dung phuong thuc GET
 module.exports.changeStatus = async (request, response) =>
 {
-   // console.log(request.params); 
-   // { statusChange: '...', idProduct: '...' }
-   const { idProduct, statusChange } = request.params;
+   const { idProduct, statusChange } = request.params; // { statusChange: '...', idProduct: '...' }
+   
+   // cap nhat data trong database
+   // day la cua mongoose, ko lien quan gi toi phuong thuc GET, PATCH,...
    await ProductModel.updateOne(
       {
          _id: idProduct
@@ -80,7 +82,11 @@ module.exports.changeStatus = async (request, response) =>
       }
    );
 
-   response.redirect("back");
+   response.json(
+      {
+         code: 200
+      }
+   );
 }
 
 
