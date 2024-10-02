@@ -131,3 +131,42 @@ if(listButtonChangeStatus.length > 0)
 }
 
 // ----- End button change status
+
+
+// ----- Check item
+
+const inputCheckAll = document.querySelector("input[name='checkAll']");
+
+if(inputCheckAll)
+{
+   const listInputCheckItem = document.querySelectorAll("input[name='checkItem']");
+
+   // when click the checkAll button
+   inputCheckAll.addEventListener("click", () => 
+      {
+         listInputCheckItem.forEach((eachInputItem) => 
+            {
+               eachInputItem.checked = inputCheckAll.checked; // true, false
+            }
+         );
+      }
+   );
+
+   // when click the checkItem button
+   listInputCheckItem.forEach((eachInputItem) => {
+      eachInputItem.addEventListener("click", () => 
+         {
+            const listCheckedItem = document.querySelectorAll("input[name='checkItem']:checked");
+            
+            if(listInputCheckItem.length == listCheckedItem.length) {
+               inputCheckAll.checked = true;
+            }
+            else {
+               inputCheckAll.checked = false;
+            }
+         }
+      );
+   });
+}
+
+// ----- End check item
