@@ -210,7 +210,9 @@ if(boxUpdate)
             })
                .then(responseFromController => responseFromController.json())
                .then(dataFromController => {
-                  console.log(dataFromController);
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
                })
          }
          else {

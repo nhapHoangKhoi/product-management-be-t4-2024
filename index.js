@@ -1,5 +1,6 @@
 const express = require('express');
 require("dotenv").config();
+const bodyParser = require('body-parser');
 
 const database = require("./config/database.js");
 database.connectDatabase();
@@ -11,6 +12,8 @@ const routeAdmin = require("./routes/admin/index.route.js");
 const app = express();  // khoi tao ung dung web su dung express
 // const port = 3000;
 const port = process.env.PORT;
+
+app.use(bodyParser.json()) // parse application/json
 
 app.set("views", "./views"); // doi voi response.render(), mac dinh di vao folder views
 app.set("view engine", "pug");

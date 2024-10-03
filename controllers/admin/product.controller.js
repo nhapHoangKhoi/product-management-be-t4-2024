@@ -90,8 +90,25 @@ module.exports.changeStatus = async (request, response) =>
 }
 
 // [PATCH] /admin/products/change-multi
-module.exports.changeMulti = (request, response) =>
+module.exports.changeMulti = async (request, response) =>
 {
+   // console.log(request.body);
+   // {
+   //    selectedValue: 'active',
+   //    listOfIds: [ '66f972ce307bea1ebe5e8fe5', '66f972ce307bea1ebe5e8fe6' ]
+   // }
+
+   const { selectedValue, listOfIds } = request.body;
+
+   await ProductModel.updateMany(
+      {
+         _id: listOfIds
+      }, 
+      {
+         status: selectedValue
+      }
+   );
+
    response.json(
       {
          code: 200
