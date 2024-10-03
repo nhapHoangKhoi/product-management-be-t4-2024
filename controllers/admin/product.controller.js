@@ -66,7 +66,7 @@ module.exports.index = async (request, response) =>
 }
 
 // [PATCH] /admin/products/change-status/:statusChange/:idProduct
-// cap nhat dung phuong thuc GET
+// cap nhat dung phuong thuc PATCH
 module.exports.changeStatus = async (request, response) =>
 {
    const { idProduct, statusChange } = request.params; // { statusChange: '...', idProduct: '...' }
@@ -88,6 +88,17 @@ module.exports.changeStatus = async (request, response) =>
       }
    );
 }
+
+// [PATCH] /admin/products/change-multi
+module.exports.changeMulti = (request, response) =>
+{
+   response.json(
+      {
+         code: 200
+      }
+   );
+}
+
 
 
 // [POST] /admin/products/create

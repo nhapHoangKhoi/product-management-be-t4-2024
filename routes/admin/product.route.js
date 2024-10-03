@@ -7,4 +7,6 @@ router.get("/", controllerProductAdmin.index);
 
 router.patch("/change-status/:statusChange/:idProduct", controllerProductAdmin.changeStatus);
 
+router.patch("/change-multi", controllerProductAdmin.changeMulti);
+
 module.exports = router;

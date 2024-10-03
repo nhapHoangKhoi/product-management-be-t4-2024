@@ -170,3 +170,54 @@ if(inputCheckAll)
 }
 
 // ----- End check item
+
+
+// ----- Box updates
+
+const boxUpdate = document.querySelector("[box-updates]");
+
+if(boxUpdate)
+{
+   const buttonUpdate = boxUpdate.querySelector("button");
+   
+   buttonUpdate.addEventListener("click", () => 
+      {
+         const selectBox = boxUpdate.querySelector("select");
+         const selectedValue = selectBox.value;
+
+         const listCheckedItem = document.querySelectorAll("input[name='checkItem']:checked");
+         
+         const listOfIds = [];
+         listCheckedItem.forEach((eachInput) => 
+            {
+               listOfIds.push(eachInput.value);
+            }
+         );
+
+         if(selectedValue != "" && listOfIds.length > 0) 
+         {
+            const dataSubmit = {
+               selectedValue: selectedValue,
+               listOfIds: listOfIds
+            };
+
+            fetch("/admin333/products/change-multi", {
+               method: "PATCH",
+               headers: {
+                  "Content-Type": "application/json"
+               },
+               body: JSON.stringify(dataSubmit)
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  console.log(dataFromController);
+               })
+         }
+         else {
+            alert("Hành động và item phải được chọn!");
+         }
+      }
+   );
+}
+
+// ----- End box updates
