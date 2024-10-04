@@ -142,7 +142,7 @@ if(inputCheckAll)
             }
          );
 
-         if(listElementsHidden.length > 0) 
+         if(listElementsHidden.length > 0 && listInputCheckItem.length > 0) 
          {
             if(inputCheckAll.checked == true) {
                listElementsHidden.forEach((eachElement) => {
@@ -342,7 +342,7 @@ if(listButtonRecovery.length > 0)
 // ----- End recover record
 
 
-// ----- Button delete many records (y tuong tu "Box updates multi items")
+// ----- Button delete many records (y tuong tu "Box updates multi items, Button check items")
 const buttonDeleteMany = document.querySelector("[button-delete-many]");
 
 if(buttonDeleteMany)
@@ -389,7 +389,7 @@ if(buttonDeleteMany)
 // ----- End button delete many records
 
 
-// ----- Button recover many records (y tuong tu "Box updates multi items")
+// ----- Button recover many records (y tuong tu "Box updates multi items, Button check items")
 const buttonRecoverMany = document.querySelector("[button-recover-many]");
 
 if(buttonRecoverMany)
@@ -435,7 +435,6 @@ if(buttonRecoverMany)
 
 
 // ----- Change item position
-
 const listInputPosition = document.querySelectorAll("input[name='position']");
 
 if(listInputPosition.length > 0)
@@ -465,5 +464,4 @@ if(listInputPosition.length > 0)
       );
    });
 }
-
 // ----- End change item position
