@@ -72,3 +72,13 @@
 }
 
 /* End main */
+
+
+/* element-hidden */
+
+.element-hidden
+{
+   display: none;
+}
+
+/* End element-hidden */

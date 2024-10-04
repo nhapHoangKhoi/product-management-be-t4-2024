@@ -140,6 +140,7 @@ const inputCheckAll = document.querySelector("input[name='checkAll']");
 if(inputCheckAll)
 {
    const listInputCheckItem = document.querySelectorAll("input[name='checkItem']");
+   const listElementsHidden = document.querySelectorAll(".element-hidden");
 
    // when click the checkAll button
    inputCheckAll.addEventListener("click", () => 
@@ -149,6 +150,20 @@ if(inputCheckAll)
                eachInputItem.checked = inputCheckAll.checked; // true, false
             }
          );
+
+         if(listElementsHidden.length > 0) 
+         {
+            if(inputCheckAll.checked == true) {
+               listElementsHidden.forEach((eachElement) => {
+                  eachElement.classList.remove("element-hidden");
+               });
+            }
+            else {
+               listElementsHidden.forEach((eachElement) => {
+                  eachElement.classList.add("element-hidden");
+               });
+            }
+         }
       }
    );
 
@@ -163,6 +178,21 @@ if(inputCheckAll)
             }
             else {
                inputCheckAll.checked = false;
+            }
+
+
+            if(listElementsHidden.length > 0)
+            {
+               if(listCheckedItem.length > 0) {
+                  listElementsHidden.forEach((eachElement) => {
+                     eachElement.classList.remove("element-hidden");
+                  });
+               }
+               else {
+                  listElementsHidden.forEach((eachElement) => {
+                     eachElement.classList.add("element-hidden");
+                  });
+               }
             }
          }
       );
@@ -225,6 +255,13 @@ if(boxUpdate)
 }
 
 // ----- End box updates
+
+
+// ---- Button update
+
+// const singleButtonUpdate = document.querySelectorAll();
+
+// ---- End button update
 
 
 // ----- Soft delete record
