@@ -37,6 +37,7 @@ block main
                   th Hình ảnh
                   th Tên sản phẩm
                   th Giá
+                  th Vị trí
                   th Trạng thái
                   th Hành động
             
@@ -55,6 +56,15 @@ block main
                         )
                      td #{aProduct.title}
                      td #{aProduct.price}$
+                     td 
+                        input(
+                           link=`/${prefixAdmin}/products/change-position/${aProduct.id}`
+                           type="number"
+                           name="position"
+                           value=aProduct.position
+                           min="1"
+                           style="width: 60px"
+                        )
                      td
                         if(aProduct.status == "active")
                            button(

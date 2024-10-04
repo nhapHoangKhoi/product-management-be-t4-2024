@@ -7,9 +7,7 @@ const searchCoBanHelper = require("../../helpers/searchCoBan.helper.js");
 module.exports.index = async (request, response) => 
 {
    // ----- Filter by status ----- //
-
    const productFind = filterStatusHelper.filterByStatus(request);
-
    const filterStatusForFE = [
       {
          label: "Tất cả",
@@ -24,12 +22,10 @@ module.exports.index = async (request, response) =>
          value: "inactive"
       }
    ];
-
    // ----- End filter by status ----- //
 
 
    // ----- Search products ----- //
-
    const objectSearchResult = searchCoBanHelper.search(request, productFind);
    let keyword = "";
 
@@ -37,22 +33,24 @@ module.exports.index = async (request, response) =>
       productFind.title = objectSearchResult.productFindTitle;
       keyword = objectSearchResult.keyword;
    }
-
    // ----- End search products ----- //
 
 
    // ----- Pagination ----- //
-
    const itemsLimited = 4;
    const pagination = await paginationHelper.paging(request, productFind, itemsLimited); // { currentPage: 1, itemsLimited: 4, startIndex: 0, totalPage: 5 }
-
    // ----- End pagination -----//
 
 
    const listOfProducts = await ProductModel
       .find(productFind)
       .limit(pagination.itemsLimited)
-      .skip(pagination.startIndex);
+      .skip(pagination.startIndex)
+      .sort(
+         {
+            position: "desc"
+         }
+      );
 
    response.render(
       "admin/pages/products/index.pug", 
@@ -74,10 +72,8 @@ module.exports.getDeletedProducts = async (request, response) =>
    };
 
    // ----- Pagination ----- //
-   
    const limitItems = 10;
    const pagination = await paginationHelper.paging(request, deletedProductFind, limitItems); // { currentPage: 1, limitItems: 10, startIndex: 0, totalPage:... }
-   
    // ----- End pagination -----//
    
 
@@ -207,6 +203,28 @@ module.exports.recoverProduct = async (request, response) =>
       },
       {
          deleted: false
+      }
+   );
+
+   response.json(
+      {
+         code: 200
+      }
+   );
+}
+
+// [PATCH] /admin/products/change-position/:idProduct
+module.exports.changeProductPosition = async (request, response) =>
+{
+   const productId = request.params.idProduct;
+   const itemPosition = request.body.itemPosition;
+
+   await ProductModel.updateOne(
+      {
+         _id: productId
+      },
+      {
+         position: itemPosition
       }
    );
 

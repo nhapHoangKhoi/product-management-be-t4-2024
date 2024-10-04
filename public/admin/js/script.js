@@ -1,5 +1,4 @@
 // ----- Button status
-
 const listButtonStatus = document.querySelectorAll("[button-status]");
 
 if(listButtonStatus.length > 0)
@@ -38,12 +37,10 @@ if(listButtonStatus.length > 0)
       buttonCurrent.classList.add("active");
    }
 }
-
 // ----- End button status
 
 
 // ----- Form search
-
 const formSearch = document.querySelector("[form-search]"); // neu ko co thi formSearch tra ve null
 
 if(formSearch)
@@ -69,12 +66,10 @@ if(formSearch)
       }
    );
 }
-
 // ----- End form search
 
 
 // ----- Pagination
-
 const listButtonPagination = document.querySelectorAll("[button-pagination]");
 
 if(listButtonPagination.length > 0)
@@ -98,12 +93,10 @@ if(listButtonPagination.length > 0)
       );
    });
 }
-
 // ----- End pagination
 
 
 // ----- Button change status
-
 const listButtonChangeStatus = document.querySelectorAll("[button-change-status]");
 
 if(listButtonChangeStatus.length > 0)
@@ -129,12 +122,10 @@ if(listButtonChangeStatus.length > 0)
       );
    });
 }
-
 // ----- End button change status
 
 
 // ----- Button check items
-
 const inputCheckAll = document.querySelector("input[name='checkAll']");
 
 if(inputCheckAll)
@@ -198,12 +189,10 @@ if(inputCheckAll)
       );
    });
 }
-
 // ----- End button check items
 
 
 // ----- Box updates multi items
-
 const boxUpdate = document.querySelector("[box-updates]");
 
 if(boxUpdate)
@@ -253,12 +242,10 @@ if(boxUpdate)
       }
    );
 }
-
 // ----- End box updates multi items
 
 
 // ----- Soft delete record
-
 const listButtonDeleteSoft = document.querySelectorAll("[button-delete-soft]");
 
 if(listButtonDeleteSoft.length > 0)
@@ -281,12 +268,10 @@ if(listButtonDeleteSoft.length > 0)
       );
    });
 }
-
 // ----- End soft delete record
 
 
 // ----- Get deleted records
-
 const buttonTrash = document.querySelector("[button-trash]");
 
 if(buttonTrash)
@@ -302,12 +287,10 @@ if(buttonTrash)
       }
    );
 }
-
 // ----- End get deleted records
 
 
 // ----- Permanent delete record
-
 const listButtonDeletePermanent = document.querySelectorAll("[button-delete-permanent]");
 
 if(listButtonDeletePermanent.length > 0)
@@ -330,12 +313,10 @@ if(listButtonDeletePermanent.length > 0)
       );
    });
 }
-
 // ----- End permanent delete record
 
 
 // ----- Recover record
-
 const listButtonRecovery = document.querySelectorAll("[button-recover]");
 
 if(listButtonRecovery.length > 0)
@@ -358,12 +339,10 @@ if(listButtonRecovery.length > 0)
       );
    });
 }
-
 // ----- End recover record
 
 
-// ---- Button delete many records (y tuong tu "Box updates multi items")
-
+// ----- Button delete many records (y tuong tu "Box updates multi items")
 const buttonDeleteMany = document.querySelector("[button-delete-many]");
 
 if(buttonDeleteMany)
@@ -407,12 +386,10 @@ if(buttonDeleteMany)
       }
    );
 }
+// ----- End button delete many records
 
-// ---- End button delete many records
 
-
-// ---- Button recover many records (y tuong tu "Box updates multi items")
-
+// ----- Button recover many records (y tuong tu "Box updates multi items")
 const buttonRecoverMany = document.querySelector("[button-recover-many]");
 
 if(buttonRecoverMany)
@@ -454,5 +431,39 @@ if(buttonRecoverMany)
       }
    );
 }
+// ----- End button recover many records
 
-// ---- End button recover many records
+
+// ----- Change item position
+
+const listInputPosition = document.querySelectorAll("input[name='position']");
+
+if(listInputPosition.length > 0)
+{
+   listInputPosition.forEach((eachInput) => {
+      eachInput.addEventListener("change", () => 
+         {
+            const itemPosition = parseInt(eachInput.value);
+            const link = eachInput.getAttribute("link");
+
+            const dataSubmit = {
+               itemPosition: itemPosition
+            };
+
+            fetch(link, {
+               method: "PATCH",
+               headers: {
+                  "Content-Type": "application/json"
+               },
+               body: JSON.stringify(dataSubmit) // chuyen ve JSON
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  console.log("cap nhat vi tri: ", dataFromController);
+               })
+         }
+      );
+   });
+}
+
+// ----- End change item position
