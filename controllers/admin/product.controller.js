@@ -143,13 +143,23 @@ module.exports.changeMulti = async (request, response) =>
          );
          break;
 
-      case "deleteItem":
+      case "deleteManyItems":
          await ProductModel.updateMany(
             {
                _id: listOfIds
             },
             {
                deleted: true
+            }
+         );
+
+      case "recoverManyItems":
+         await ProductModel.updateMany(
+            {
+               _id: listOfIds
+            },
+            {
+               deleted: false
             }
          );
       

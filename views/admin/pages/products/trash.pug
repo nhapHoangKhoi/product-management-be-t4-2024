@@ -12,8 +12,13 @@ block main
    .card-body
       button(
          class="btn btn-secondary btn-sm mb-3 element-hidden"
-         button-update=""
+         button-recover-many=`/${prefixAdmin}/products/change-multi`
+         value="recoverManyItems"
       ) Khôi phục
+      
+      button(
+         class="btn btn-secondary btn-sm mb-3 ml-3 element-hidden"
+      ) Xoá vĩnh viễn
 
       table.table.table-hover.table-sm
          thead

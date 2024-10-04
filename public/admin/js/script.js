@@ -202,7 +202,7 @@ if(inputCheckAll)
 // ----- End button check items
 
 
-// ----- Box updates
+// ----- Box updates multi items
 
 const boxUpdate = document.querySelector("[box-updates]");
 
@@ -216,8 +216,8 @@ if(boxUpdate)
          const selectedValue = selectBox.value;
 
          const listCheckedItem = document.querySelectorAll("input[name='checkItem']:checked");
-         
          const listOfIds = [];
+
          listCheckedItem.forEach((eachInput) => 
             {
                listOfIds.push(eachInput.value);
@@ -254,14 +254,7 @@ if(boxUpdate)
    );
 }
 
-// ----- End box updates
-
-
-// ---- Button update
-
-// const singleButtonUpdate = document.querySelectorAll();
-
-// ---- End button update
+// ----- End box updates multi items
 
 
 // ----- Soft delete record
@@ -367,3 +360,51 @@ if(listButtonRecovery.length > 0)
 }
 
 // ----- End recover record
+
+
+// ---- Button recover many records
+
+const buttonRecoverMany = document.querySelector("[button-recover-many]");
+
+if(buttonRecoverMany)
+{
+   buttonRecoverMany.addEventListener("click", () => 
+      {
+         const listCheckedItem = document.querySelectorAll("input[name='checkItem']:checked");
+         const listOfIds = [];
+         const link = buttonRecoverMany.getAttribute("button-recover-many");
+         const action = buttonRecoverMany.getAttribute("value");
+         console.log(action);
+         
+         listCheckedItem.forEach((eachInput) => 
+            {
+               listOfIds.push(eachInput.value);
+            }
+         );
+         
+         if(action != "" && listOfIds.length > 0)
+         {
+            const dataSubmit = {
+               selectedValue: action,
+               listOfIds: listOfIds
+            };
+
+            fetch(link, {
+               method: "PATCH",
+               headers: {
+                  "Content-Type": "application/json"
+               },
+               body: JSON.stringify(dataSubmit)
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      }
+   );
+}
+
+// ---- End button recover many records
