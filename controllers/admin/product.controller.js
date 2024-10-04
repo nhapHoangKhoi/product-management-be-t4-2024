@@ -107,6 +107,8 @@ module.exports.changeStatus = async (request, response) =>
       }
    );
 
+   request.flash("success", "Cập nhật trạng thái thành công!"); // chi la dat ten key "success"
+
    response.json(
       {
          code: 200
@@ -184,6 +186,8 @@ module.exports.softDeleteProduct = async (request, response) =>
          deleted: true
       }
    );
+
+   request.flash("success", "Xóa sản phẩm thành công!"); // chi la dat ten key "success"
 
    response.json(
       {

@@ -465,3 +465,20 @@ if(listInputPosition.length > 0)
    });
 }
 // ----- End change item position
+
+
+// ----- Show alert
+
+const alertNotification = document.querySelector("[show-alert]");
+
+if(alertNotification)
+{
+   let timeExpiredNoti = alertNotification.getAttribute("show-alert") || 3000;
+   timeExpiredNoti = parseInt(timeExpiredNoti);
+
+   setTimeout(() => {
+      alertNotification.classList.add("element-hidden");
+   }, timeExpiredNoti);
+}
+
+// ----- End show alert

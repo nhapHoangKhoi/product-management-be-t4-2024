@@ -82,3 +82,21 @@
 }
 
 /* End element-hidden */
+
+
+/* show-alert */
+
+.show-alert
+{
+   position: fixed;
+   top: 70px;
+   right: 20px;
+   z-index: 999;
+}
+
+.show-alert.element-hidden
+{
+   display: none;
+}
+
+/* End show-alert */

@@ -6,6 +6,12 @@ include ../../mixins/pagination-bar.pug
 include ../../mixins/box-updates.pug
 
 block main 
+   - if(messages.success)
+      div(
+         class="alert alert-success show-alert"
+         show-alert="3000"
+      ) #{messages.success}
+
    h1(class="main-header mb-4")
       div(class="inner-title") Quản lý sản phẩm
       button(
