@@ -194,6 +194,8 @@ if(boxUpdate)
             }
          );
 
+         const link = boxUpdate.getAttribute("box-updates");
+
          if(selectedValue != "" && listOfIds.length > 0) 
          {
             const dataSubmit = {
@@ -201,7 +203,7 @@ if(boxUpdate)
                listOfIds: listOfIds
             };
 
-            fetch("/admin333/products/change-multi", {
+            fetch(link, {
                method: "PATCH",
                headers: {
                   "Content-Type": "application/json"
