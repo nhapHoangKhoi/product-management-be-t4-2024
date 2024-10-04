@@ -1,4 +1,5 @@
 const ProductModel = require("../../models/product.model.js");
+const systemConfigs = require("../../config/system.js");
 const paginationHelper = require("../../helpers/pagination.helper.js");
 const filterStatusHelper = require("../../helpers/filterByStatus.helper.js");
 const searchCoBanHelper = require("../../helpers/searchCoBan.helper.js");
@@ -89,6 +90,38 @@ module.exports.getDeletedProducts = async (request, response) =>
          pagination: pagination
       }
    );
+}
+
+// [GET] /admin/products/create
+module.exports.getCreatePage = (request, response) =>
+{
+   response.render(
+      "admin/pages/products/create.pug",
+      {
+         pageTitle: "Thêm mới sản phẩm"
+      }
+   );
+}
+
+// [POST] /admin/products/create
+module.exports.createProduct = async (request, response) =>
+{
+   request.body.price = parseFloat(request.body.price);
+   request.body.discountPercentage = parseFloat(request.body.discountPercentage);
+   request.body.stock = parseInt(request.body.stock);
+   
+   if(request.body.position) {
+      request.body.position = parseInt(request.body.position);
+   }
+   else {
+      const numberOfProducts = await ProductModel.countDocuments({});
+      request.body.position = numberOfProducts + 1;
+   }
+
+   const newProductModel = new ProductModel(request.body);
+   await newProductModel.save();
+
+   response.redirect(`/${systemConfigs.prefixAdmin}/products`);
 }
 
 // [PATCH] /admin/products/change-status/:statusChange/:idProduct

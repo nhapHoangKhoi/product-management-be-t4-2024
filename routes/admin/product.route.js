@@ -7,6 +7,10 @@ router.get("/", controllerProductAdmin.index);
 
 router.get("/trash", controllerProductAdmin.getDeletedProducts); // danh sach san pham da bi xoa
 
+router.get("/create", controllerProductAdmin.getCreatePage);
+
+router.post("/create", controllerProductAdmin.createProduct);
+
 router.patch("/change-status/:statusChange/:idProduct", controllerProductAdmin.changeStatus);
 
 router.patch("/change-multi", controllerProductAdmin.changeMulti);

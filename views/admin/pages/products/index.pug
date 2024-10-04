@@ -19,6 +19,7 @@ block main
          button-trash=`/${prefixAdmin}/products/trash`
       ) Sản phẩm đã xoá
 
+
    .card.mb-3 
       .card-header Bộ lọc và Tìm kiếm
       .card-body 
@@ -33,6 +34,12 @@ block main
       .card-header Danh sách
       .card-body
          +box-updates(`/${prefixAdmin}/products/change-multi`)
+
+         div(class="text-left mb-3")
+            a(
+               href=`/${prefixAdmin}/products/create`
+               class="btn btn-outline-info"
+            ) + Thêm mới
          
          table.table.table-hover.table-sm
             thead

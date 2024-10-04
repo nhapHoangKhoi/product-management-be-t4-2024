@@ -22,7 +22,8 @@ app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 // End flash
 
-app.use(bodyParser.json()) // parse application/json
+app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
+app.use(bodyParser.json()); // parse application/json, cai nay la FE gui data len thong qua chuoi JSON
 
 app.set("views", "./views"); // doi voi response.render(), mac dinh di vao folder views
 app.set("view engine", "pug");
