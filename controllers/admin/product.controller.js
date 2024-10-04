@@ -129,14 +129,33 @@ module.exports.changeMulti = async (request, response) =>
 
    const { selectedValue, listOfIds } = request.body;
 
-   await ProductModel.updateMany(
-      {
-         _id: listOfIds
-      }, 
-      {
-         status: selectedValue
-      }
-   );
+   switch(selectedValue)
+   {
+      case "active":
+      case "inactive":
+         await ProductModel.updateMany(
+            {
+               _id: listOfIds
+            }, 
+            {
+               status: selectedValue
+            }
+         );
+         break;
+
+      case "deleteItem":
+         await ProductModel.updateMany(
+            {
+               _id: listOfIds
+            },
+            {
+               deleted: true
+            }
+         );
+      
+      default:
+         break;
+   }
 
    response.json(
       {
