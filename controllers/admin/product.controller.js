@@ -116,6 +116,23 @@ module.exports.changeMulti = async (request, response) =>
    );
 }
 
+// [DELETE] /admin/products/delete/:idProduct
+module.exports.deleteProduct = async (request, response) => 
+{
+   const productId = request.params.idProduct;
+
+   await ProductModel.deleteOne(
+      {
+         _id: productId
+      }
+   );
+
+   response.json(
+      {
+         code: 200
+      }
+   );
+}
 
 
 // [POST] /admin/products/create

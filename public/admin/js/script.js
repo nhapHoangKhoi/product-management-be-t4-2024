@@ -225,3 +225,31 @@ if(boxUpdate)
 }
 
 // ----- End box updates
+
+
+// ----- Delete record
+
+const listButtonDelete = document.querySelectorAll("[button-delete]");
+
+if(listButtonDelete.length > 0)
+{
+   listButtonDelete.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {
+            const itemDeleteId = eachButton.getAttribute("button-delete");
+            
+            fetch(`/admin333/products/delete/${itemDeleteId}`, {
+               method: "DELETE"
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      );
+   });
+}
+
+// ----- End delete record

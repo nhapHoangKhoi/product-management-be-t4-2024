@@ -63,7 +63,10 @@ block main
                            ) Dừng hoạt động 
                      td
                         button(class="btn btn-warning btn-sm") Sửa
-                        button(class="btn btn-danger btn-sm ml-1") Xoá
+                        button(
+                           class="btn btn-danger btn-sm ml-1" 
+                           button-delete=aProduct.id
+                        ) Xoá
 
 
    +pagination-bar(pagination)

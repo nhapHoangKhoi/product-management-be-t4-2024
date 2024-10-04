@@ -9,4 +9,6 @@ router.patch("/change-status/:statusChange/:idProduct", controllerProductAdmin.c
 
 router.patch("/change-multi", controllerProductAdmin.changeMulti);
 
+router.delete("/delete/:idProduct", controllerProductAdmin.deleteProduct);
+
 module.exports = router;
