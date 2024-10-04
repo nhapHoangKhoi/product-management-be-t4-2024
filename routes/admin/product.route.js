@@ -11,6 +11,10 @@ router.patch("/change-multi", controllerProductAdmin.changeMulti);
 
 router.patch("/delete/:idProduct", controllerProductAdmin.softDeleteProduct);
 
-// san pham da bi xoa
+router.get("/trash", controllerProductAdmin.getDeletedProducts); // danh sach san pham da bi xoa
+router.delete("/delete-permanent/:idProduct", controllerProductAdmin.permanentDeleteProduct);
+router.patch("/recover/:idProduct", controllerProductAdmin.recoverProduct);
+
+
 
 module.exports = router;

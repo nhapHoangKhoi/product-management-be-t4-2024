@@ -133,7 +133,7 @@ if(listButtonChangeStatus.length > 0)
 // ----- End button change status
 
 
-// ----- Check item
+// ----- Button check items
 
 const inputCheckAll = document.querySelector("input[name='checkAll']");
 
@@ -169,7 +169,7 @@ if(inputCheckAll)
    });
 }
 
-// ----- End check item
+// ----- End button check items
 
 
 // ----- Box updates
@@ -229,14 +229,14 @@ if(boxUpdate)
 
 // ----- Soft delete record
 
-const listButtonDelete = document.querySelectorAll("[button-delete]");
+const listButtonDeleteSoft = document.querySelectorAll("[button-delete-soft]");
 
-if(listButtonDelete.length > 0)
+if(listButtonDeleteSoft.length > 0)
 {
-   listButtonDelete.forEach((eachButton) => {
+   listButtonDeleteSoft.forEach((eachButton) => {
       eachButton.addEventListener("click", () => 
          {  
-            const link = eachButton.getAttribute("button-delete");
+            const link = eachButton.getAttribute("button-delete-soft");
             
             fetch(link, {
                method: "PATCH"
@@ -253,3 +253,80 @@ if(listButtonDelete.length > 0)
 }
 
 // ----- End soft delete record
+
+
+// ----- Get deleted records
+
+const buttonTrash = document.querySelector("[button-trash]");
+
+if(buttonTrash)
+{
+   buttonTrash.addEventListener("click", () =>
+      {
+         const link = buttonTrash.getAttribute("button-trash");
+
+         fetch(link)
+            .then(responseFromController => {
+               window.location.href = responseFromController.url;
+            })
+      }
+   );
+}
+
+// ----- End get deleted records
+
+
+// ----- Permanent delete record
+
+const listButtonDeletePermanent = document.querySelectorAll("[button-delete-permanent]");
+
+if(listButtonDeletePermanent.length > 0)
+{
+   listButtonDeletePermanent.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {  
+            const link = eachButton.getAttribute("button-delete-permanent");
+            
+            fetch(link, {
+               method: "DELETE"
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      );
+   });
+}
+
+// ----- End permanent delete record
+
+
+// ----- Recover record
+
+const listButtonRecovery = document.querySelectorAll("[button-recover]");
+
+if(listButtonRecovery.length > 0)
+{
+   listButtonRecovery.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {
+            const link = eachButton.getAttribute("button-recover");
+
+            fetch(link, {
+               method: "PATCH"
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      );
+   });
+}
+
+// ----- End recover record

@@ -6,7 +6,7 @@ const searchCoBanHelper = require("../../helpers/searchCoBan.helper.js");
 // [GET] /admin/products/
 module.exports.index = async (request, response) => 
 {
-   // ----- Filter by status
+   // ----- Filter by status ----- //
 
    const productFind = filterStatusHelper.filterByStatus(request);
 
@@ -25,10 +25,10 @@ module.exports.index = async (request, response) =>
       }
    ];
 
-   // ----- End filter by status
+   // ----- End filter by status ----- //
 
 
-   // ----- Search products
+   // ----- Search products ----- //
 
    const objectSearchResult = searchCoBanHelper.search(request, productFind);
    let keyword = "";
@@ -38,19 +38,20 @@ module.exports.index = async (request, response) =>
       keyword = objectSearchResult.keyword;
    }
 
-   // ----- End search products
+   // ----- End search products ----- //
 
 
-   // ----- Pagination
-   
-   const pagination = await paginationHelper.paging(request, productFind); // { currentPage: 1, limitItems: 4, startIndex: 0, totalPage: 5 }
+   // ----- Pagination ----- //
 
-   // ----- End pagination
+   const itemsLimited = 4;
+   const pagination = await paginationHelper.paging(request, productFind, itemsLimited); // { currentPage: 1, itemsLimited: 4, startIndex: 0, totalPage: 5 }
+
+   // ----- End pagination -----//
 
 
    const listOfProducts = await ProductModel
       .find(productFind)
-      .limit(pagination.limitItems)
+      .limit(pagination.itemsLimited)
       .skip(pagination.startIndex);
 
    response.render(
@@ -65,8 +66,36 @@ module.exports.index = async (request, response) =>
    );
 }
 
+// [GET] /admin/products/trash
+module.exports.getDeletedProducts = async (request, response) =>
+{
+   const deletedProductFind = {
+      deleted: true
+   };
+
+   // ----- Pagination ----- //
+   
+   const limitItems = 10;
+   const pagination = await paginationHelper.paging(request, deletedProductFind, limitItems); // { currentPage: 1, limitItems: 10, startIndex: 0, totalPage:... }
+   
+   // ----- End pagination -----//
+   
+
+   const listOfDeletedProducts = await ProductModel
+      .find(deletedProductFind)
+      .limit(pagination.itemsLimited)
+      .skip(pagination.startIndex);
+
+   response.render(
+      "admin/pages/products/trash.pug",
+      {
+         listOfDeletedProducts: listOfDeletedProducts,
+         pagination: pagination
+      }
+   );
+}
+
 // [PATCH] /admin/products/change-status/:statusChange/:idProduct
-// cap nhat dung phuong thuc PATCH
 module.exports.changeStatus = async (request, response) =>
 {
    const { idProduct, statusChange } = request.params; // { statusChange: '...', idProduct: '...' }
@@ -137,7 +166,44 @@ module.exports.softDeleteProduct = async (request, response) =>
    );
 }
 
-// [GET] /admin/products/trash
+// [PATCH] /admin/products/recover/:idProduct
+module.exports.recoverProduct = async (request, response) => 
+{
+   const productId = request.params.idProduct;
+
+   await ProductModel.updateOne(
+      {
+         _id: productId
+      },
+      {
+         deleted: false
+      }
+   );
+
+   response.json(
+      {
+         code: 200
+      }
+   );
+}
+
+// [DELETE] /admin/products/delete-permanent/:idProduct
+module.exports.permanentDeleteProduct = async (request, response) =>
+{
+   const productId = request.params.idProduct;
+
+   await ProductModel.deleteOne(
+      {
+         _id: productId
+      }
+   );
+
+   response.json(
+      {
+         code: 200
+      }
+   );
+}
 
 
 // [POST] /admin/products/create

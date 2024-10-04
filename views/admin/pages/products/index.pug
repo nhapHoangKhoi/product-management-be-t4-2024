@@ -1,11 +1,17 @@
 extends ../../layouts/default.pug
+
 include ../../mixins/filter-status.pug
 include ../../mixins/search-form.pug
 include ../../mixins/pagination-bar.pug
 include ../../mixins/box-updates.pug
 
 block main 
-   h1(class="mb-4") Quản lý sản phẩm
+   h1(class="main-header mb-4")
+      div(class="inner-title") Quản lý sản phẩm
+      button(
+         class="btn btn-primary" 
+         button-trash=`/${prefixAdmin}/products/trash`
+      ) Sản phẩm đã xoá
 
    .card.mb-3 
       .card-header Bộ lọc và Tìm kiếm
@@ -19,7 +25,7 @@ block main
 
    .card.mb-3 
       .card-header Danh sách
-      .card-body 
+      .card-body
          +box-updates(`/${prefixAdmin}/products/change-multi`)
          
          table.table.table-hover.table-sm
@@ -33,6 +39,7 @@ block main
                   th Giá
                   th Trạng thái
                   th Hành động
+            
             tbody
                each aProduct, index in listOfProducts
                   tr 
@@ -65,8 +72,7 @@ block main
                         button(class="btn btn-warning btn-sm") Sửa
                         button(
                            class="btn btn-danger btn-sm ml-1" 
-                           button-delete=`/${prefixAdmin}/products/delete/${aProduct.id}`
+                           button-delete-soft=`/${prefixAdmin}/products/delete/${aProduct.id}`
                         ) Xoá
-
 
    +pagination-bar(pagination)
