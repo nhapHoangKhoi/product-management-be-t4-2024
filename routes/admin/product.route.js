@@ -9,6 +9,8 @@ router.patch("/change-status/:statusChange/:idProduct", controllerProductAdmin.c
 
 router.patch("/change-multi", controllerProductAdmin.changeMulti);
 
-router.delete("/delete/:idProduct", controllerProductAdmin.deleteProduct);
+router.patch("/delete/:idProduct", controllerProductAdmin.softDeleteProduct);
+
+// san pham da bi xoa
 
 module.exports = router;

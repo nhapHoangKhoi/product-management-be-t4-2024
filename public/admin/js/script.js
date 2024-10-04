@@ -227,7 +227,7 @@ if(boxUpdate)
 // ----- End box updates
 
 
-// ----- Delete record
+// ----- Soft delete record
 
 const listButtonDelete = document.querySelectorAll("[button-delete]");
 
@@ -235,11 +235,11 @@ if(listButtonDelete.length > 0)
 {
    listButtonDelete.forEach((eachButton) => {
       eachButton.addEventListener("click", () => 
-         {
-            const itemDeleteId = eachButton.getAttribute("button-delete");
+         {  
+            const link = eachButton.getAttribute("button-delete");
             
-            fetch(`/admin333/products/delete/${itemDeleteId}`, {
-               method: "DELETE"
+            fetch(link, {
+               method: "PATCH"
             })
                .then(responseFromController => responseFromController.json())
                .then(dataFromController => {
@@ -252,4 +252,4 @@ if(listButtonDelete.length > 0)
    });
 }
 
-// ----- End delete record
+// ----- End soft delete record

@@ -116,14 +116,17 @@ module.exports.changeMulti = async (request, response) =>
    );
 }
 
-// [DELETE] /admin/products/delete/:idProduct
-module.exports.deleteProduct = async (request, response) => 
+// [PATCH] /admin/products/delete/:idProduct
+module.exports.softDeleteProduct = async (request, response) => 
 {
    const productId = request.params.idProduct;
 
-   await ProductModel.deleteOne(
+   await ProductModel.updateOne(
       {
          _id: productId
+      },
+      {
+         deleted: true
       }
    );
 
@@ -133,6 +136,8 @@ module.exports.deleteProduct = async (request, response) =>
       }
    );
 }
+
+// [GET] /admin/products/trash
 
 
 // [POST] /admin/products/create
