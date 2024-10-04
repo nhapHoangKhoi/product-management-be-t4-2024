@@ -152,6 +152,7 @@ module.exports.changeMulti = async (request, response) =>
                deleted: true
             }
          );
+         break;
 
       case "recoverManyItems":
          await ProductModel.updateMany(
@@ -226,6 +227,26 @@ module.exports.permanentDeleteProduct = async (request, response) =>
          _id: productId
       }
    );
+
+   response.json(
+      {
+         code: 200
+      }
+   );
+}
+
+// [DELETE] /admin/products/delete-many-permanent
+module.exports.permanentDeleteManyProducts = async (request, response) =>
+{
+   const { selectedValue, listOfIds } = request.body;
+
+   if(selectedValue == "deletePermanentManyItems") {
+      await ProductModel.deleteMany(
+         {
+            _id: listOfIds
+         }
+      );
+   }
 
    response.json(
       {

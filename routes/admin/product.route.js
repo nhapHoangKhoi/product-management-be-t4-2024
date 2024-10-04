@@ -14,7 +14,6 @@ router.patch("/delete/:idProduct", controllerProductAdmin.softDeleteProduct);
 router.get("/trash", controllerProductAdmin.getDeletedProducts); // danh sach san pham da bi xoa
 router.delete("/delete-permanent/:idProduct", controllerProductAdmin.permanentDeleteProduct);
 router.patch("/recover/:idProduct", controllerProductAdmin.recoverProduct);
-
-
+router.delete("/delete-many-permanent", controllerProductAdmin.permanentDeleteManyProducts);
 
 module.exports = router;

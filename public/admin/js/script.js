@@ -362,7 +362,56 @@ if(listButtonRecovery.length > 0)
 // ----- End recover record
 
 
-// ---- Button recover many records
+// ---- Button delete many records (y tuong tu "Box updates multi items")
+
+const buttonDeleteMany = document.querySelector("[button-delete-many]");
+
+if(buttonDeleteMany)
+{
+   buttonDeleteMany.addEventListener("click", () => 
+      {
+         const listCheckedItem = document.querySelectorAll("input[name='checkItem']:checked");
+         const listOfIds = [];
+         const link = buttonDeleteMany.getAttribute("button-delete-many");
+         console.log(link);
+         
+         const action = buttonDeleteMany.getAttribute("value");
+         
+         listCheckedItem.forEach((eachInput) => 
+            {
+               listOfIds.push(eachInput.value);
+            }
+         );
+         
+         if(action != "" && listOfIds.length > 0)
+         {
+            const dataSubmit = {
+               selectedValue: action,
+               listOfIds: listOfIds
+            };
+
+            fetch(link, {
+               method: "DELETE",
+               headers: {
+                  "Content-Type": "application/json"
+               },
+               body: JSON.stringify(dataSubmit)
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      }
+   );
+}
+
+// ---- End button delete many records
+
+
+// ---- Button recover many records (y tuong tu "Box updates multi items")
 
 const buttonRecoverMany = document.querySelector("[button-recover-many]");
 
@@ -374,7 +423,6 @@ if(buttonRecoverMany)
          const listOfIds = [];
          const link = buttonRecoverMany.getAttribute("button-recover-many");
          const action = buttonRecoverMany.getAttribute("value");
-         console.log(action);
          
          listCheckedItem.forEach((eachInput) => 
             {
