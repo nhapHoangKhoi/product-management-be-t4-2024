@@ -1,7 +1,16 @@
 const express = require("express");
+const multer  = require('multer');
 const router = express.Router(); // ham Router() de dinh nghia ra cac route con
 
 const controllerProductAdmin = require("../../controllers/admin/product.controller.js");
+
+// ------ Upload 1 file
+const storageMulterHelper = require("../../helpers/storageMulter.helper.js");
+const storage = storageMulterHelper.storage;
+
+const upload = multer({ storage: storage });
+// ----- End upload 1 file
+
 
 router.get("/", controllerProductAdmin.index);
 
@@ -9,7 +18,11 @@ router.get("/trash", controllerProductAdmin.getDeletedProducts); // danh sach sa
 
 router.get("/create", controllerProductAdmin.getCreatePage);
 
-router.post("/create", controllerProductAdmin.createProduct);
+router.post(
+   "/create", 
+   upload.single("thumbnail"), 
+   controllerProductAdmin.createProduct
+);
 
 router.patch("/change-status/:statusChange/:idProduct", controllerProductAdmin.changeStatus);
 
