@@ -1,4 +1,4 @@
-import fadeOut from "./fadeOutNotification.js";
+import { fadeOutFE, fadeOutBE } from "./fadeOutNotification.js";
 
 // ----- Button status
 const listButtonStatus = document.querySelectorAll("[button-status]");
@@ -133,7 +133,7 @@ const inputCheckAll = document.querySelector("input[name='checkAll']");
 if(inputCheckAll)
 {
    const listInputCheckItem = document.querySelectorAll("input[name='checkItem']");
-   const listElementsHidden = document.querySelectorAll(".element-hidden");
+   const listElementsHidden = document.querySelectorAll("button.element-hidden");
 
    // when click the checkAll button
    inputCheckAll.addEventListener("click", () => 
@@ -241,6 +241,7 @@ if(boxUpdate)
          else {
             // alert("Hành động và item phải được chọn!");
 
+            // ----- Notification chi ben FE -----/
             const notificationFEError = document.querySelector("[show-notification-fe]");
 
             if(notificationFEError)
@@ -251,8 +252,9 @@ if(boxUpdate)
                notificationFEError.innerText = "Hành động và item phải được chọn!";
                notificationFEError.classList.remove("element-hidden");
                
-               fadeOut(notificationFEError, timeExpiredNotification);
+               fadeOutFE(notificationFEError, timeExpiredNotification);
             }
+            // ----- End notification chi ben FE -----/
          }
       }
    );
@@ -490,7 +492,7 @@ if(notification)
    let timeExpiredNotification = notification.getAttribute("show-notification") || 3000;
    timeExpiredNotification = parseInt(timeExpiredNotification);
 
-   fadeOut(notification, timeExpiredNotification);
+   fadeOutBE(notification, timeExpiredNotification);
 }
 // ----- End show notification BE
 
