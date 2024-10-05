@@ -3,6 +3,7 @@ const multer  = require('multer');
 const router = express.Router(); // ham Router() de dinh nghia ra cac route con
 
 const controllerProductAdmin = require("../../controllers/admin/product.controller.js");
+const validate = require("../../validates/admin/product.validate.js");
 
 // ------ Upload 1 file
 const storageMulterHelper = require("../../helpers/storageMulter.helper.js");
@@ -20,7 +21,8 @@ router.get("/create", controllerProductAdmin.getCreatePage);
 
 router.post(
    "/create", 
-   upload.single("thumbnail"), 
+   upload.single("thumbnail"),
+   validate.createProduct, 
    controllerProductAdmin.createProduct
 );
 

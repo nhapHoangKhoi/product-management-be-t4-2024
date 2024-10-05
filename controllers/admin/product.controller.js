@@ -106,16 +106,6 @@ module.exports.getCreatePage = (request, response) =>
 // [POST] /admin/products/create
 module.exports.createProduct = async (request, response) =>
 {
-   // ----- Check title ----- //
-   if(!request.body.title) 
-   {
-      request.flash("error", "Tiêu đề không được để trống!");
-      response.redirect("back");
-      return;
-   }
-   // ----- End check title ----- //
-
-
    // ----- Check upload 1 file ----- //
    if(request.file && request.file.filename) 
    {
