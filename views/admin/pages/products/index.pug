@@ -4,13 +4,10 @@ include ../../mixins/filter-status.pug
 include ../../mixins/search-form.pug
 include ../../mixins/pagination-bar.pug
 include ../../mixins/box-updates.pug
+include ../../mixins/notification.pug
 
 block main 
-   - if(messages.success)
-      div(
-         class="alert alert-success show-alert"
-         show-alert="3000"
-      ) #{messages.success}
+   +notification-success(3000)
 
    h1(class="main-header mb-4")
       div(class="inner-title") Quản lý sản phẩm

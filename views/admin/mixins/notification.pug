@@ -1,0 +1,14 @@
+mixin notification-success(timeExpired = 3000)
+   - if(messages.success)
+      div(
+         class="alert alert-success show-notification"
+         show-notification=timeExpired
+      ) #{messages.success}
+
+
+mixin notification-error(timeExpired = 3000)
+   - if(messages.error)
+      div(
+         class="alert alert-danger show-notification"
+         show-notification=timeExpired
+      ) #{messages.error}

@@ -1,3 +1,5 @@
+import fadeOut from "./fadeOutNotification.js";
+
 // ----- Button status
 const listButtonStatus = document.querySelectorAll("[button-status]");
 
@@ -467,23 +469,20 @@ if(listInputPosition.length > 0)
 // ----- End change item position
 
 
-// ----- Show alert
-const alertNotification = document.querySelector("[show-alert]");
+// ----- Show notification
+const notification = document.querySelector("[show-notification]");
 
-if(alertNotification)
+if(notification)
 {
-   let timeExpiredNoti = alertNotification.getAttribute("show-alert") || 3000;
-   timeExpiredNoti = parseInt(timeExpiredNoti);
+   let timeExpiredNotification = notification.getAttribute("show-notification") || 3000;
+   timeExpiredNotification = parseInt(timeExpiredNotification);
 
-   setTimeout(() => {
-      alertNotification.classList.add("element-hidden");
-   }, timeExpiredNoti);
+   fadeOut(notification, timeExpiredNotification);
 }
-// ----- End show alert
+// ----- End show notification
 
 
 // ----- Preview image
-
 const elementUploadImage = document.querySelector("[upload-image]");
 
 if(elementUploadImage)
@@ -502,5 +501,4 @@ if(elementUploadImage)
       }
    );
 }
-
 // ----- End preview image

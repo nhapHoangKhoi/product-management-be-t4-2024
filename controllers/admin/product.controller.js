@@ -106,6 +106,16 @@ module.exports.getCreatePage = (request, response) =>
 // [POST] /admin/products/create
 module.exports.createProduct = async (request, response) =>
 {
+   // ----- Check title ----- //
+   if(!request.body.title) 
+   {
+      request.flash("error", "Tiêu đề không được để trống!");
+      response.redirect("back");
+      return;
+   }
+   // ----- End check title ----- //
+
+
    // ----- Check upload 1 file ----- //
    if(request.file && request.file.filename) 
    {
@@ -114,7 +124,7 @@ module.exports.createProduct = async (request, response) =>
    // ----- End check upload 1 file ----- //
 
 
-   // ----- make sure the data type is correct with the Model : Number, String,... ----- //
+   // ----- Make sure the data type is correct with the Model : Number, String,... ----- //
    request.body.price = parseFloat(request.body.price);
    request.body.discountPercentage = parseFloat(request.body.discountPercentage);
    request.body.stock = parseInt(request.body.stock);
@@ -126,7 +136,7 @@ module.exports.createProduct = async (request, response) =>
       const numberOfProducts = await ProductModel.countDocuments({});
       request.body.position = numberOfProducts + 1;
    }
-   // ----- make sure the data type is correct with the Model : Number, String,... ----- //
+   // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
 
    
    const newProductModel = new ProductModel(request.body);
@@ -205,6 +215,8 @@ module.exports.changeMulti = async (request, response) =>
                deleted: false
             }
          );
+         request.flash("success", "Khôi phục sản phẩm thành công!"); // chi la dat ten key "success"
+         break;
       
       default:
          break;
@@ -231,7 +243,7 @@ module.exports.softDeleteProduct = async (request, response) =>
       }
    );
 
-   request.flash("success", "Xóa sản phẩm thành công!"); // chi la dat ten key "success"
+   request.flash("success", "Xoá sản phẩm thành công!"); // chi la dat ten key "success"
 
    response.json(
       {
@@ -253,6 +265,8 @@ module.exports.recoverProduct = async (request, response) =>
          deleted: false
       }
    );
+
+   request.flash("success", "Khôi phục sản phẩm thành công!"); // chi la dat ten key "success"
 
    response.json(
       {

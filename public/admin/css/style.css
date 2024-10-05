@@ -84,9 +84,9 @@
 /* End element-hidden */
 
 
-/* show-alert */
+/* show-notification */
 
-.show-alert
+.show-notification
 {
    position: fixed;
    top: 70px;
@@ -94,12 +94,12 @@
    z-index: 999;
 }
 
-.show-alert.element-hidden
+.show-notification.element-hidden
 {
    display: none;
 }
 
-/* End show-alert */
+/* End show-notification */
 
 
 /* image-preview */
