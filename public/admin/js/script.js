@@ -200,7 +200,7 @@ const boxUpdate = document.querySelector("[box-updates]");
 if(boxUpdate)
 {
    const buttonUpdate = boxUpdate.querySelector("button");
-   
+
    buttonUpdate.addEventListener("click", () => 
       {
          const selectBox = boxUpdate.querySelector("select");
@@ -239,7 +239,20 @@ if(boxUpdate)
                })
          }
          else {
-            alert("Hành động và item phải được chọn!");
+            // alert("Hành động và item phải được chọn!");
+
+            const notificationFEError = document.querySelector("[show-notification-fe]");
+
+            if(notificationFEError)
+            {
+               let timeExpiredNotification = notificationFEError.getAttribute("show-notification-fe") || 3000;
+               timeExpiredNotification = parseInt(timeExpiredNotification);
+               
+               notificationFEError.innerText = "Hành động và item phải được chọn!";
+               notificationFEError.classList.remove("element-hidden");
+               
+               fadeOut(notificationFEError, timeExpiredNotification);
+            }
          }
       }
    );
@@ -469,7 +482,7 @@ if(listInputPosition.length > 0)
 // ----- End change item position
 
 
-// ----- Show notification
+// ----- Show notification BE
 const notification = document.querySelector("[show-notification]");
 
 if(notification)
@@ -479,7 +492,7 @@ if(notification)
 
    fadeOut(notification, timeExpiredNotification);
 }
-// ----- End show notification
+// ----- End show notification BE
 
 
 // ----- Preview image

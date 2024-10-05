@@ -193,6 +193,7 @@ module.exports.changeMulti = async (request, response) =>
                status: selectedValue
             }
          );
+         request.flash("success", "Cập nhật sản phẩm thành công!"); // chi la dat ten key "success"
          break;
 
       case "deleteManyItems":
@@ -204,6 +205,7 @@ module.exports.changeMulti = async (request, response) =>
                deleted: true
             }
          );
+         request.flash("success", "Xoá sản phẩm thành công!"); // chi la dat ten key "success"
          break;
 
       case "recoverManyItems":

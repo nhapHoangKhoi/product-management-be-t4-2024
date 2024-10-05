@@ -7,7 +7,9 @@ include ../../mixins/box-updates.pug
 include ../../mixins/notification.pug
 
 block main 
-   +notification-success(3000)
+   +notification-success-BE(3000)
+   +notification-error-BE(5000)
+   +notification-error-FE(5000)
 
    h1(class="main-header mb-4")
       div(class="inner-title") Quản lý sản phẩm

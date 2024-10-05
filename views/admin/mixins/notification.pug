@@ -1,4 +1,4 @@
-mixin notification-success(timeExpired = 3000)
+mixin notification-success-BE(timeExpired = 3000)
    - if(messages.success)
       div(
          class="alert alert-success show-notification"
@@ -6,9 +6,16 @@ mixin notification-success(timeExpired = 3000)
       ) #{messages.success}
 
 
-mixin notification-error(timeExpired = 3000)
+mixin notification-error-BE(timeExpired = 3000)
    - if(messages.error)
       div(
          class="alert alert-danger show-notification"
          show-notification=timeExpired
       ) #{messages.error}
+
+
+mixin notification-error-FE(timeExpired = 3000)
+   div(
+      class="alert alert-danger show-notification element-hidden"
+      show-notification-fe=timeExpired
+   )
