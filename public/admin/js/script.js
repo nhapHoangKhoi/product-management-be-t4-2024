@@ -468,7 +468,6 @@ if(listInputPosition.length > 0)
 
 
 // ----- Show alert
-
 const alertNotification = document.querySelector("[show-alert]");
 
 if(alertNotification)
@@ -480,5 +479,28 @@ if(alertNotification)
       alertNotification.classList.add("element-hidden");
    }, timeExpiredNoti);
 }
-
 // ----- End show alert
+
+
+// ----- Preview image
+
+const elementUploadImage = document.querySelector("[upload-image]");
+
+if(elementUploadImage)
+{
+   const elementInputUploadImage = elementUploadImage.querySelector("[upload-image-input]");
+   const elementPreviewUploadImage = elementUploadImage.querySelector("[upload-image-preview]");
+
+   elementInputUploadImage.addEventListener("change", () => 
+      {
+         // console.log(elementInputUploadImage.files); // tra ra mot mang data
+         const uploadedFile = elementInputUploadImage.files[0];
+
+         if(uploadedFile) {
+            elementPreviewUploadImage.src = URL.createObjectURL(uploadedFile);
+         }
+      }
+   );
+}
+
+// ----- End preview image
