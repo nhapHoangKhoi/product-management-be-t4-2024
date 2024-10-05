@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const slug = require('mongoose-slug-updater');
+mongoose.plugin(slug);
 
 const productSchema = new mongoose.Schema(
    {
@@ -14,6 +16,14 @@ const productSchema = new mongoose.Schema(
          type: Boolean,
          default: false
       },
+      slug: {
+         type: String,
+         slug: "title", // tu dong render slug theo truong title
+         unique: true
+      }
+   },
+   {
+      timestamps: true // automatically insert field createAt, updateAt
    }
 );
 
