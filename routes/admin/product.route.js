@@ -19,6 +19,8 @@ router.get("/trash", controllerProductAdmin.getDeletedProducts); // danh sach sa
 
 router.get("/create", controllerProductAdmin.getCreatePage);
 
+router.get("/edit/:idProduct", controllerProductAdmin.getEditPage);
+
 router.post(
    "/create", 
    upload.single("thumbnail"),
@@ -35,6 +37,13 @@ router.patch("/delete/:idProduct", controllerProductAdmin.softDeleteProduct);
 router.patch("/recover/:idProduct", controllerProductAdmin.recoverProduct);
 
 router.patch("/change-position/:idProduct", controllerProductAdmin.changeProductPosition);
+
+router.patch(
+   "/edit/:idProduct", 
+   upload.single("thumbnail"),
+   validate.createProduct, 
+   controllerProductAdmin.editProduct
+);
 
 router.delete("/delete-permanent/:idProduct", controllerProductAdmin.permanentDeleteProduct);
 

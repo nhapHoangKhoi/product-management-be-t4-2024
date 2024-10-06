@@ -92,11 +92,26 @@
    top: 70px;
    right: 20px;
    z-index: 999;
+
+   display: flex;
+   align-items: center;
 }
 
 .show-notification.element-hidden
 {
    display: none;
+}
+
+.show-notification.alert-danger .inner-icon
+{
+   color: red;
+   margin-right: 10px;
+}
+
+.show-notification.alert-success .inner-icon
+{
+   color: rgb(1, 173, 1);
+   margin-right: 10px;
 }
 
 /* End show-notification */

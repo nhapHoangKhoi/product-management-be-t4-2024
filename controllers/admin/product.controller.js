@@ -4,6 +4,7 @@ const paginationHelper = require("../../helpers/pagination.helper.js");
 const filterStatusHelper = require("../../helpers/filterByStatus.helper.js");
 const searchCoBanHelper = require("../../helpers/searchCoBan.helper.js");
 
+// ----------------[GET]------------------- //
 // [GET] /admin/products/
 module.exports.index = async (request, response) => 
 {
@@ -103,6 +104,45 @@ module.exports.getCreatePage = (request, response) =>
    );
 }
 
+// [GET] /admin/products/edit/:idProduct
+module.exports.getEditPage = async (request, response) =>
+{
+   try {
+      const productId = request.params.idProduct;
+
+      const productFind = {
+         _id: productId,
+         deleted: false
+      };
+   
+      const theProductData = await ProductModel.findOne(productFind); 
+
+      if(theProductData) // check != null, vi co render ra giao dien nen them if else cho nay nua
+      {
+         response.render(
+            "admin/pages/products/edit.pug",
+            {
+               pageTitle: "Chỉnh sửa sản phẩm",
+               theProductData: theProductData
+            }
+         );
+      }
+      else 
+      {
+         response.redirect(`/${systemConfigs.prefixAdmin}/products`);
+      }
+   }
+   catch(error) {
+      // catch la do nguoi ta hack, pha
+      // console.log(error)
+      request.flash("error", "ID sản phẩm không hợp lệ!");
+      response.redirect(`/${systemConfigs.prefixAdmin}/products`);
+   }
+}
+// ----------------End [GET]------------------- //
+
+
+// ----------------[POST]------------------- //
 // [POST] /admin/products/create
 module.exports.createProduct = async (request, response) =>
 {
@@ -134,30 +174,84 @@ module.exports.createProduct = async (request, response) =>
 
    response.redirect(`/${systemConfigs.prefixAdmin}/products`);
 }
+// ----------------End [POST]------------------- //
+
+
+// ----------------[PATCH]------------------- //
+// [PATCH] /admin/products/edit/:idProduct
+module.exports.editProduct = async (request, response) =>
+{
+   try {
+      const productId = request.params.idProduct;
+   
+      // ----- Check upload 1 file ----- //
+      if(request.file && request.file.filename) 
+      {
+         request.body.thumbnail = `/uploads/${request.file.filename}`;
+      }
+      // ----- End check upload 1 file ----- //
+   
+   
+      // ----- Make sure the data type is correct with the Model : Number, String,... ----- //
+      request.body.price = parseFloat(request.body.price);
+      request.body.discountPercentage = parseFloat(request.body.discountPercentage);
+      request.body.stock = parseInt(request.body.stock);
+      
+      if(request.body.position) {
+         request.body.position = parseInt(request.body.position);
+      }
+      else {
+         const numberOfProducts = await ProductModel.countDocuments({});
+         request.body.position = numberOfProducts + 1;
+      }
+      // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
+   
+   
+      await ProductModel.updateOne(
+         {
+            _id: productId
+         },
+         request.body
+      );
+   
+      request.flash("success", "Cập nhật sản phẩm thành công!");
+   }
+   catch(error) {
+      request.flash("error", "ID sản phẩm không hợp lệ!");
+   }
+
+   // response.send("OK Frontend");
+   response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/edit
+}
 
 // [PATCH] /admin/products/change-status/:statusChange/:idProduct
 module.exports.changeStatus = async (request, response) =>
 {
-   const { idProduct, statusChange } = request.params; // { statusChange: '...', idProduct: '...' }
+   try {
+      const { idProduct, statusChange } = request.params; // { statusChange: '...', idProduct: '...' }
+      
+      // cap nhat data trong database
+      // day la cua mongoose, ko lien quan gi toi phuong thuc GET, PATCH,...
+      await ProductModel.updateOne(
+         {
+            _id: idProduct
+         }, 
+         {
+            status: (statusChange == "active") ? "inactive" : "active"
+         }
+      );
    
-   // cap nhat data trong database
-   // day la cua mongoose, ko lien quan gi toi phuong thuc GET, PATCH,...
-   await ProductModel.updateOne(
-      {
-         _id: idProduct
-      }, 
-      {
-         status: (statusChange == "active") ? "inactive" : "active"
-      }
-   );
+      request.flash("success", "Cập nhật trạng thái thành công!"); // chi la dat ten key "success"
 
-   request.flash("success", "Cập nhật trạng thái thành công!"); // chi la dat ten key "success"
-
-   response.json(
-      {
-         code: 200
-      }
-   );
+      response.json(
+         {
+            code: 200
+         }
+      );
+   } 
+   catch(error) {
+      response.redirect("back"); // back to page [GET] /admin/products/
+   }
 }
 
 // [PATCH] /admin/products/change-multi
@@ -224,87 +318,110 @@ module.exports.changeMulti = async (request, response) =>
 // [PATCH] /admin/products/delete/:idProduct
 module.exports.softDeleteProduct = async (request, response) => 
 {
-   const productId = request.params.idProduct;
-
-   await ProductModel.updateOne(
-      {
-         _id: productId
-      },
-      {
-         deleted: true
-      }
-   );
-
-   request.flash("success", "Xoá sản phẩm thành công!"); // chi la dat ten key "success"
-
-   response.json(
-      {
-         code: 200
-      }
-   );
+   try {
+      const productId = request.params.idProduct;
+   
+      await ProductModel.updateOne(
+         {
+            _id: productId
+         },
+         {
+            deleted: true
+         }
+      );
+   
+      request.flash("success", "Xoá sản phẩm thành công!"); // chi la dat ten key "success"
+   
+      response.json(
+         {
+            code: 200
+         }
+      );
+   }
+   catch(error) {
+      response.redirect("back"); // back to page [GET] /admin/products/
+   }
 }
 
 // [PATCH] /admin/products/recover/:idProduct
 module.exports.recoverProduct = async (request, response) => 
 {
-   const productId = request.params.idProduct;
-
-   await ProductModel.updateOne(
-      {
-         _id: productId
-      },
-      {
-         deleted: false
-      }
-   );
-
-   request.flash("success", "Khôi phục sản phẩm thành công!"); // chi la dat ten key "success"
-
-   response.json(
-      {
-         code: 200
-      }
-   );
+   try {
+      const productId = request.params.idProduct;
+   
+      await ProductModel.updateOne(
+         {
+            _id: productId
+         },
+         {
+            deleted: false
+         }
+      );
+   
+      request.flash("success", "Khôi phục sản phẩm thành công!"); // chi la dat ten key "success"
+   
+      response.json(
+         {
+            code: 200
+         }
+      );
+   }
+   catch(error) {
+      response.redirect("back"); // back to page [GET] /admin/products/trash
+   }
 }
 
 // [PATCH] /admin/products/change-position/:idProduct
 module.exports.changeProductPosition = async (request, response) =>
 {
-   const productId = request.params.idProduct;
-   const itemPosition = request.body.itemPosition;
-
-   await ProductModel.updateOne(
-      {
-         _id: productId
-      },
-      {
-         position: itemPosition
-      }
-   );
-
-   response.json(
-      {
-         code: 200
-      }
-   );
+   try {
+      const productId = request.params.idProduct;
+      const itemPosition = request.body.itemPosition;
+   
+      await ProductModel.updateOne(
+         {
+            _id: productId
+         },
+         {
+            position: itemPosition
+         }
+      );
+   
+      response.json(
+         {
+            code: 200
+         }
+      );
+   }
+   catch(error) {
+      response.redirect("back"); // back to page [GET] /admin/products/
+   }
 }
+// ----------------End [PATCH]------------------- //
 
+
+// ----------------[DELETE]------------------- //
 // [DELETE] /admin/products/delete-permanent/:idProduct
 module.exports.permanentDeleteProduct = async (request, response) =>
 {
-   const productId = request.params.idProduct;
-
-   await ProductModel.deleteOne(
-      {
-         _id: productId
-      }
-   );
-
-   response.json(
-      {
-         code: 200
-      }
-   );
+   try {
+      const productId = request.params.idProduct;
+   
+      await ProductModel.deleteOne(
+         {
+            _id: productId
+         }
+      );
+   
+      response.json(
+         {
+            code: 200
+         }
+      );
+   }
+   catch(error) {
+      response.redirect("back"); // back to page [GET] /admin/products/trash
+   }
 }
 
 // [DELETE] /admin/products/delete-many-permanent
@@ -326,7 +443,4 @@ module.exports.permanentDeleteManyProducts = async (request, response) =>
       }
    );
 }
-
-
-// [POST] /admin/products/create
-// ...
+// ----------------End [DELETE]------------------- //

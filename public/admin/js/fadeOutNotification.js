@@ -9,26 +9,32 @@ export function fadeOutFE(notification, timeExpired) // 2 ham nay giong y chang 
       notification.style.opacity = 1; // reset opacity to full
    }
 
+   const timeExistClear = timeExpired;
+
    let opacity = 1;
-   const fadeDuration = 50;
-   const totalSteps = timeExpired / fadeDuration;
+   const fadeDuration = 35; // toc do lam mo, so cang nho thi mo cang nhanh
+   const totalSteps = 20;
    const opacityDecrement = opacity / totalSteps;
    
-   currentFadeOutTimerFE = setInterval(() => {
-      if(opacity <= 0) {
-         clearInterval(currentFadeOutTimerFE);
-         // notification.style.display = "none"; // su dung cai nay se ko mo rong duoc
-         notification.classList.add("element-hidden");
-      }
+   currentFadeOutTimerFE = setTimeout(() => {
 
-      notification.style.opacity = opacity;
-      opacity = opacity - opacityDecrement;
+      currentFadeOutTimerFE = setInterval(() => {
+         if(opacity <= 0) {
+            clearInterval(currentFadeOutTimerFE);
+            // notification.style.display = "none"; // su dung cai nay se ko mo rong duoc
+            notification.classList.add("element-hidden");
+         }
+   
+         notification.style.opacity = opacity;
+         opacity = opacity - opacityDecrement;
+   
+         // ensure opacity does not go below 0
+         if (opacity < 0) {
+            opacity = 0;
+         }
+      }, fadeDuration); // fade out the notification within ... miliseconds
 
-      // ensure opacity does not go below 0
-      if (opacity < 0) {
-         opacity = 0;
-      }
-   }, fadeDuration); // fade out the notification within ... seconds
+   }, timeExistClear);
 }
 
 export function fadeOutBE(notification, timeExpired) // 2 ham nay giong y chang nhau, chi la tach ra thoi
@@ -39,24 +45,30 @@ export function fadeOutBE(notification, timeExpired) // 2 ham nay giong y chang 
       notification.style.opacity = 1; // reset opacity to full
    }
 
+   const timeExistClear = timeExpired;
+
    let opacity = 1;
-   const fadeDuration = 50;
-   const totalSteps = timeExpired / fadeDuration;
+   const fadeDuration = 35; // toc do lam mo, so cang nho thi mo cang nhanh
+   const totalSteps = 20;
    const opacityDecrement = opacity / totalSteps;
+
+   currentFadeOutTimerBE = setTimeout(() => {
+
+      currentFadeOutTimerBE = setInterval(() => {
+         if(opacity <= 0) {
+            clearInterval(currentFadeOutTimerBE);
+            // notification.style.display = "none"; // su dung cai nay se ko mo rong duoc
+            notification.classList.add("element-hidden");
+         }
    
-   currentFadeOutTimerBE = setInterval(() => {
-      if(opacity <= 0) {
-         clearInterval(currentFadeOutTimerBE);
-         // notification.style.display = "none"; // su dung cai nay se ko mo rong duoc
-         notification.classList.add("element-hidden");
-      }
+         notification.style.opacity = opacity;
+         opacity = opacity - opacityDecrement;
+   
+         // ensure opacity does not go below 0
+         if (opacity < 0) {
+            opacity = 0;
+         }
+      }, fadeDuration); // fade out the notification within ... seconds
 
-      notification.style.opacity = opacity;
-      opacity = opacity - opacityDecrement;
-
-      // ensure opacity does not go below 0
-      if (opacity < 0) {
-         opacity = 0;
-      }
-   }, fadeDuration); // fade out the notification within ... seconds
+   }, timeExistClear);
 }

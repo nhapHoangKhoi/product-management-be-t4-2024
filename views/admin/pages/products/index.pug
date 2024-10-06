@@ -4,7 +4,6 @@ include ../../mixins/filter-status.pug
 include ../../mixins/search-form.pug
 include ../../mixins/pagination-bar.pug
 include ../../mixins/box-updates.pug
-include ../../mixins/notification.pug
 
 block main 
 
@@ -88,7 +87,10 @@ block main
                               button-change-status=""
                            ) Dừng hoạt động 
                      td
-                        button(class="btn btn-warning btn-sm") Sửa
+                        a(
+                           class="btn btn-warning btn-sm"
+                           href=`/${prefixAdmin}/products/edit/${aProduct.id}`
+                        ) Sửa
                         button(
                            class="btn btn-danger btn-sm ml-1" 
                            button-delete-soft=`/${prefixAdmin}/products/delete/${aProduct.id}`

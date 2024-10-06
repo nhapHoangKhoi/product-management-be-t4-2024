@@ -42,62 +42,6 @@ if(listButtonStatus.length > 0)
 // ----- End button status
 
 
-// ----- Form search
-const formSearch = document.querySelector("[form-search]"); // neu ko co thi formSearch tra ve null
-
-if(formSearch)
-{
-   let newURL = new URL(window.location.href);
-
-   formSearch.addEventListener("submit", (event) => 
-      {
-         event.preventDefault();
-
-         const searchedKeyword = event.target.elements.inputKeyword.value;
-         newURL.searchParams.delete("page");
-
-         if(searchedKeyword) {
-            newURL.searchParams.set("inputKeyword", searchedKeyword);
-         }
-         else {
-            newURL.searchParams.delete("inputKeyword");
-         }
-
-         // http://localhost:3000/admin333/products?keyword=iPhone
-         window.location.href = newURL.href;
-      }
-   );
-}
-// ----- End form search
-
-
-// ----- Pagination
-const listButtonPagination = document.querySelectorAll("[button-pagination]");
-
-if(listButtonPagination.length > 0)
-{
-   let newURL = new URL(window.location.href);
-
-   listButtonPagination.forEach((eachButton) => {
-      eachButton.addEventListener("click", () => 
-         {
-            const page = eachButton.getAttribute("button-pagination");
-            
-            if(page) {
-               newURL.searchParams.set("page", page);
-            }
-            else {
-               newURL.searchParams.delete("page");
-            }
-
-            window.location.href = newURL.href;
-         }
-      );
-   });
-}
-// ----- End pagination
-
-
 // ----- Button change status
 const listButtonChangeStatus = document.querySelectorAll("[button-change-status]");
 
@@ -242,14 +186,15 @@ if(boxUpdate)
             // alert("Hành động và item phải được chọn!");
 
             // ----- Notification chi ben FE -----/
-            const notificationFEError = document.querySelector("[show-notification-fe]");
+            const notificationFEError = document.querySelector(".alert-danger[show-notification-fe]");
 
             if(notificationFEError)
             {
                let timeExpiredNotification = notificationFEError.getAttribute("show-notification-fe") || 3000;
                timeExpiredNotification = parseInt(timeExpiredNotification);
-               
-               notificationFEError.innerText = "Hành động và item phải được chọn!";
+
+               const notificationContent = notificationFEError.querySelector(".inner-content");
+               notificationContent.innerText = "Hành động và item phải được chọn!";
                notificationFEError.classList.remove("element-hidden");
                
                fadeOutFE(notificationFEError, timeExpiredNotification);
@@ -260,103 +205,6 @@ if(boxUpdate)
    );
 }
 // ----- End box updates multi items
-
-
-// ----- Soft delete record
-const listButtonDeleteSoft = document.querySelectorAll("[button-delete-soft]");
-
-if(listButtonDeleteSoft.length > 0)
-{
-   listButtonDeleteSoft.forEach((eachButton) => {
-      eachButton.addEventListener("click", () => 
-         {  
-            const link = eachButton.getAttribute("button-delete-soft");
-            
-            fetch(link, {
-               method: "PATCH"
-            })
-               .then(responseFromController => responseFromController.json())
-               .then(dataFromController => {
-                  if(dataFromController.code == 200) {
-                     window.location.reload();
-                  }
-               })
-         }
-      );
-   });
-}
-// ----- End soft delete record
-
-
-// ----- Get deleted records
-const buttonTrash = document.querySelector("[button-trash]");
-
-if(buttonTrash)
-{
-   buttonTrash.addEventListener("click", () =>
-      {
-         const link = buttonTrash.getAttribute("button-trash");
-
-         fetch(link)
-            .then(responseFromController => {
-               window.location.href = responseFromController.url;
-            })
-      }
-   );
-}
-// ----- End get deleted records
-
-
-// ----- Permanent delete record
-const listButtonDeletePermanent = document.querySelectorAll("[button-delete-permanent]");
-
-if(listButtonDeletePermanent.length > 0)
-{
-   listButtonDeletePermanent.forEach((eachButton) => {
-      eachButton.addEventListener("click", () => 
-         {  
-            const link = eachButton.getAttribute("button-delete-permanent");
-            
-            fetch(link, {
-               method: "DELETE"
-            })
-               .then(responseFromController => responseFromController.json())
-               .then(dataFromController => {
-                  if(dataFromController.code == 200) {
-                     window.location.reload();
-                  }
-               })
-         }
-      );
-   });
-}
-// ----- End permanent delete record
-
-
-// ----- Recover record
-const listButtonRecovery = document.querySelectorAll("[button-recover]");
-
-if(listButtonRecovery.length > 0)
-{
-   listButtonRecovery.forEach((eachButton) => {
-      eachButton.addEventListener("click", () => 
-         {
-            const link = eachButton.getAttribute("button-recover");
-
-            fetch(link, {
-               method: "PATCH"
-            })
-               .then(responseFromController => responseFromController.json())
-               .then(dataFromController => {
-                  if(dataFromController.code == 200) {
-                     window.location.reload();
-                  }
-               })
-         }
-      );
-   });
-}
-// ----- End recover record
 
 
 // ----- Button delete many records (y tuong tu "Box updates multi items, Button check items")
@@ -484,17 +332,105 @@ if(listInputPosition.length > 0)
 // ----- End change item position
 
 
-// ----- Show notification BE
-const notification = document.querySelector("[show-notification]");
+// ----- Form search
+const formSearch = document.querySelector("[form-search]"); // neu ko co thi formSearch tra ve null
 
-if(notification)
+if(formSearch)
 {
-   let timeExpiredNotification = notification.getAttribute("show-notification") || 3000;
-   timeExpiredNotification = parseInt(timeExpiredNotification);
+   let newURL = new URL(window.location.href);
 
-   fadeOutBE(notification, timeExpiredNotification);
+   formSearch.addEventListener("submit", (event) => 
+      {
+         event.preventDefault();
+
+         const searchedKeyword = event.target.elements.inputKeyword.value;
+         newURL.searchParams.delete("page");
+
+         if(searchedKeyword) {
+            newURL.searchParams.set("inputKeyword", searchedKeyword);
+         }
+         else {
+            newURL.searchParams.delete("inputKeyword");
+         }
+
+         // http://localhost:3000/admin333/products?keyword=iPhone
+         window.location.href = newURL.href;
+      }
+   );
 }
-// ----- End show notification BE
+// ----- End form search
+
+
+// ----- Get deleted records
+const buttonTrash = document.querySelector("[button-trash]");
+
+if(buttonTrash)
+{
+   buttonTrash.addEventListener("click", () =>
+      {
+         const link = buttonTrash.getAttribute("button-trash");
+
+         fetch(link)
+            .then(responseFromController => {
+               window.location.href = responseFromController.url;
+            })
+      }
+   );
+}
+// ----- End get deleted records
+
+
+// ----- Permanent delete record
+const listButtonDeletePermanent = document.querySelectorAll("[button-delete-permanent]");
+
+if(listButtonDeletePermanent.length > 0)
+{
+   listButtonDeletePermanent.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {  
+            const link = eachButton.getAttribute("button-delete-permanent");
+            
+            fetch(link, {
+               method: "DELETE"
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      );
+   });
+}
+// ----- End permanent delete record
+
+
+// ----- Pagination
+const listButtonPagination = document.querySelectorAll("[button-pagination]");
+
+if(listButtonPagination.length > 0)
+{
+   let newURL = new URL(window.location.href);
+
+   listButtonPagination.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {
+            const page = eachButton.getAttribute("button-pagination");
+            
+            if(page) {
+               newURL.searchParams.set("page", page);
+            }
+            else {
+               newURL.searchParams.delete("page");
+            }
+
+            window.location.href = newURL.href;
+         }
+      );
+   });
+}
+// ----- End pagination
 
 
 // ----- Preview image
@@ -517,3 +453,68 @@ if(elementUploadImage)
    );
 }
 // ----- End preview image
+
+
+// ----- Recover record
+const listButtonRecovery = document.querySelectorAll("[button-recover]");
+
+if(listButtonRecovery.length > 0)
+{
+   listButtonRecovery.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {
+            const link = eachButton.getAttribute("button-recover");
+
+            fetch(link, {
+               method: "PATCH"
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      );
+   });
+}
+// ----- End recover record
+
+
+// ----- Soft delete record
+const listButtonDeleteSoft = document.querySelectorAll("[button-delete-soft]");
+
+if(listButtonDeleteSoft.length > 0)
+{
+   listButtonDeleteSoft.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {  
+            const link = eachButton.getAttribute("button-delete-soft");
+            
+            fetch(link, {
+               method: "PATCH"
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      );
+   });
+}
+// ----- End soft delete record
+
+
+// ----- Show notification BE
+const notification = document.querySelector("[show-notification]");
+
+if(notification)
+{
+   let timeExpiredNotification = notification.getAttribute("show-notification") || 3000;
+   timeExpiredNotification = parseInt(timeExpiredNotification);
+
+   fadeOutBE(notification, timeExpiredNotification);
+}
+// ----- End show notification BE

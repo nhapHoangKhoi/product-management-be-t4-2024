@@ -3,7 +3,9 @@ mixin notification-success-BE(timeExpired = 3000)
       div(
          class="alert alert-success show-notification"
          show-notification=timeExpired
-      ) #{messages.success}
+      )
+         span(class="inner-icon") <i class="fa-regular fa-circle-check"></i>
+         div(class="inner-content") #{messages.success}
 
 
 mixin notification-error-BE(timeExpired = 3000)
@@ -11,7 +13,9 @@ mixin notification-error-BE(timeExpired = 3000)
       div(
          class="alert alert-danger show-notification"
          show-notification=timeExpired
-      ) #{messages.error}
+      )
+         span(class="inner-icon") <i class="fa-regular fa-circle-xmark"></i>
+         div(class="inner-content") #{messages.error}
 
 
 mixin notification-error-FE(timeExpired = 3000)
@@ -19,3 +23,5 @@ mixin notification-error-FE(timeExpired = 3000)
       class="alert alert-danger show-notification element-hidden"
       show-notification-fe=timeExpired
    )
+      span(class="inner-icon") <i class="fa-regular fa-circle-xmark"></i>
+      div(class="inner-content")
