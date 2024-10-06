@@ -1,4 +1,5 @@
 extends ../../layouts/default.pug
+
 include ../../mixins/box-head.pug
 
 block main 
@@ -10,11 +11,13 @@ block main
       .row
          each aProduct in listOfProducts
             .col-4.mb-3 
-               .product-item 
-                  .inner-image 
-                     img(src=aProduct.thumbnail, alt="Mascara")
-                  .inner-content
-                     h3.inner-title #{aProduct.title}
-                     .inner-price-new #{aProduct.priceNew}$
-                     .inner-price-old #{aProduct.price}$
-                     .inner-discount #{aProduct.discountPercentage}%
+               .product-item
+                     .inner-image
+                        a(href=`/products/${aProduct.slug}`) 
+                           img(src=aProduct.thumbnail, alt="Mascara")
+                     .inner-content
+                        h3.inner-title 
+                           a(href=`/products/${aProduct.slug}`) #{aProduct.title}
+                        .inner-price-new #{aProduct.priceNew}$
+                        .inner-price-old #{aProduct.price}$
+                        .inner-discount #{aProduct.discountPercentage}%

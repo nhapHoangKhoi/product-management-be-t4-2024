@@ -6,4 +6,6 @@ const controllerProduct = require("../../controllers/client/product.controller.j
 // giong nhu noi chuoi
 router.get("/", controllerProduct.index);
 
+router.get("/:slug", controllerProduct.getDetailPage);
+
 module.exports = router;
