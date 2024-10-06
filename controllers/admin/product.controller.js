@@ -139,6 +139,42 @@ module.exports.getEditPage = async (request, response) =>
       response.redirect(`/${systemConfigs.prefixAdmin}/products`);
    }
 }
+
+// [GET] /admin/products/detail/:idProduct
+module.exports.getDetailPage = async (request, response) =>
+{
+   try {
+      const productId = request.params.idProduct;
+
+      const productFind = {
+         _id: productId,
+         deleted: false
+      };
+   
+      const theProductData = await ProductModel.findOne(productFind); 
+
+      if(theProductData) // check != null, vi co render ra giao dien nen them if else cho nay nua
+      {
+         response.render(
+            "admin/pages/products/detail.pug",
+            {
+               pageTitle: "Chi tiết sản phẩm",
+               theProductData: theProductData
+            }
+         );
+      }
+      else 
+      {
+         response.redirect(`/${systemConfigs.prefixAdmin}/products`);
+      }
+   }
+   catch(error) {
+      // catch la do nguoi ta hack, pha
+      // console.log(error)
+      request.flash("error", "ID sản phẩm không hợp lệ!");
+      response.redirect(`/${systemConfigs.prefixAdmin}/products`);
+   }
+}
 // ----------------End [GET]------------------- //
 
 

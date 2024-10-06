@@ -21,6 +21,8 @@ router.get("/create", controllerProductAdmin.getCreatePage);
 
 router.get("/edit/:idProduct", controllerProductAdmin.getEditPage);
 
+router.get("/detail/:idProduct", controllerProductAdmin.getDetailPage);
+
 router.post(
    "/create", 
    upload.single("thumbnail"),

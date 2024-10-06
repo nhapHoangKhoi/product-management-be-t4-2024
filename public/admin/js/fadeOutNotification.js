@@ -1,7 +1,7 @@
 let currentFadeOutTimerFE = null; // store the timer reference
 let currentFadeOutTimerBE = null;
 
-export function fadeOutFE(notification, timeExpired) // 2 ham nay giong y chang nhau, chi la tach ra thoi
+export function fadeOutFE(notification, timeExpired) // 2 ham fadeout giong y chang nhau, chi la tach ra thoi
 {
    // clear any existing fade-out timer
    if (currentFadeOutTimerFE) {
@@ -37,7 +37,31 @@ export function fadeOutFE(notification, timeExpired) // 2 ham nay giong y chang 
    }, timeExistClear);
 }
 
-export function fadeOutBE(notification, timeExpired) // 2 ham nay giong y chang nhau, chi la tach ra thoi
+export function fadeInFE(notification, fadeDuration = 1) 
+{
+   notification.style.opacity = 0;
+   notification.classList.remove("element-hidden");
+
+   let opacity = 0;
+   const totalSteps = 20;
+   const opacityIncrement = 1 / totalSteps;
+
+   const fadeInInterval = setInterval(() => {
+      if (opacity >= 1) {
+         clearInterval(fadeInInterval); // stop when fully visible
+      }
+
+      notification.style.opacity = opacity;
+      opacity = opacity + opacityIncrement;
+
+      // ensure opacity does not exceed 1
+      if (opacity > 1) {
+         opacity = 1;
+      }
+   }, fadeDuration); // fade-in interval
+}
+
+export function fadeOutBE(notification, timeExpired) // 2 ham fadeout giong y chang nhau, chi la tach ra thoi
 {
    // clear any existing fade-out timer
    if (currentFadeOutTimerBE) {

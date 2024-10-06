@@ -51,21 +51,32 @@ block main
             
             tbody
                each aProduct, index in listOfProducts
-                  tr 
+                  tr
                      td 
-                        input(name="checkItem" type="checkbox" value=aProduct.id)
+                        input(
+                           onclick=`event.stopPropagation();`
+                           name="checkItem" 
+                           type="checkbox" 
+                           value=aProduct.id
+                        )
+
                      td #{index+1}
-                     td
+
+                     td(onclick=`location.href='/${prefixAdmin}/products/detail/${aProduct.id}'`, style="cursor: pointer;")
                         img(
                            src=aProduct.thumbnail
                            alt=aProduct.title
                            width="80px"
                            height="auto"
                         )
-                     td #{aProduct.title}
-                     td #{aProduct.price}$
-                     td 
+
+                     td(onclick=`location.href='/${prefixAdmin}/products/detail/${aProduct.id}'`, style="cursor: pointer;") #{aProduct.title}
+   
+                     td(onclick=`location.href='/${prefixAdmin}/products/detail/${aProduct.id}'`, style="cursor: pointer;") #{aProduct.price}$
+
+                     td(onclick=`location.href='/${prefixAdmin}/products/detail/${aProduct.id}'`, style="cursor: pointer;")
                         input(
+                           onclick=`event.stopPropagation();`
                            link=`/${prefixAdmin}/products/change-position/${aProduct.id}`
                            type="number"
                            name="position"
@@ -73,26 +84,32 @@ block main
                            min="1"
                            style="width: 60px"
                         )
-                     td
+
+                     td(onclick=`location.href='/${prefixAdmin}/products/detail/${aProduct.id}'`, style="cursor: pointer;")
                         if(aProduct.status == "active")
                            button(
+                              onclick=`event.stopPropagation();`
                               link=`/${prefixAdmin}/products/change-status/${aProduct.status}/${aProduct.id}`  
-                              class="badge badge-success" 
+                              class="btn badge badge-success" 
                               button-change-status=""
                            ) Hoạt động
                         else
                            button(
+                              onclick=`event.stopPropagation();`
                               link=`/${prefixAdmin}/products/change-status/${aProduct.status}/${aProduct.id}` 
-                              class="badge badge-danger"
+                              class="btn badge badge-danger"
                               button-change-status=""
                            ) Dừng hoạt động 
-                     td
+                     
+                     td(onclick=`location.href='/${prefixAdmin}/products/detail/${aProduct.id}'`, style="cursor: pointer;")
                         a(
-                           class="btn btn-warning btn-sm"
+                           onclick=`event.stopPropagation();`
+                           class="btn btn-warning btn-sm mr-1"
                            href=`/${prefixAdmin}/products/edit/${aProduct.id}`
                         ) Sửa
                         button(
-                           class="btn btn-danger btn-sm ml-1" 
+                           onclick=`event.stopPropagation();`
+                           class="btn btn-danger btn-sm" 
                            button-delete-soft=`/${prefixAdmin}/products/delete/${aProduct.id}`
                         ) Xoá
 
