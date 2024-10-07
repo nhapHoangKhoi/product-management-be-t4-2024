@@ -196,9 +196,9 @@ if(boxUpdate)
                const notificationContent = notificationFEError.querySelector(".inner-content");
                notificationContent.innerText = "Hành động và item phải được chọn!";
                
-               fadeInFE(notificationFEError);
+               noticationFunctions.fadeInFE(notificationFEError);
 
-               fadeOutFE(notificationFEError, timeExpiredNotification);
+               noticationFunctions.fadeOutFE(notificationFEError, timeExpiredNotification);
             }
             // ----- End notification chi ben FE -----/
          }
@@ -516,8 +516,8 @@ if(notification)
    let timeExpiredNotification = notification.getAttribute("show-notification") || 3000;
    timeExpiredNotification = parseInt(timeExpiredNotification);
 
-   fadeInFE(notification);
+   noticationFunctions.fadeInFE(notification);
    
-   fadeOutBE(notification, timeExpiredNotification);
+   noticationFunctions.fadeOutBE(notification, timeExpiredNotification);
 }
 // ----- End show notification BE
