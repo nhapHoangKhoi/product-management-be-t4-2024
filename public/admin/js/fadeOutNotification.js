@@ -1,6 +1,9 @@
 let currentFadeOutTimerFE = null; // store the timer reference
 let currentFadeOutTimerBE = null;
 
+// notification FE tuc la trang web khong bi load lai
+// notification BE tuc la trang web bi load lai roi moi hien notification len
+
 export function fadeOutFE(notification, timeExpired) // 2 ham fadeout na na nhau, chi la tach ra thoi
 {
    // clear any existing fade-out timer

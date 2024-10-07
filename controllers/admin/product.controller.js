@@ -27,6 +27,24 @@ module.exports.index = async (request, response) =>
    // ----- End filter by status ----- //
 
 
+   // ----- Sort ----- //
+   const productSortBy = {
+      // position: "desc",
+      // price: "desc",
+      // title: "asc"
+   };
+
+   // vi du : sortKey=price&sortValue=desc
+   if(request.query.sortKey && request.query.sortValue) 
+   {
+      productSortBy[request.query.sortKey] = request.query.sortValue; // title=desc, price=desc,...
+   }
+   else {
+      productSortBy.position = "desc"; // mac dinh neu ko co yeu cau sort khac
+   }
+   // ----- End sort ----- //
+
+
    // ----- Search products ----- //
    const objectSearchResult = searchCoBanHelper.search(request, productFind);
    let keyword = "";
@@ -48,11 +66,7 @@ module.exports.index = async (request, response) =>
       .find(productFind)
       .limit(pagination.itemsLimited)
       .skip(pagination.startIndex)
-      .sort(
-         {
-            position: "desc"
-         }
-      );
+      .sort(productSortBy);
 
    response.render(
       "admin/pages/products/index.pug", 

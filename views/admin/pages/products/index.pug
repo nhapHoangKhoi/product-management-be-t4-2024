@@ -28,6 +28,7 @@ block main
    .card.mb-3 
       .card-header Danh sách
       .card-body
+
          +box-updates(`/${prefixAdmin}/products/change-multi`)
 
          div(class="text-left mb-3")
@@ -35,6 +36,27 @@ block main
                href=`/${prefixAdmin}/products/create`
                class="btn btn-outline-info"
             ) + Thêm mới
+
+         div(class="mb-3" sort-bar)
+            .row.align-items-center
+               .col-5
+                  select(
+                     class="form-control"
+                     name="sort"
+                     select-sort
+                  )
+                     option(value="position-descending" option-default) Vị trí giảm dần
+                     option(value="position-ascending") Vị trí tăng dần
+                     option(value="price-descending") Giá giảm dần
+                     option(value="price-ascending") Giá tăng dần
+                     option(value="title-ascending") Tiêu đề A - Z
+                     option(value="title-descending") Tiêu đề Z - A
+               .col-6.pl-0
+                  div(
+                     class="text-warning"
+                     sort-clear
+                  ) Xoá
+         
          
          table.table.table-hover.table-sm
             thead

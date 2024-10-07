@@ -78,7 +78,7 @@
 
 .element-hidden
 {
-   display: none;
+   display: none!important;
 }
 
 /* End element-hidden */
@@ -95,11 +95,6 @@
 
    display: flex;
    align-items: center;
-}
-
-.show-notification.element-hidden
-{
-   display: none;
 }
 
 .show-notification.alert-danger .inner-icon
@@ -146,3 +141,21 @@
 }
 
 /* End image-preview */
+
+
+/* sort-bar */
+
+[sort-bar] [sort-clear]
+{
+   font-weight: bold;
+   text-decoration: underline;
+
+   display: inline-block;
+}
+
+[sort-bar] [sort-clear]:hover
+{
+   cursor: pointer;
+}
+
+/* End sort-bar */

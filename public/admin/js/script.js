@@ -522,3 +522,82 @@ if(notification)
    fadeOutBE(notification, timeExpiredNotification);
 }
 // ----- End show notification BE
+
+
+// ----- Sort bar (giong "Form search" o tren)
+const sortBar = document.querySelector("[sort-bar]");
+
+if(sortBar)
+{
+   let currentURL = new URL(window.location.href);
+   const theSelection = sortBar.querySelector("[select-sort]");
+
+
+   // Insert "selected" attibute into the chosen option
+   const currentSortKey = currentURL.searchParams.get("sortKey");
+   const currentSortValue = currentURL.searchParams.get("sortValue");
+
+   if(currentSortKey && currentSortValue) {
+      const string = `${currentSortKey}-${currentSortValue}`;
+      const optionSelected = theSelection.querySelector(`option[value="${string}"]`);
+
+      optionSelected.setAttribute("selected", true);
+   }
+   // End insert "selected" attibute into the chosen option
+
+   
+   // If option changed, assign keys to url and send to BE
+   theSelection.addEventListener("change", () => 
+      { 
+         // vd :         title-ascending
+         // spilt("-") : ["title", "ascending"]
+         const [sortKey, sortValue] = theSelection.value.split("-");
+
+         if(sortKey && sortValue) {
+            currentURL.searchParams.set("sortKey", sortKey);
+            currentURL.searchParams.set("sortValue", sortValue);
+
+            window.location.href = currentURL.href;
+         }
+      }
+   );
+   // End if option changed, assign keys to url and send to BE
+
+   
+   // Clear button
+   const iconClear = sortBar.querySelector("[sort-clear]");
+   if(iconClear)
+   {
+      iconClear.addEventListener("click", () => 
+         {
+            currentURL.searchParams.delete("sortKey");
+            currentURL.searchParams.delete("sortValue");
+
+            window.location.href = currentURL.href;
+         }
+      );
+
+
+      // When in default option => hide clear button
+      const optionDefault = sortBar.querySelector("option[option-default]");
+      const optionCurrent = sortBar.querySelector("option[selected]");
+   
+      /* selected == null => hidden
+         selected && option-default */
+      if(optionCurrent && optionDefault)
+      {
+         if(optionCurrent.value == optionDefault.value) {
+            iconClear.classList.add("element-hidden");
+         }
+         else {
+            iconClear.classList.remove("element-hidden");
+         }
+      }
+      else {
+         iconClear.classList.add("element-hidden");
+      }
+      // End when in default option => hide clear button
+   }
+   // End clear button
+}
+// ----- End sort bar
