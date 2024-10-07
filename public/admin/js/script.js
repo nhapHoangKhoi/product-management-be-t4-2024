@@ -517,8 +517,8 @@ if(notification)
    let timeExpiredNotification = notification.getAttribute("show-notification") || 3000;
    timeExpiredNotification = parseInt(timeExpiredNotification);
 
-   // fadeInFE(notification); // thong bao BE dung nen dung fadeIn
-   
+   fadeInFE(notification, 0.5);
+
    fadeOutBE(notification, timeExpiredNotification);
 }
 // ----- End show notification BE
