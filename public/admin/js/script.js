@@ -1,5 +1,3 @@
-// import { fadeOutFE, fadeOutBE, fadeInFE } from "./fadeOutNotification.js";
-
 let currentFadeOutTimerFE = null; // store the timer reference
 let currentFadeOutTimerBE = null;
 
