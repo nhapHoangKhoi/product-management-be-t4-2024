@@ -1,7 +1,7 @@
 mixin notification-success-BE(timeExpired = 3000)
    - if(messages.success)
       div(
-         class="alert alert-success show-notification"
+         class="alert alert-success show-notification fade-in-be"
          show-notification=timeExpired
       )
          span(class="inner-icon") <i class="fa-regular fa-circle-check"></i>
@@ -11,7 +11,7 @@ mixin notification-success-BE(timeExpired = 3000)
 mixin notification-error-BE(timeExpired = 3000)
    - if(messages.error)
       div(
-         class="alert alert-danger show-notification"
+         class="alert alert-danger show-notification fade-in-be"
          show-notification=timeExpired
       )
          span(class="inner-icon") <i class="fa-regular fa-circle-xmark"></i>

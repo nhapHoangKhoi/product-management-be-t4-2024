@@ -1,7 +1,7 @@
 let currentFadeOutTimerFE = null; // store the timer reference
 let currentFadeOutTimerBE = null;
 
-export function fadeOutFE(notification, timeExpired) // 2 ham fadeout giong y chang nhau, chi la tach ra thoi
+export function fadeOutFE(notification, timeExpired) // 2 ham fadeout na na nhau, chi la tach ra thoi
 {
    // clear any existing fade-out timer
    if (currentFadeOutTimerFE) {
@@ -61,7 +61,7 @@ export function fadeInFE(notification, fadeDuration = 1)
    }, fadeDuration); // fade-in interval
 }
 
-export function fadeOutBE(notification, timeExpired) // 2 ham fadeout giong y chang nhau, chi la tach ra thoi
+export function fadeOutBE(notification, timeExpired) // 2 ham fadeout na na nhau, co them remove("fade-in-be")
 {
    // clear any existing fade-out timer
    if (currentFadeOutTimerBE) {
@@ -77,11 +77,13 @@ export function fadeOutBE(notification, timeExpired) // 2 ham fadeout giong y ch
    const opacityDecrement = opacity / totalSteps;
 
    currentFadeOutTimerBE = setTimeout(() => {
+      notification.classList.remove("fade-in-be");
 
       currentFadeOutTimerBE = setInterval(() => {
          if(opacity <= 0) {
             clearInterval(currentFadeOutTimerBE);
             // notification.style.display = "none"; // su dung cai nay se ko mo rong duoc
+            
             notification.classList.add("element-hidden");
          }
    
