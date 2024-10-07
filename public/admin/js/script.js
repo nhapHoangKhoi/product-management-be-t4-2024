@@ -517,7 +517,7 @@ if(notification)
    let timeExpiredNotification = notification.getAttribute("show-notification") || 3000;
    timeExpiredNotification = parseInt(timeExpiredNotification);
 
-   fadeInFE(notification, 0.5);
+   fadeInFE(notification);
 
    fadeOutBE(notification, timeExpiredNotification);
 }
