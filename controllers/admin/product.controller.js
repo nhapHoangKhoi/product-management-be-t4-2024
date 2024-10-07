@@ -200,6 +200,7 @@ module.exports.createProduct = async (request, response) =>
    const newProductModel = new ProductModel(request.body);
    await newProductModel.save();
 
+   request.flash("success", "Thêm mới sản phẩm thành công!");
    response.redirect(`/${systemConfigs.prefixAdmin}/products`);
 }
 // ----------------End [POST]------------------- //
