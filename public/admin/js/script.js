@@ -1,3 +1,4 @@
+"use strict";
 import { fadeOutFE, fadeInFE, fadeOutBE } from "./fadeOutNotification.js";
 
 // ----- Button status
