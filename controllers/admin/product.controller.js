@@ -182,14 +182,6 @@ module.exports.getDetailPage = async (request, response) =>
 // [POST] /admin/products/create
 module.exports.createProduct = async (request, response) =>
 {
-   // ----- Check upload 1 file ----- //
-   if(request.file && request.file.filename) 
-   {
-      request.body.thumbnail = `/uploads/${request.file.filename}`;
-   }
-   // ----- End check upload 1 file ----- //
-
-
    // ----- Make sure the data type is correct with the Model : Number, String,... ----- //
    request.body.price = parseFloat(request.body.price);
    request.body.discountPercentage = parseFloat(request.body.discountPercentage);
@@ -220,14 +212,7 @@ module.exports.editProduct = async (request, response) =>
    try {
       const productId = request.params.idProduct;
    
-      // ----- Check upload 1 file ----- //
-      if(request.file && request.file.filename) 
-      {
-         request.body.thumbnail = `/uploads/${request.file.filename}`;
-      }
-      // ----- End check upload 1 file ----- //
-   
-   
+      
       // ----- Make sure the data type is correct with the Model : Number, String,... ----- //
       request.body.price = parseFloat(request.body.price);
       request.body.discountPercentage = parseFloat(request.body.discountPercentage);

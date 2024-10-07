@@ -4,12 +4,17 @@ const router = express.Router(); // ham Router() de dinh nghia ra cac route con
 
 const controllerProductAdmin = require("../../controllers/admin/product.controller.js");
 const validate = require("../../validates/admin/product.validate.js");
+const functionsUploadFileToCloud = require("../../middlewares/admin/uploadCloud.middleware.js");
+
 
 // ------ Upload 1 file
-const storageMulterHelper = require("../../helpers/storageMulter.helper.js");
-const storage = storageMulterHelper.storage;
-
-const upload = multer({ storage: storage });
+// ko dung 3 doan code nay nua
+//
+// const storageMulterHelper = require("../../helpers/storageMulter.helper.js");
+// const storage = storageMulterHelper.storage;
+// const upload = multer({ storage: storage });
+//
+const upload = multer();
 // ----- End upload 1 file
 
 
@@ -25,7 +30,8 @@ router.get("/detail/:idProduct", controllerProductAdmin.getDetailPage);
 
 router.post(
    "/create", 
-   upload.single("thumbnail"),
+   upload.single("thumbnail"), // de up anh tu frontend len ung dung backend nodejs
+   functionsUploadFileToCloud.uploadSingleFile, // de up anh tu backend nodejs len cloudinary
    validate.createProduct, 
    controllerProductAdmin.createProduct
 );
@@ -42,7 +48,8 @@ router.patch("/change-position/:idProduct", controllerProductAdmin.changeProduct
 
 router.patch(
    "/edit/:idProduct", 
-   upload.single("thumbnail"),
+   upload.single("thumbnail"), // de up anh tu frontend len ung dung backend nodejs
+   functionsUploadFileToCloud.uploadSingleFile, // de up anh tu backend nodejs len cloudinary
    validate.createProduct, 
    controllerProductAdmin.editProduct
 );
