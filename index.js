@@ -28,10 +28,12 @@ app.use(flash());
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json, cai nay la FE gui data len thong qua chuoi JSON
 
-app.set("views", "./views"); // doi voi response.render(), mac dinh di vao folder views
+// app.set("views", "./views"); // doi voi response.render(), mac dinh di vao folder views
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
-app.use(express.static("public")); // nhung cac file tinh, tuc la folder public, mac dinh tu di vao folder public
+// app.use(express.static("public")); // nhung cac file tinh, tuc la folder public, mac dinh tu di vao folder public
+app.use(express.static(`${__dirname}/public`));
 
 
 // app global variables for pug only
