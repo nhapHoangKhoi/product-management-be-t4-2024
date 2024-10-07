@@ -593,9 +593,6 @@ if(sortBar)
             iconClear.classList.remove("element-hidden");
          }
       }
-      else {
-         iconClear.classList.add("element-hidden");
-      }
       // End when in default option => hide clear button
    }
    // End clear button
