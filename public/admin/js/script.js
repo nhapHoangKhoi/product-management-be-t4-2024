@@ -1,104 +1,3 @@
-let currentFadeOutTimerFE = null; // store the timer reference
-let currentFadeOutTimerBE = null;
-
-// 2 ham fadeout giong y chang nhau, chi la tach ra thoi
-const fadeOutFE = (notification, timeExpired) => 
-{
-   // clear any existing fade-out timer
-   if (currentFadeOutTimerFE) {
-      clearInterval(currentFadeOutTimerFE);
-      notification.style.opacity = 1; // reset opacity to full
-   }
-
-   const timeExistClear = timeExpired;
-
-   let opacity = 1;
-   const fadeDuration = 35; // toc do lam mo, so cang nho thi mo cang nhanh
-   const totalSteps = 20;
-   const opacityDecrement = opacity / totalSteps;
-   
-   currentFadeOutTimerFE = setTimeout(() => {
-
-      currentFadeOutTimerFE = setInterval(() => {
-         if(opacity <= 0) {
-            clearInterval(currentFadeOutTimerFE);
-            // notification.style.display = "none"; // su dung cai nay se ko mo rong duoc
-            notification.classList.add("element-hidden");
-         }
-   
-         notification.style.opacity = opacity;
-         opacity = opacity - opacityDecrement;
-   
-         // ensure opacity does not go below 0
-         if (opacity < 0) {
-            opacity = 0;
-         }
-      }, fadeDuration); // fade out the notification within ... miliseconds
-
-   }, timeExistClear);
-}
-
-const fadeInFE = (notification, fadeDuration = 1) => 
-{
-   notification.style.opacity = 0;
-   notification.classList.remove("element-hidden");
-
-   let opacity = 0;
-   const totalSteps = 20;
-   const opacityIncrement = 1 / totalSteps;
-
-   const fadeInInterval = setInterval(() => {
-      if (opacity >= 1) {
-         clearInterval(fadeInInterval); // stop when fully visible
-      }
-
-      notification.style.opacity = opacity;
-      opacity = opacity + opacityIncrement;
-
-      // ensure opacity does not exceed 1
-      if (opacity > 1) {
-         opacity = 1;
-      }
-   }, fadeDuration); // fade-in interval
-}
-
-// 2 ham fadeout giong y chang nhau, chi la tach ra thoi
-const fadeOutBE = (notification, timeExpired) => 
-{
-   // clear any existing fade-out timer
-   if (currentFadeOutTimerBE) {
-      clearInterval(currentFadeOutTimerBE);
-      notification.style.opacity = 1; // reset opacity to full
-   }
-
-   const timeExistClear = timeExpired;
-
-   let opacity = 1;
-   const fadeDuration = 35; // toc do lam mo, so cang nho thi mo cang nhanh
-   const totalSteps = 20;
-   const opacityDecrement = opacity / totalSteps;
-
-   currentFadeOutTimerBE = setTimeout(() => {
-
-      currentFadeOutTimerBE = setInterval(() => {
-         if(opacity <= 0) {
-            clearInterval(currentFadeOutTimerBE);
-            // notification.style.display = "none"; // su dung cai nay se ko mo rong duoc
-            notification.classList.add("element-hidden");
-         }
-   
-         notification.style.opacity = opacity;
-         opacity = opacity - opacityDecrement;
-   
-         // ensure opacity does not go below 0
-         if (opacity < 0) {
-            opacity = 0;
-         }
-      }, fadeDuration); // fade out the notification within ... seconds
-
-   }, timeExistClear);
-}
-
 // ----- Button status
 const listButtonStatus = document.querySelectorAll("[button-status]");
 
@@ -294,10 +193,11 @@ if(boxUpdate)
 
                const notificationContent = notificationFEError.querySelector(".inner-content");
                notificationContent.innerText = "Hành động và item phải được chọn!";
+               notificationFEError.classList.remove("element-hidden");
                
-               fadeInFE(notificationFEError);
+               // fadeInFE(notificationFEError);
 
-               fadeOutFE(notificationFEError, timeExpiredNotification);
+               // fadeOutFE(notificationFEError, timeExpiredNotification);
             }
             // ----- End notification chi ben FE -----/
          }
@@ -615,8 +515,8 @@ if(notification)
    let timeExpiredNotification = notification.getAttribute("show-notification") || 3000;
    timeExpiredNotification = parseInt(timeExpiredNotification);
 
-   fadeInFE(notification);
+   // fadeInFE(notification);
    
-   fadeOutBE(notification, timeExpiredNotification);
+   // fadeOutBE(notification, timeExpiredNotification);
 }
 // ----- End show notification BE
