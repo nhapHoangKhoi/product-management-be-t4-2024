@@ -2,7 +2,7 @@ let currentFadeOutTimerFE = null; // store the timer reference
 let currentFadeOutTimerBE = null;
 
 // 2 ham fadeout giong y chang nhau, chi la tach ra thoi
-module.exports.fadeOutFE = (notification, timeExpired) => 
+export const fadeOutFE = (notification, timeExpired) => 
 {
    // clear any existing fade-out timer
    if (currentFadeOutTimerFE) {
@@ -38,7 +38,7 @@ module.exports.fadeOutFE = (notification, timeExpired) =>
    }, timeExistClear);
 }
 
-module.exports.fadeInFE = (notification, fadeDuration = 1) => 
+export const fadeInFE = (notification, fadeDuration = 1) => 
 {
    notification.style.opacity = 0;
    notification.classList.remove("element-hidden");
@@ -63,7 +63,7 @@ module.exports.fadeInFE = (notification, fadeDuration = 1) =>
 }
 
 // 2 ham fadeout giong y chang nhau, chi la tach ra thoi
-module.exports.fadeOutBE = (notification, timeExpired) => 
+export const fadeOutBE = (notification, timeExpired) => 
 {
    // clear any existing fade-out timer
    if (currentFadeOutTimerBE) {

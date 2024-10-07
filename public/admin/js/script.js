@@ -1,4 +1,4 @@
-const noticationFunctions = require("./fadeOutNotification.js");
+import { fadeInFE, fadeInFE, fadeOutBE } from "./fadeOutNotification.js";
 
 // ----- Button status
 const listButtonStatus = document.querySelectorAll("[button-status]");
@@ -196,9 +196,9 @@ if(boxUpdate)
                const notificationContent = notificationFEError.querySelector(".inner-content");
                notificationContent.innerText = "Hành động và item phải được chọn!";
                
-               noticationFunctions.fadeInFE(notificationFEError);
+               fadeInFE(notificationFEError);
 
-               noticationFunctions.fadeOutFE(notificationFEError, timeExpiredNotification);
+               fadeOutFE(notificationFEError, timeExpiredNotification);
             }
             // ----- End notification chi ben FE -----/
          }
@@ -516,8 +516,8 @@ if(notification)
    let timeExpiredNotification = notification.getAttribute("show-notification") || 3000;
    timeExpiredNotification = parseInt(timeExpiredNotification);
 
-   noticationFunctions.fadeInFE(notification);
+   fadeInFE(notification);
    
-   noticationFunctions.fadeOutBE(notification, timeExpiredNotification);
+   fadeOutBE(notification, timeExpiredNotification);
 }
 // ----- End show notification BE
