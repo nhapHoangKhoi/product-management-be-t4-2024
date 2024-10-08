@@ -5,6 +5,7 @@ const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const methodOverride = require('method-override');
+const path = require('path');
 
 const database = require("./config/database.js");
 database.connectDatabase();
@@ -32,12 +33,19 @@ app.use(bodyParser.json()); // parse application/json, cai nay la FE gui data le
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
+
+// tinyMCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+// End tinyMCE
+
+
 // app.use(express.static("public")); // nhung cac file tinh, tuc la folder public, mac dinh tu di vao folder public
 app.use(express.static(`${__dirname}/public`));
 
 
 // app global variables for pug only
 app.locals.prefixAdmin = systemConfigs.prefixAdmin;
+// End app global variables for pug only
 
 routeClient.index(app); // goi den ham index cua file index.route.js
 routeAdmin.index(app);
