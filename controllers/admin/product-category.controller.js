@@ -72,6 +72,56 @@ module.exports.getCreatePage = async (request, response) =>
       }
    );
 }
+
+// [GET] /admin/product-categories/edit/:idCategory
+module.exports.getEditPage = async (request, response) =>
+{
+   try {
+      // ----- Data of the specific category ----- //
+      const categoryId = request.params.idCategory;
+      
+      const theCategoryFind = {
+         _id: categoryId,
+         deleted: false
+      };
+      const theCategoryData = await ProductCategoryModel.findOne(theCategoryFind);
+      // ----- End data of the specific category ----- //
+
+
+      const allCategoriesFind = {
+         deleted: false
+      };
+
+      const listOfCategories = await ProductCategoryModel.find(allCategoriesFind); 
+   
+      // ----- Hierarchy dropdown ----- //
+      const hierarchyCategories = createHierarchyHelper(listOfCategories);
+      // ----- End hierarchy dropdown ----- //
+   
+      
+      if(hierarchyCategories) // check != null, vi co render ra giao dien nen them if else cho nay nua
+      {
+         response.render(
+            "admin/pages/product-categories/edit.pug", 
+            {
+               pageTitle: "Chỉnh sửa danh mục sản phẩm",
+               listOfCategories: hierarchyCategories,
+               theCategoryData: theCategoryData
+            }
+         );
+      }
+      else 
+      {
+         response.redirect(`/${systemConfigs.prefixAdmin}/product-categories`);
+      }
+   }
+   catch(error) {
+      // catch la do nguoi ta hack, pha
+      // console.log(error)
+      request.flash("error", "ID sản phẩm không hợp lệ!");
+      response.redirect(`/${systemConfigs.prefixAdmin}/product-categories`);
+   }
+}
 // ----------------End [GET]------------------- //
 
 
@@ -100,6 +150,38 @@ module.exports.createCategory = async (request, response) =>
 
 
 // ----------------[PATCH]------------------- //
+// [PATCH] /admin/product-categories/edit/:idCategory
+module.exports.editCategory = async (request, response) =>
+{
+   try {
+      const categoryId = request.params.idCategory;
+
+      // ----- Make sure the data type is correct with the Model : Number, String,... ----- //   
+      if(request.body.position) {
+         request.body.position = parseInt(request.body.position);
+      }
+      else {
+         const numberOfCategories = await ProductCategoryModel.countDocuments({});
+         request.body.position = numberOfCategories + 1;
+      }
+      // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
+
+      await ProductCategoryModel.updateOne(
+         {
+            _id: categoryId
+         },
+         request.body
+      );
+   
+      request.flash("success", "Cập nhật danh mục thành công!");
+   }
+   catch(error) {
+      request.flash("error", "ID sản phẩm không hợp lệ!");
+   }
+
+   // response.send("OK Frontend");
+   response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/product-categories/edit
+}
 // ----------------End [PATCH]------------------- //
 
 

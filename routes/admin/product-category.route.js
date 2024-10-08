@@ -15,12 +15,22 @@ router.get("/", controllerAdmin.index);
 
 router.get("/create", controllerAdmin.getCreatePage);
 
+router.get("/edit/:idCategory", controllerAdmin.getEditPage);
+
 router.post(
    "/create",
    upload.single("thumbnail"), // de up anh tu frontend len ung dung backend nodejs
    functionsUploadFileToCloud.uploadSingleFile, // de up anh tu backend nodejs len cloudinary 
    validate.createCategory,
    controllerAdmin.createCategory
+);
+
+router.patch(
+   "/edit/:idCategory", 
+   upload.single("thumbnail"), // de up anh tu frontend len ung dung backend nodejs
+   functionsUploadFileToCloud.uploadSingleFile, // de up anh tu backend nodejs len cloudinary
+   validate.createCategory, 
+   controllerAdmin.editCategory
 );
 
 module.exports = router;

@@ -227,7 +227,6 @@ module.exports.editProduct = async (request, response) =>
    try {
       const productId = request.params.idProduct;
    
-      
       // ----- Make sure the data type is correct with the Model : Number, String,... ----- //
       request.body.price = parseFloat(request.body.price);
       request.body.discountPercentage = parseFloat(request.body.discountPercentage);
@@ -241,8 +240,8 @@ module.exports.editProduct = async (request, response) =>
          request.body.position = numberOfProducts + 1;
       }
       // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
-   
-   
+
+
       await ProductModel.updateOne(
          {
             _id: productId
@@ -257,7 +256,7 @@ module.exports.editProduct = async (request, response) =>
    }
 
    // response.send("OK Frontend");
-   response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/edit
+   response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/products/edit
 }
 
 // [PATCH] /admin/products/change-status/:statusChange/:idProduct

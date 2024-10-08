@@ -1,11 +1,14 @@
-mixin select-hierarchy(listOfItems, level = 1)
+mixin select-hierarchy(listOfItems, level = 1, parentId = "")
    each itemParent in listOfItems
       - const prefix = Array(level + 1).join("--")
 
-      option(value=`${itemParent.id}`) #{prefix} #{itemParent.title}
+      option(
+         value=`${itemParent.id}`
+         selected=(itemParent.id == parentId ? true : false)
+      ) #{prefix} #{itemParent.title}
 
       if(itemParent.children)
-         +select-hierarchy(itemParent.children, level + 1)
+         +select-hierarchy(itemParent.children, level + 1, parentId)
 
 
 //- prefix : tiền tố
