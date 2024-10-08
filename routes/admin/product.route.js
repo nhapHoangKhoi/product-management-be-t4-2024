@@ -17,7 +17,7 @@ const functionsUploadFileToCloud = require("../../middlewares/admin/uploadCloud.
 const upload = multer();
 // ----- End upload 1 file
 
-
+// /products/
 router.get("/", controllerProductAdmin.index);
 
 router.get("/trash", controllerProductAdmin.getDeletedProducts); // danh sach san pham da bi xoa

@@ -1,4 +1,4 @@
-// [GET] /admin/dashboard
+// [GET] /admin/dashboard/
 module.exports.index = (request, response) => {
    response.render(
       "admin/pages/dashboard/index.pug", 
@@ -7,4 +7,3 @@ module.exports.index = (request, response) => {
       }
    );
 }
-
