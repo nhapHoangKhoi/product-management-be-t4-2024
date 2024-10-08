@@ -1,10 +1,13 @@
 const ProductModel = require("../../models/product.model.js");
+const ProductCategoryModel = require("../../models/product-category.model.js");
+
 const systemConfigs = require("../../config/system.js");
 const paginationHelper = require("../../helpers/pagination.helper.js");
 const filterStatusHelper = require("../../helpers/filterByStatus.helper.js");
 const searchCoBanHelper = require("../../helpers/searchCoBan.helper.js");
+const createHierarchyHelper = require("../../helpers/createHierarchy.helper.js");
 
-// ----------------[GET]------------------- //
+// ----------------[]------------------- //
 // [GET] /admin/products/
 module.exports.index = async (request, response) => 
 {
@@ -80,80 +83,6 @@ module.exports.index = async (request, response) =>
    );
 }
 
-// [GET] /admin/products/trash
-module.exports.getDeletedProducts = async (request, response) =>
-{
-   const deletedProductFind = {
-      deleted: true
-   };
-
-   // ----- Pagination ----- //
-   const limitItems = 10;
-   const pagination = await paginationHelper.paging(request, deletedProductFind, limitItems, ProductModel); // { currentPage: 1, limitItems: 10, startIndex: 0, totalPage:... }
-   // ----- End pagination -----//
-   
-
-   const listOfDeletedProducts = await ProductModel
-      .find(deletedProductFind)
-      .limit(pagination.itemsLimited)
-      .skip(pagination.startIndex);
-
-   response.render(
-      "admin/pages/products/trash.pug",
-      {
-         listOfDeletedProducts: listOfDeletedProducts,
-         pagination: pagination
-      }
-   );
-}
-
-// [GET] /admin/products/create
-module.exports.getCreatePage = (request, response) =>
-{
-   response.render(
-      "admin/pages/products/create.pug",
-      {
-         pageTitle: "Thêm mới sản phẩm"
-      }
-   );
-}
-
-// [GET] /admin/products/edit/:idProduct
-module.exports.getEditPage = async (request, response) =>
-{
-   try {
-      const productId = request.params.idProduct;
-
-      const productFind = {
-         _id: productId,
-         deleted: false
-      };
-   
-      const theProductData = await ProductModel.findOne(productFind); 
-
-      if(theProductData) // check != null, vi co render ra giao dien nen them if else cho nay nua
-      {
-         response.render(
-            "admin/pages/products/edit.pug",
-            {
-               pageTitle: "Chỉnh sửa sản phẩm",
-               theProductData: theProductData
-            }
-         );
-      }
-      else 
-      {
-         response.redirect(`/${systemConfigs.prefixAdmin}/products`);
-      }
-   }
-   catch(error) {
-      // catch la do nguoi ta hack, pha
-      // console.log(error)
-      request.flash("error", "ID sản phẩm không hợp lệ!");
-      response.redirect(`/${systemConfigs.prefixAdmin}/products`);
-   }
-}
-
 // [GET] /admin/products/detail/:idProduct
 module.exports.getDetailPage = async (request, response) =>
 {
@@ -188,75 +117,6 @@ module.exports.getDetailPage = async (request, response) =>
       request.flash("error", "ID sản phẩm không hợp lệ!");
       response.redirect(`/${systemConfigs.prefixAdmin}/products`);
    }
-}
-// ----------------End [GET]------------------- //
-
-
-// ----------------[POST]------------------- //
-// [POST] /admin/products/create
-module.exports.createProduct = async (request, response) =>
-{
-   // ----- Make sure the data type is correct with the Model : Number, String,... ----- //
-   request.body.price = parseFloat(request.body.price);
-   request.body.discountPercentage = parseFloat(request.body.discountPercentage);
-   request.body.stock = parseInt(request.body.stock);
-   
-   if(request.body.position) {
-      request.body.position = parseInt(request.body.position);
-   }
-   else {
-      const numberOfProducts = await ProductModel.countDocuments({});
-      request.body.position = numberOfProducts + 1;
-   }
-   // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
-
-   
-   const newProductModel = new ProductModel(request.body);
-   await newProductModel.save();
-
-   request.flash("success", "Thêm mới sản phẩm thành công!");
-   response.redirect(`/${systemConfigs.prefixAdmin}/products`);
-}
-// ----------------End [POST]------------------- //
-
-
-// ----------------[PATCH]------------------- //
-// [PATCH] /admin/products/edit/:idProduct
-module.exports.editProduct = async (request, response) =>
-{
-   try {
-      const productId = request.params.idProduct;
-   
-      // ----- Make sure the data type is correct with the Model : Number, String,... ----- //
-      request.body.price = parseFloat(request.body.price);
-      request.body.discountPercentage = parseFloat(request.body.discountPercentage);
-      request.body.stock = parseInt(request.body.stock);
-      
-      if(request.body.position) {
-         request.body.position = parseInt(request.body.position);
-      }
-      else {
-         const numberOfProducts = await ProductModel.countDocuments({});
-         request.body.position = numberOfProducts + 1;
-      }
-      // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
-
-
-      await ProductModel.updateOne(
-         {
-            _id: productId
-         },
-         request.body
-      );
-   
-      request.flash("success", "Cập nhật sản phẩm thành công!");
-   }
-   catch(error) {
-      request.flash("error", "ID sản phẩm không hợp lệ!");
-   }
-
-   // response.send("OK Frontend");
-   response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/products/edit
 }
 
 // [PATCH] /admin/products/change-status/:statusChange/:idProduct
@@ -378,6 +238,199 @@ module.exports.softDeleteProduct = async (request, response) =>
    }
 }
 
+// [PATCH] /admin/products/change-position/:idProduct
+module.exports.changeProductPosition = async (request, response) =>
+{
+   try {
+      const productId = request.params.idProduct;
+      const itemPosition = request.body.itemPosition;
+   
+      await ProductModel.updateOne(
+         {
+            _id: productId
+         },
+         {
+            position: itemPosition
+         }
+      );
+   
+      response.json(
+         {
+            code: 200
+         }
+      );
+   }
+   catch(error) {
+      response.redirect("back"); // back to page [GET] /admin/products/
+   }
+}
+// ----------------End []------------------- //
+
+
+// ----------------[]------------------- //
+// [GET] /admin/products/create
+module.exports.getCreatePage = async (request, response) =>
+   {
+      // ----- Hierarchy dropdown ----- //
+      const allCategoriesFind = {
+         deleted: false
+      };
+      const listOfCategories = await ProductCategoryModel.find(allCategoriesFind); 
+      
+      const hierarchyCategories = createHierarchyHelper(listOfCategories);
+      // ----- End hierarchy dropdown ----- //
+      
+      
+      response.render(
+         "admin/pages/products/create.pug",
+         {
+            pageTitle: "Thêm mới sản phẩm",
+            listOfCategories: hierarchyCategories
+      }
+   );
+}
+
+// [POST] /admin/products/create
+module.exports.createProduct = async (request, response) =>
+{
+   // ----- Make sure the data type is correct with the Model : Number, String,... ----- //
+   request.body.price = parseFloat(request.body.price);
+   request.body.discountPercentage = parseFloat(request.body.discountPercentage);
+   request.body.stock = parseInt(request.body.stock);
+   
+   if(request.body.position) {
+      request.body.position = parseInt(request.body.position);
+   }
+   else {
+      const numberOfProducts = await ProductModel.countDocuments({});
+      request.body.position = numberOfProducts + 1;
+   }
+   // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
+
+   
+   const newProductModel = new ProductModel(request.body);
+   await newProductModel.save();
+
+   request.flash("success", "Thêm mới sản phẩm thành công!");
+   response.redirect(`/${systemConfigs.prefixAdmin}/products`);
+}
+// ----------------End []------------------- //
+
+
+// ----------------[]------------------- //
+// [GET] /admin/products/edit/:idProduct
+module.exports.getEditPage = async (request, response) =>
+{
+   try {
+      const productId = request.params.idProduct;
+
+      const productFind = {
+         _id: productId,
+         deleted: false
+      };
+   
+      const theProductData = await ProductModel.findOne(productFind); 
+
+      if(theProductData) // check != null, vi co render ra giao dien nen them if else cho nay nua
+      {
+         // ----- Hierarchy dropdown ----- //
+         const allCategoriesFind = {
+            deleted: false
+         };
+         const listOfCategories = await ProductCategoryModel.find(allCategoriesFind); 
+         const hierarchyCategories = createHierarchyHelper(listOfCategories);
+         // ----- End hierarchy dropdown ----- //
+
+         response.render(
+            "admin/pages/products/edit.pug",
+            {
+               pageTitle: "Chỉnh sửa sản phẩm",
+               theProductData: theProductData,
+               listOfCategories: hierarchyCategories
+            }
+         );
+      }
+      else 
+      {
+         response.redirect(`/${systemConfigs.prefixAdmin}/products`);
+      }
+   }
+   catch(error) {
+      // catch la do nguoi ta hack, pha
+      // console.log(error)
+      request.flash("error", "ID sản phẩm không hợp lệ!");
+      response.redirect(`/${systemConfigs.prefixAdmin}/products`);
+   }
+}
+
+// [PATCH] /admin/products/edit/:idProduct
+module.exports.editProduct = async (request, response) =>
+{
+   try {
+      const productId = request.params.idProduct;
+   
+      // ----- Make sure the data type is correct with the Model : Number, String,... ----- //
+      request.body.price = parseFloat(request.body.price);
+      request.body.discountPercentage = parseFloat(request.body.discountPercentage);
+      request.body.stock = parseInt(request.body.stock);
+      
+      if(request.body.position) {
+         request.body.position = parseInt(request.body.position);
+      }
+      else {
+         const numberOfProducts = await ProductModel.countDocuments({});
+         request.body.position = numberOfProducts + 1;
+      }
+      // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
+
+
+      await ProductModel.updateOne(
+         {
+            _id: productId
+         },
+         request.body
+      );
+   
+      request.flash("success", "Cập nhật sản phẩm thành công!");
+   }
+   catch(error) {
+      request.flash("error", "ID sản phẩm không hợp lệ!");
+   }
+
+   // response.send("OK Frontend");
+   response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/products/edit
+}
+// ----------------End []------------------- //
+
+
+// ----------------[]------------------- //
+// [GET] /admin/products/trash
+module.exports.getDeletedProducts = async (request, response) =>
+{
+   const deletedProductFind = {
+      deleted: true
+   };
+
+   // ----- Pagination ----- //
+   const limitItems = 10;
+   const pagination = await paginationHelper.paging(request, deletedProductFind, limitItems, ProductModel); // { currentPage: 1, limitItems: 10, startIndex: 0, totalPage:... }
+   // ----- End pagination -----//
+   
+
+   const listOfDeletedProducts = await ProductModel
+      .find(deletedProductFind)
+      .limit(pagination.itemsLimited)
+      .skip(pagination.startIndex);
+
+   response.render(
+      "admin/pages/products/trash.pug",
+      {
+         listOfDeletedProducts: listOfDeletedProducts,
+         pagination: pagination
+      }
+   );
+}
+
 // [PATCH] /admin/products/recover/:idProduct
 module.exports.recoverProduct = async (request, response) => 
 {
@@ -406,36 +459,6 @@ module.exports.recoverProduct = async (request, response) =>
    }
 }
 
-// [PATCH] /admin/products/change-position/:idProduct
-module.exports.changeProductPosition = async (request, response) =>
-{
-   try {
-      const productId = request.params.idProduct;
-      const itemPosition = request.body.itemPosition;
-   
-      await ProductModel.updateOne(
-         {
-            _id: productId
-         },
-         {
-            position: itemPosition
-         }
-      );
-   
-      response.json(
-         {
-            code: 200
-         }
-      );
-   }
-   catch(error) {
-      response.redirect("back"); // back to page [GET] /admin/products/
-   }
-}
-// ----------------End [PATCH]------------------- //
-
-
-// ----------------[DELETE]------------------- //
 // [DELETE] /admin/products/delete-permanent/:idProduct
 module.exports.permanentDeleteProduct = async (request, response) =>
 {
@@ -478,4 +501,4 @@ module.exports.permanentDeleteManyProducts = async (request, response) =>
       }
    );
 }
-// ----------------End [DELETE]------------------- //
+// ----------------End []------------------- //

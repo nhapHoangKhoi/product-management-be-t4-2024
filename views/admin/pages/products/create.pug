@@ -1,5 +1,7 @@
 extends ../../layouts/default.pug
 
+include ../../mixins/select-hierarchy.pug
+
 block main 
 
    h1 #{pageTitle}
@@ -20,10 +22,21 @@ block main
          )
 
       div(class="form-group")
-         label(for="desc") Mô tả
+         label(for="product_category_id") Danh mục
+         select(
+            name="product_category_id"
+            class="form-control"
+            id="product_category_id"
+         )
+            option(value="") -- Chọn danh mục --
+            - if(listOfCategories)
+               +select-hierarchy(listOfCategories)
+
+      div(class="form-group")
+         label(for="description") Mô tả
          textarea(
             class="form-control"
-            id="desc"
+            id="description"
             name="description"
             rows="5"
             textarea-mce

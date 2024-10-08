@@ -1,5 +1,7 @@
 extends ../../layouts/default.pug
 
+include ../../mixins/select-hierarchy.pug
+
 block main 
 
    h1 #{pageTitle}
@@ -19,6 +21,17 @@ block main
             value=theProductData.title
             required
          )
+
+      div(class="form-group")
+         label(for="product_category_id") Danh mục
+         select(
+            name="product_category_id"
+            class="form-control"
+            id="product_category_id"
+         )
+            option(value="") -- Chọn danh mục --
+            - if(listOfCategories)
+               +select-hierarchy(listOfCategories, 1, theProductData.product_category_id)
 
       div(class="form-group")
          label(for="desc") Mô tả

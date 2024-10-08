@@ -14,9 +14,6 @@ const upload = multer();
 router.get("/", controllerAdmin.index);
 
 router.get("/create", controllerAdmin.getCreatePage);
-
-router.get("/edit/:idCategory", controllerAdmin.getEditPage);
-
 router.post(
    "/create",
    upload.single("thumbnail"), // de up anh tu frontend len ung dung backend nodejs
@@ -25,6 +22,7 @@ router.post(
    controllerAdmin.createCategory
 );
 
+router.get("/edit/:idCategory", controllerAdmin.getEditPage);
 router.patch(
    "/edit/:idCategory", 
    upload.single("thumbnail"), // de up anh tu frontend len ung dung backend nodejs

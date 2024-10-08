@@ -4,7 +4,7 @@ const filterStatusHelper = require("../../helpers/filterByStatus.helper.js");
 const paginationHelper = require("../../helpers/pagination.helper.js");
 const createHierarchyHelper = require("../../helpers/createHierarchy.helper.js");
 
-// ----------------[GET]------------------- //
+// ----------------[]------------------- //
 // [GET] /admin/product-categories/
 module.exports.index = async (request, response) => 
 {
@@ -48,7 +48,10 @@ module.exports.index = async (request, response) =>
       }
    );
 }
+// ---------------End []------------------ //
 
+
+// ----------------[]------------------- //
 // [GET] /admin/product-categories/create
 module.exports.getCreatePage = async (request, response) =>
 {
@@ -73,6 +76,30 @@ module.exports.getCreatePage = async (request, response) =>
    );
 }
 
+// [POST] /admin/product-categories/create
+module.exports.createCategory = async (request, response) =>
+{
+   // ----- Make sure the data type is correct with the Model : Number, String,... ----- //   
+   if(request.body.position) {
+      request.body.position = parseInt(request.body.position);
+   }
+   else {
+      const numberOfCategories = await ProductCategoryModel.countDocuments({});
+      request.body.position = numberOfCategories + 1;
+   }
+   // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
+
+   
+   const newCategoryModel = new ProductCategoryModel(request.body);
+   await newCategoryModel.save();
+
+   request.flash("success", "Thêm mới danh mục thành công!");
+   response.redirect(`/${systemConfigs.prefixAdmin}/product-categories`);
+}
+// ---------------End []------------------ //
+
+
+// ----------------[]------------------- //
 // [GET] /admin/product-categories/edit/:idCategory
 module.exports.getEditPage = async (request, response) =>
 {
@@ -88,13 +115,11 @@ module.exports.getEditPage = async (request, response) =>
       // ----- End data of the specific category ----- //
 
 
+      // ----- Hierarchy dropdown ----- //
       const allCategoriesFind = {
          deleted: false
       };
-
       const listOfCategories = await ProductCategoryModel.find(allCategoriesFind); 
-   
-      // ----- Hierarchy dropdown ----- //
       const hierarchyCategories = createHierarchyHelper(listOfCategories);
       // ----- End hierarchy dropdown ----- //
    
@@ -122,34 +147,7 @@ module.exports.getEditPage = async (request, response) =>
       response.redirect(`/${systemConfigs.prefixAdmin}/product-categories`);
    }
 }
-// ----------------End [GET]------------------- //
 
-
-// ----------------[POST]------------------- //
-// [POST] /admin/product-categories/create
-module.exports.createCategory = async (request, response) =>
-{
-   // ----- Make sure the data type is correct with the Model : Number, String,... ----- //   
-   if(request.body.position) {
-      request.body.position = parseInt(request.body.position);
-   }
-   else {
-      const numberOfCategories = await ProductCategoryModel.countDocuments({});
-      request.body.position = numberOfCategories + 1;
-   }
-   // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
-
-   
-   const newCategoryModel = new ProductCategoryModel(request.body);
-   await newCategoryModel.save();
-
-   request.flash("success", "Thêm mới danh mục thành công!");
-   response.redirect(`/${systemConfigs.prefixAdmin}/product-categories`);
-}
-// ----------------End [POST]------------------- //
-
-
-// ----------------[PATCH]------------------- //
 // [PATCH] /admin/product-categories/edit/:idCategory
 module.exports.editCategory = async (request, response) =>
 {
@@ -182,8 +180,4 @@ module.exports.editCategory = async (request, response) =>
    // response.send("OK Frontend");
    response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/product-categories/edit
 }
-// ----------------End [PATCH]------------------- //
-
-
-// ----------------[DELETE]------------------- //
-// ----------------End [DELETE]------------------- //
+// ---------------End []------------------ //

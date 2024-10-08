@@ -19,15 +19,13 @@ const upload = multer();
 
 // /products/
 router.get("/", controllerProductAdmin.index);
-
-router.get("/trash", controllerProductAdmin.getDeletedProducts); // danh sach san pham da bi xoa
+router.get("/detail/:idProduct", controllerProductAdmin.getDetailPage);
+router.patch("/change-status/:statusChange/:idProduct", controllerProductAdmin.changeStatus);
+router.patch("/change-multi", controllerProductAdmin.changeMulti);
+router.patch("/delete/:idProduct", controllerProductAdmin.softDeleteProduct);
+router.patch("/change-position/:idProduct", controllerProductAdmin.changeProductPosition);
 
 router.get("/create", controllerProductAdmin.getCreatePage);
-
-router.get("/edit/:idProduct", controllerProductAdmin.getEditPage);
-
-router.get("/detail/:idProduct", controllerProductAdmin.getDetailPage);
-
 router.post(
    "/create", 
    upload.single("thumbnail"), // de up anh tu frontend len ung dung backend nodejs
@@ -36,16 +34,7 @@ router.post(
    controllerProductAdmin.createProduct
 );
 
-router.patch("/change-status/:statusChange/:idProduct", controllerProductAdmin.changeStatus);
-
-router.patch("/change-multi", controllerProductAdmin.changeMulti);
-
-router.patch("/delete/:idProduct", controllerProductAdmin.softDeleteProduct);
-
-router.patch("/recover/:idProduct", controllerProductAdmin.recoverProduct);
-
-router.patch("/change-position/:idProduct", controllerProductAdmin.changeProductPosition);
-
+router.get("/edit/:idProduct", controllerProductAdmin.getEditPage);
 router.patch(
    "/edit/:idProduct", 
    upload.single("thumbnail"), // de up anh tu frontend len ung dung backend nodejs
@@ -54,8 +43,10 @@ router.patch(
    controllerProductAdmin.editProduct
 );
 
+router.get("/trash", controllerProductAdmin.getDeletedProducts); // danh sach san pham da bi xoa
+router.patch("/recover/:idProduct", controllerProductAdmin.recoverProduct);
 router.delete("/delete-permanent/:idProduct", controllerProductAdmin.permanentDeleteProduct);
-
 router.delete("/delete-many-permanent", controllerProductAdmin.permanentDeleteManyProducts);
+
 
 module.exports = router;
