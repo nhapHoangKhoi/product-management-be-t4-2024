@@ -2,6 +2,7 @@ const ProductCategoryModel = require("../../models/product-category.model.js");
 const systemConfigs = require("../../config/system.js");
 const filterStatusHelper = require("../../helpers/filterByStatus.helper.js");
 const paginationHelper = require("../../helpers/pagination.helper.js");
+const createHierarchyHelper = require("../../helpers/createHierarchy.helper.js");
 
 // ----------------[GET]------------------- //
 // [GET] /admin/product-categories/
@@ -49,12 +50,25 @@ module.exports.index = async (request, response) =>
 }
 
 // [GET] /admin/product-categories/create
-module.exports.getCreatePage = (request, response) =>
+module.exports.getCreatePage = async (request, response) =>
 {
+   const productCategoryFind = {
+      deleted: false
+   };
+
+
+   const listOfCategories = await ProductCategoryModel.find(productCategoryFind); 
+
+   // ----- Hierarchy dropdown ----- //
+   const hierarchyCategories = createHierarchyHelper(listOfCategories);
+   // ----- End hierarchy dropdown ----- //
+
+
    response.render(
       "admin/pages/product-categories/create.pug", 
       {
-         pageTitle: "Thêm mới danh mục sản phẩm"
+         pageTitle: "Thêm mới danh mục sản phẩm",
+         listOfCategories: hierarchyCategories
       }
    );
 }
