@@ -598,3 +598,86 @@ if(sortBar)
    // End clear button
 }
 // ----- End sort bar
+
+
+// ----- Table permissions
+
+// **************//
+// [
+//    {
+//       id: "id của nhóm quyền Quản trị viên",
+//       permissions: ["product-categories_view", "product-categories_create", "product-categories_edit", "product-categories_delete"]
+//    },
+//    {
+//       id: "id của nhóm quyền Quản lý sản phẩm",
+//       permissions: ["product-categories_view", "product-categories_create"]
+//    },
+// ]
+// **************//
+
+const tablePermissions = document.querySelector("[table-permissions]");
+
+if(tablePermissions)
+{
+   const buttonSubmit = document.querySelector("[button-submit]");
+
+   buttonSubmit.addEventListener("click", () => 
+      {
+         const listElementsRoleId = tablePermissions.querySelectorAll("[role-id]");
+         
+         const listRoles = [];
+         for(const anElement of listElementsRoleId) 
+         {
+            const roleId = anElement.getAttribute("role-id");
+            const eachRole = {
+               id: roleId,
+               permissions: []
+            };
+
+            const listInputsChecked = tablePermissions.querySelectorAll(`input[belongs-role-id="${roleId}"]:checked`);
+
+            listInputsChecked.forEach((eachInput) => {
+               const permissionName = eachInput.getAttribute("permission-name");
+               eachRole.permissions.push(permissionName);
+            });
+
+            listRoles.push(eachRole);
+         }
+
+         const path = buttonSubmit.getAttribute("button-submit");
+         fetch(path, {
+            method: "PATCH",
+            headers: {
+               "Content-Type": "application/json"
+            },
+            body: JSON.stringify(listRoles)
+         })
+            .then(responseFromController => responseFromController.json())
+            .then(dataFromController => {
+               if(dataFromController.code == 200) {
+                  // window.location.reload();
+
+                  // ----- Notification chi ben FE -----/
+                  const notificationFESuccess = document.querySelector(".alert-success[show-notification-fe]");
+
+                  if(notificationFESuccess)
+                  {
+                     let timeExpiredNotification = notificationFESuccess.getAttribute("show-notification-fe") || 3000;
+                     timeExpiredNotification = parseInt(timeExpiredNotification);
+
+                     const notificationContent = notificationFESuccess.querySelector(".inner-content");
+                     notificationContent.innerText = dataFromController.message; // Cap nhat thanh cong
+                     notificationFESuccess.classList.remove("element-hidden");
+                     
+                     fadeInFE(notificationFESuccess);
+
+                     fadeOutFE(notificationFESuccess, timeExpiredNotification);
+                  }
+                  // ----- End notification chi ben FE -----/
+               }
+            })
+      }
+   );
+}
+
+// ----- End table permissions

@@ -108,3 +108,51 @@ module.exports.editRole = async (request, response) =>
    }
 }
 // ----------------End []------------------- //
+
+
+// ----------------[]------------------- //
+// [GET] /admin/roles/permissons
+module.exports.getPermissionPage = async (request, response) => 
+{
+   const roleFind = {
+      deleted: false
+   };
+
+   const records = await RoleModel.find(roleFind);
+
+   response.render(
+      "admin/pages/roles/permissions.pug", 
+      {
+         pageTitle: "Phân quyền",
+         records: records
+      }
+   );
+}
+
+// [PATCH] /admin/roles/permissons
+module.exports.editPermissions = async (request, response) => 
+{
+   const listRoles = request.body;
+
+   for(const eachRole of listRoles) {
+      await RoleModel.updateOne(
+         {
+            _id: eachRole.id,
+            deleted: false
+         },
+         {
+            permissions: eachRole.permissions
+         }
+      );
+   }
+
+   // request.flash("success", "Cập nhật thành công!"); // cach nay truoc gio, thu dung cach khac
+
+   response.json(
+      {
+         code: 200,
+         message: "Cập nhật thành công!"
+      }
+   );
+}
+// ----------------End []------------------- //

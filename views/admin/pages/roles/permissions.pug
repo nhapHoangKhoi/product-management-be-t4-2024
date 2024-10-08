@@ -1,0 +1,76 @@
+extends ../../layouts/default.pug
+
+block main 
+
+   //- h1(class="mb-4") Trang phân quyền
+   h1(class="mb-4") #{pageTitle}
+
+   if(records)
+      div(class="text-right")
+         button(
+            type="submit"
+            class="btn btn-primary mb-3"
+            button-submit=`/${prefixAdmin}/roles/permissions`
+         ) Cập nhật
+
+      table(
+         class="table table-hover table-sm"
+         table-permissions
+      )
+         thead
+            tr
+               th Tính năng
+               each eachRole in records
+                  th(
+                     class="text-center"
+                     role-id=eachRole.id
+                  ) #{eachRole.title}
+
+         tbody
+            tr
+               td(colspan="4")
+                  b Danh mục sản phẩm
+            
+            tr
+               td Xem
+               each eachRole in records
+                  td(class="text-center")
+                     input(
+                        type="checkbox"
+                        permission-name="product-categories_view" 
+                        belongs-role-id=eachRole.id
+                        checked=(eachRole.permissions.includes("product-categories_view") ? true : false)
+                     )
+            
+            tr
+               td Thêm mới
+               each eachRole in records
+                  td(class="text-center")
+                     input(
+                        type="checkbox"
+                        permission-name="product-categories_create" 
+                        belongs-role-id=eachRole.id
+                        checked=(eachRole.permissions.includes("product-categories_create") ? true : false)
+                     )
+            
+            tr
+               td Chỉnh sửa
+               each eachRole in records
+                  td(class="text-center")
+                     input(
+                        type="checkbox"
+                        permission-name="product-categories_edit" 
+                        belongs-role-id=eachRole.id
+                        checked=(eachRole.permissions.includes("product-categories_edit") ? true : false)
+                     )
+            
+            tr
+               td Xóa
+               each eachRole in records
+                  td(class="text-center")
+                     input(
+                        type="checkbox"
+                        permission-name="product-categories_delete" 
+                        belongs-role-id=eachRole.id
+                        checked=(eachRole.permissions.includes("product-categories_delete") ? true : false)
+                     )

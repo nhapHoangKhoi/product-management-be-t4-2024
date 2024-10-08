@@ -11,4 +11,7 @@ router.post("/create", controllerAdmin.createRole);
 router.get("/edit/:idRole", controllerAdmin.getEditPage);
 router.patch("/edit/:idRole", controllerAdmin.editRole);
 
+router.get("/permissions", controllerAdmin.getPermissionPage);
+router.patch("/permissions", controllerAdmin.editPermissions);
+
 module.exports = router;
