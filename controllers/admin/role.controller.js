@@ -45,3 +45,66 @@ module.exports.createRole = async (request, response) =>
    response.redirect(`/${systemConfigs.prefixAdmin}/roles`);
 }
 // ----------------End []------------------- //
+
+
+// ----------------[]------------------- //
+// [GET] /admin/roles/edit/:idRole
+module.exports.getEditPage = async (request, response) => 
+{
+   try {
+      const roleId = request.params.idRole;
+
+      const roleFind = {
+         _id: roleId,
+         deleted: false
+      };
+
+      const theRoleData = await RoleModel.findOne(roleFind);
+      
+      if(theRoleData) // check != null, vi co render ra giao dien nen them if else cho nay nua
+      {
+         response.render(
+            "admin/pages/roles/edit.pug", 
+            {
+               pageTitle: "Chỉnh sửa nhóm quyền",
+               theRoleData: theRoleData
+            }
+         );
+      }
+      else {
+         response.redirect(`/${systemConfigs.prefixAdmin}/roles`);
+      }
+   }
+   catch(error) {
+      // catch la do nguoi ta hack, pha
+      // console.log(error);
+      request.flash("error", "ID sản phẩm không hợp lệ!");
+      response.redirect(`/${systemConfigs.prefixAdmin}/roles`);
+   }
+}
+
+// [PATCH] /admin/roles/edit/:idRole
+module.exports.editRole = async (request, response) => 
+{
+   try {
+      const roleId = request.params.idRole;
+
+      await RoleModel.updateOne(
+         {
+            _id: roleId
+         },
+         request.body
+      );
+
+      request.flash("success", "Cập nhật thành công!");
+      // response.send("OK Frontend");
+      response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/roles/edit
+   }
+   catch(error) {
+      // catch la do nguoi ta hack, pha
+      console.log(error);
+      request.flash("error", "ID nhóm quyền không hợp lệ!");
+      response.redirect(`/${systemConfigs.prefixAdmin}/roles`);
+   }
+}
+// ----------------End []------------------- //

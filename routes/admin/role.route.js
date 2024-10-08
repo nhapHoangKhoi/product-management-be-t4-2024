@@ -8,4 +8,7 @@ router.get("/", controllerAdmin.index);
 router.get("/create", controllerAdmin.getCreatePage);
 router.post("/create", controllerAdmin.createRole);
 
+router.get("/edit/:idRole", controllerAdmin.getEditPage);
+router.patch("/edit/:idRole", controllerAdmin.editRole);
+
 module.exports = router;
