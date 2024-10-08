@@ -58,7 +58,7 @@ module.exports.index = async (request, response) =>
 
    // ----- Pagination ----- //
    const itemsLimited = 4;
-   const pagination = await paginationHelper.paging(request, productFind, itemsLimited); // { currentPage: 1, itemsLimited: 4, startIndex: 0, totalPage: 5 }
+   const pagination = await paginationHelper.paging(request, productFind, itemsLimited, ProductModel); // { currentPage: 1, itemsLimited: 4, startIndex: 0, totalPage: 5 }
    // ----- End pagination -----//
 
 
@@ -89,7 +89,7 @@ module.exports.getDeletedProducts = async (request, response) =>
 
    // ----- Pagination ----- //
    const limitItems = 10;
-   const pagination = await paginationHelper.paging(request, deletedProductFind, limitItems); // { currentPage: 1, limitItems: 10, startIndex: 0, totalPage:... }
+   const pagination = await paginationHelper.paging(request, deletedProductFind, limitItems, ProductModel); // { currentPage: 1, limitItems: 10, startIndex: 0, totalPage:... }
    // ----- End pagination -----//
    
 

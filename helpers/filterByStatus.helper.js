@@ -1,6 +1,6 @@
 module.exports.filterByStatus = (request) =>
 {
-   const productFind = {
+   const itemFind = {
       deleted: false
    };
 
@@ -8,8 +8,8 @@ module.exports.filterByStatus = (request) =>
    // {status: "inactive"}
    // {status: undefined}
    if(request.query.status) {
-      productFind.status = request.query.status;
+      itemFind.status = request.query.status;
    }
 
-   return productFind;
+   return itemFind;
 }

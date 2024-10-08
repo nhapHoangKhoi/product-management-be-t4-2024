@@ -1,7 +1,18 @@
 extends ../../layouts/default.pug
 
+include ../../mixins/filter-status.pug
+include ../../mixins/pagination-bar.pug
+
 block main
+   
    h1(class="mb-4") Danh mục sản phẩm
+
+   .card.mb-3 
+      .card-header Bộ lọc và Tìm kiếm
+      .card-body 
+         .row 
+            .col-6
+               +filter-status(filterStatusForFE)
 
    .card.mb-3
       .card-header Danh sách 
@@ -13,3 +24,86 @@ block main
                   href=`/${prefixAdmin}/product-categories/create`
                   class="btn btn-outline-info"
                ) + Thêm mới
+
+            table.table.table-hover.table-sm
+               thead
+                  tr
+                     th 
+                        label(for="checkALL-box")
+                           input(name="checkAll" id="checkALL-box" type="checkbox")
+                     th STT
+                     th Hình ảnh
+                     th Tên sản phẩm
+                     th Giá
+                     th Vị trí
+                     th Trạng thái
+                     th Hành động
+               
+               tbody
+                  each category, index in listOfCategories
+                     tr
+                        td 
+                           label(for=`checkItem-${index+1}`)
+                              input(
+                                 onclick=`event.stopPropagation();`
+                                 name="checkItem"
+                                 id=`checkItem-${index+1}` 
+                                 type="checkbox" 
+                                 value=category.id
+                              )
+
+                        td #{index+1}
+
+                        td(onclick=`location.href='/${prefixAdmin}/product-categories/detail/${category.id}'`, style="cursor: pointer;")
+                           img(
+                              src=category.thumbnail
+                              alt=category.title
+                              width="80px"
+                              height="auto"
+                           )
+
+                        td(onclick=`location.href='/${prefixAdmin}/product-categories/detail/${category.id}'`, style="cursor: pointer;") #{category.title}
+      
+                        td(onclick=`location.href='/${prefixAdmin}/product-categories/detail/${category.id}'`, style="cursor: pointer;") #{category.price}$
+
+                        td(onclick=`location.href='/${prefixAdmin}/product-categories/detail/${category.id}'`, style="cursor: pointer;")
+                           input(
+                              onclick=`event.stopPropagation();`
+                              link=`/${prefixAdmin}/product-categories/change-position/${category.id}`
+                              type="number"
+                              name="position"
+                              value=category.position
+                              min="1"
+                              style="width: 60px"
+                           )
+
+                        td(onclick=`location.href='/${prefixAdmin}/product-categories/detail/${category.id}'`, style="cursor: pointer;")
+                           if(category.status == "active")
+                              button(
+                                 onclick=`event.stopPropagation();`
+                                 link=`/${prefixAdmin}/product-categories/change-status/${category.status}/${category.id}`  
+                                 class="btn badge badge-success" 
+                                 button-change-status=""
+                              ) Hoạt động
+                           else
+                              button(
+                                 onclick=`event.stopPropagation();`
+                                 link=`/${prefixAdmin}/product-categories/change-status/${category.status}/${category.id}` 
+                                 class="btn badge badge-danger"
+                                 button-change-status=""
+                              ) Dừng hoạt động 
+                        
+                        td(onclick=`location.href='/${prefixAdmin}/product-categories/detail/${category.id}'`, style="cursor: pointer;")
+                           a(
+                              onclick=`event.stopPropagation();`
+                              class="btn btn-warning btn-sm mr-1"
+                              href=`/${prefixAdmin}/product-categories/edit/${category.id}`
+                           ) Sửa
+                           button(
+                              onclick=`event.stopPropagation();`
+                              class="btn btn-danger btn-sm" 
+                              button-delete-soft=`/${prefixAdmin}/product-categories/delete/${category.id}`
+                           ) Xoá
+
+
+   +pagination-bar(pagination)

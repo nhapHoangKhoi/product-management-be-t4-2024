@@ -1,4 +1,4 @@
-module.exports.search = (request, productFind) =>
+module.exports.search = (request, itemFind) =>
 {
    let keyword = "";
    let objectReturn = "";
@@ -6,12 +6,12 @@ module.exports.search = (request, productFind) =>
    if(request.query.inputKeyword) 
    {
       const regex = new RegExp(request.query.inputKeyword, "i");
-      productFind.title = regex;
+      itemFind.title = regex;
 
       keyword = request.query.inputKeyword;
 
       objectReturn = {
-         productFindTitle: productFind.title,
+         itemFindTitle: itemFind.title,
          keyword: keyword
       };
    }

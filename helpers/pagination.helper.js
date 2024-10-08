@@ -1,6 +1,4 @@
-const ProductModel = require("../models/product.model.js");
-
-module.exports.paging = async (request, productFind, itemsLimited) =>
+module.exports.paging = async (request, itemFind, itemsLimited, Model) =>
 {
    // { currentPage: 1, itemsLimited: 4, startIndex: 0, totalPage: 5 }
    const pagination = {
@@ -14,7 +12,7 @@ module.exports.paging = async (request, productFind, itemsLimited) =>
 
    pagination.startIndex = (pagination.currentPage - 1) * pagination.itemsLimited;
 
-   const totalProductsCounted = await ProductModel.countDocuments(productFind);
+   const totalProductsCounted = await Model.countDocuments(itemFind);
    const totalPage = Math.ceil(totalProductsCounted / pagination.itemsLimited);
    pagination.totalPage = totalPage;
 
