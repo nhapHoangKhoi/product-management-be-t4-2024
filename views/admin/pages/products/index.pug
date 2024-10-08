@@ -62,7 +62,8 @@ block main
             thead
                tr
                   th 
-                     input(name="checkAll" type="checkbox")
+                     label(for="checkALL-box")
+                        input(name="checkAll" id="checkALL-box" type="checkbox")
                   th STT
                   th Hình ảnh
                   th Tên sản phẩm
@@ -75,12 +76,14 @@ block main
                each aProduct, index in listOfProducts
                   tr
                      td 
-                        input(
-                           onclick=`event.stopPropagation();`
-                           name="checkItem" 
-                           type="checkbox" 
-                           value=aProduct.id
-                        )
+                        label(for=`checkItem-${index+1}`)
+                           input(
+                              onclick=`event.stopPropagation();`
+                              name="checkItem"
+                              id=`checkItem-${index+1}` 
+                              type="checkbox" 
+                              value=aProduct.id
+                           )
 
                      td #{index+1}
 

@@ -143,6 +143,47 @@
 /* End image-preview */
 
 
+/* table input */
+
+table input
+{
+   width: 19px;
+   height: 19px;
+   cursor: pointer;
+}
+
+table thead th
+{
+   vertical-align: middle!important;
+}
+
+table thead th label
+{
+   margin: 0;
+
+   width: 100%;
+   cursor: pointer;
+   display: flex;
+}
+
+table tbody td
+{
+   height: 20px;
+}
+
+
+table tbody td label
+{
+   margin: 0;
+
+   width: 100%;
+   height: 100%;
+   cursor: pointer;
+}
+
+/* End table input */
+
+
 /* sort-bar */
 
 [sort-bar] [sort-clear]
