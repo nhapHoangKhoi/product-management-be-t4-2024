@@ -53,7 +53,7 @@ module.exports.index = async (request, response) =>
    let keyword = "";
 
    if(objectSearchResult) {
-      productFind.title = objectSearchResult.productFindTitle;
+      productFind.title = objectSearchResult.itemFindTitle;
       keyword = objectSearchResult.keyword;
    }
    // ----- End search products ----- //
