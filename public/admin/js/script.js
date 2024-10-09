@@ -231,24 +231,43 @@ if(buttonDeleteMany)
          
          if(action != "" && listOfIds.length > 0)
          {
-            const dataSubmit = {
-               selectedValue: action,
-               listOfIds: listOfIds
-            };
-
-            fetch(link, {
-               method: "DELETE",
-               headers: {
-                  "Content-Type": "application/json"
-               },
-               body: JSON.stringify(dataSubmit)
-            })
-               .then(responseFromController => responseFromController.json())
-               .then(dataFromController => {
-                  if(dataFromController.code == 200) {
-                     window.location.reload();
+            Swal.fire({
+               title: "Bạn có chắc muốn xóa",
+               text: "Hành động này sẽ xóa vĩnh viễn bản ghi",
+               icon: "warning",
+               showCancelButton: true,
+               confirmButtonColor: "#d33",
+               cancelButtonColor: "#3085d6",
+               confirmButtonText: "Vẫn xóa!",
+               cancelButtonText: "Hủy"
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                     const dataSubmit = {
+                        selectedValue: action,
+                        listOfIds: listOfIds
+                     };
+         
+                     fetch(link, {
+                        method: "DELETE",
+                        headers: {
+                           "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(dataSubmit)
+                     })
+                        .then(responseFromController => responseFromController.json())
+                        .then(dataFromController => {
+                           if(dataFromController.code == 200) {
+                              Swal.fire({
+                                 title: "Đã xóa!",
+                                 text: "Bạn đã xóa thành công",
+                                 icon: "success",
+                              })
+                                 .then(noName => window.location.reload())
+                              // window.location.reload();
+                           }
+                        })
                   }
-               })
+               });
          }
       }
    );
@@ -390,17 +409,36 @@ if(listButtonDeletePermanent.length > 0)
    listButtonDeletePermanent.forEach((eachButton) => {
       eachButton.addEventListener("click", () => 
          {  
-            const link = eachButton.getAttribute("button-delete-permanent");
-            
-            fetch(link, {
-               method: "DELETE"
-            })
-               .then(responseFromController => responseFromController.json())
-               .then(dataFromController => {
-                  if(dataFromController.code == 200) {
-                     window.location.reload();
+            Swal.fire({
+               title: "Bạn có chắc muốn xóa",
+               text: "Hành động này sẽ xóa vĩnh viễn bản ghi",
+               icon: "warning",
+               showCancelButton: true,
+               confirmButtonColor: "#d33",
+               cancelButtonColor: "#3085d6",
+               confirmButtonText: "Vẫn xóa!",
+               cancelButtonText: "Hủy"
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                     const link = eachButton.getAttribute("button-delete-permanent");
+                     
+                     fetch(link, {
+                        method: "DELETE"
+                     })
+                        .then(responseFromController => responseFromController.json())
+                        .then(dataFromController => {
+                           if(dataFromController.code == 200) {
+                              Swal.fire({
+                                 title: "Đã xóa!",
+                                 text: "Bạn đã xóa thành công",
+                                 icon: "success",
+                              })
+                                 .then(noName => window.location.reload())
+                              // window.location.reload()
+                           }
+                        });
                   }
-               })
+               });
          }
       );
    });
@@ -601,7 +639,7 @@ if(sortBar)
 
 
 // ----- Table permissions
-
+//
 // **************//
 // [
 //    {
@@ -679,5 +717,4 @@ if(tablePermissions)
       }
    );
 }
-
 // ----- End table permissions

@@ -3,17 +3,28 @@ extends ../../layouts/default.pug
 block main 
 
    //- h1(class="mb-4") Trang Nhóm quyền
-   h1(class="mb-4") Nhóm quyền
+
+   h1(class="main-header mb-4")
+      div(class="inner-title") Nhóm quyền
+      button(
+         class="btn btn-primary" 
+         button-trash=`/${prefixAdmin}/roles/trash`
+      ) Recycle bin
 
    .card.mb-3
       .card-header Danh sách 
       .card-body 
-         .row 
-            .col-8 
+         .row.align-items-center.mb-4
+            .col-8
+               button(
+                  class="btn btn-secondary btn-sm element-hidden"
+                  button-delete-many=`/${prefixAdmin}/roles/change-multi`
+                  value="deleteSoftManyItems"
+               ) Xoá
             .col-4.text-right 
                a(
                   href=`/${prefixAdmin}/roles/create`
-                  class="btn btn-outline-info mb-4"
+                  class="btn btn-outline-info"
                ) + Thêm mới
 
          table(
@@ -21,6 +32,9 @@ block main
          )
             thead
                tr
+                  th 
+                     label(for="checkALL-box")
+                        input(name="checkAll" id="checkALL-box" type="checkbox")
                   th STT
                   th Nhóm quyền
                   th Mô tả ngắn
@@ -29,21 +43,32 @@ block main
                if(listOfRoles.length > 0)
                   each aRole, index in listOfRoles
                      tr
+                        td 
+                           label(for=`checkItem-${index+1}`)
+                              input(
+                                 name="checkItem"
+                                 id=`checkItem-${index+1}` 
+                                 type="checkbox" 
+                                 value=aRole.id
+                              )
+
                         td #{index + 1}
                         td #{aRole.title}
                         td #{aRole.description}
                         td
-                           a(
-                              class="btn btn-secondary btn-sm"
-                              href=`/${prefixAdmin}/roles/detail/${aRole.id}`
-                           ) Chi tiết
-                           a(
-                              class="btn btn-warning btn-sm ml-1"
-                              href=`/${prefixAdmin}/roles/edit/${aRole.id}`
-                           ) Sửa
-                           button(
-                              class="btn btn-danger btn-sm ml-1"
-                           ) Xóa
+                           div(class="buttons")
+                              a(
+                                 class="btn btn-secondary btn-sm"
+                                 href=`/${prefixAdmin}/roles/detail/${aRole.id}`
+                              ) Chi tiết
+                              a(
+                                 class="btn btn-warning btn-sm"
+                                 href=`/${prefixAdmin}/roles/edit/${aRole.id}`
+                              ) Sửa
+                              button(
+                                 class="btn btn-danger btn-sm"
+                                 button-delete-soft=`/${prefixAdmin}/roles/delete/${aRole.id}`
+                              ) Xóa
                else
                   tr
                      td(colspan="4" class="text-center") Chưa có nhóm quyền nào được tạo.

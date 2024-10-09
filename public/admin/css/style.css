@@ -90,7 +90,7 @@
 {
    position: fixed;
    top: 70px;
-   right: 20px;
+   right: 15px;
    z-index: 999;
 
    display: flex;
@@ -178,6 +178,29 @@ table tbody td label
    width: 100%;
    height: 100%;
    cursor: pointer;
+}
+
+table tbody td .buttons a, 
+table tbody td .buttons button
+{
+   margin-right: 4px;
+}
+
+/* nho hon 992 */
+@media (max-width: 991.98px)
+{
+   table tbody td .buttons
+   {
+      display: flex;
+      flex-direction: column;
+   }
+
+   table tbody td .buttons a, 
+   table tbody td .buttons button
+   {
+      margin-right: 0;
+      margin-bottom: 4px;
+   }
 }
 
 /* End table input */

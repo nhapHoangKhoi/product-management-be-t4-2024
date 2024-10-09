@@ -175,7 +175,7 @@ module.exports.changeMulti = async (request, response) =>
          request.flash("success", "Cập nhật sản phẩm thành công!"); // chi la dat ten key "success"
          break;
 
-      case "deleteManyItems":
+      case "deleteSoftManyItems":
          await ProductModel.updateMany(
             {
                _id: listOfIds

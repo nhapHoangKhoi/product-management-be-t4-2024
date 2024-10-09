@@ -1,5 +1,7 @@
 const RoleModel = require("../../models/role.model.js");
+
 const systemConfigs = require("../../config/system.js");
+const paginationHelper = require("../../helpers/pagination.helper.js");
 
 // ----------------[]------------------- //
 // [GET] /admin/roles/
@@ -18,6 +20,82 @@ module.exports.index = async (request, response) =>
          listOfRoles: listOfRoles
       }
    );
+}
+
+// [PATCH] /admin/roles/change-multi
+module.exports.changeMulti = async (request, response) =>
+{
+   // console.log(request.body);
+   // {
+   //    selectedValue: 'active',
+   //    listOfIds: [ '66f972ce307bea1ebe5e8fe5', '66f972ce307bea1ebe5e8fe6' ]
+   // }
+
+   const { selectedValue, listOfIds } = request.body;
+
+   switch(selectedValue)
+   {
+      case "deleteSoftManyItems":
+         await RoleModel.updateMany(
+            {
+               _id: listOfIds
+            },
+            {
+               deleted: true
+            }
+         );
+         request.flash("success", "Xoá sản phẩm thành công!"); // chi la dat ten key "success"
+         break;
+
+      case "recoverManyItems":
+         await RoleModel.updateMany(
+            {
+               _id: listOfIds
+            },
+            {
+               deleted: false
+            }
+         );
+         request.flash("success", "Khôi phục sản phẩm thành công!"); // chi la dat ten key "success"
+         break;
+      
+      default:
+         break;
+   }
+
+   response.json(
+      {
+         code: 200
+      }
+   );
+}
+
+// [PATCH] /admin/roles/delete/:idRole
+module.exports.softDeleteRole = async (request, response) => 
+{
+   try {
+      const roleId = request.params.idRole;
+   
+      await RoleModel.updateOne(
+         {
+            _id: roleId
+         },
+         {
+            deleted: true
+         }
+      );
+   
+      request.flash("success", "Xoá thành công!"); // chi la dat ten key "success"
+   
+      response.json(
+         {
+            code: 200
+         }
+      );
+   }
+   catch(error) {
+      response.redirect("back"); // back to page [GET] /admin/products/
+   }
 }
 // ----------------End []------------------- //
 
@@ -152,6 +230,107 @@ module.exports.editPermissions = async (request, response) =>
       {
          code: 200,
          message: "Cập nhật thành công!"
+      }
+   );
+}
+// ----------------End []------------------- //
+
+
+// ----------------[]------------------- //
+// [GET] /admin/roles/trash
+module.exports.getDeletedRoles = async (request, response) =>
+{
+   const deletedRoleFind = {
+      deleted: true
+   };
+
+   // ----- Pagination ----- //
+   const limitItems = 10;
+   const pagination = await paginationHelper.paging(request, deletedRoleFind, limitItems, RoleModel); // { currentPage: 1, limitItems: 10, startIndex: 0, totalPage:... }
+   // ----- End pagination -----//
+   
+
+   const listOfDeletedRoles = await RoleModel
+      .find(deletedRoleFind)
+      .limit(pagination.itemsLimited)
+      .skip(pagination.startIndex);
+
+   response.render(
+      "admin/pages/roles/trash.pug",
+      {
+         listOfDeletedRoles: listOfDeletedRoles,
+         pagination: pagination
+      }
+   );
+}
+
+// [PATCH] /admin/roles/recover/:idRole
+module.exports.recoverRole= async (request, response) => 
+{
+   try {
+      const roleId = request.params.idRole;
+   
+      await RoleModel.updateOne(
+         {
+            _id: roleId
+         },
+         {
+            deleted: false
+         }
+      );
+   
+      request.flash("success", "Khôi phục thành công!"); // chi la dat ten key "success"
+   
+      response.json(
+         {
+            code: 200
+         }
+      );
+   }
+   catch(error) {
+      response.redirect("back"); // back to page [GET] /admin/products/trash
+   }
+}
+
+// [DELETE] /admin/roles/delete-permanent/:idRole
+module.exports.permanentDeleteRole = async (request, response) =>
+{
+   try {
+      const roleId = request.params.idRole;
+   
+      await RoleModel.deleteOne(
+         {
+            _id: roleId
+         }
+      );
+   
+      response.json(
+         {
+            code: 200
+         }
+      );
+   }
+   catch(error) {
+      response.redirect("back"); // back to page [GET] /admin/products/trash
+   }
+}
+
+// [DELETE] /admin/roles/delete-many-permanent
+module.exports.permanentDeleteManyRoles = async (request, response) =>
+{
+   const { selectedValue, listOfIds } = request.body;
+
+   if(selectedValue == "deletePermanentManyItems") {
+      await RoleModel.deleteMany(
+         {
+            _id: listOfIds
+         }
+      );
+   }
+
+   response.json(
+      {
+         code: 200
       }
    );
 }

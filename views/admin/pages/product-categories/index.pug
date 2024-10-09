@@ -94,16 +94,17 @@ block main
                               ) Dừng hoạt động 
                         
                         td(onclick=`location.href='/${prefixAdmin}/product-categories/detail/${category.id}'`, style="cursor: pointer;")
-                           a(
-                              onclick=`event.stopPropagation();`
-                              class="btn btn-warning btn-sm mr-1"
-                              href=`/${prefixAdmin}/product-categories/edit/${category.id}`
-                           ) Sửa
-                           button(
-                              onclick=`event.stopPropagation();`
-                              class="btn btn-danger btn-sm" 
-                              button-delete-soft=`/${prefixAdmin}/product-categories/delete/${category.id}`
-                           ) Xoá
+                           div(class="buttons")
+                              a(
+                                 onclick=`event.stopPropagation();`
+                                 class="btn btn-warning btn-sm"
+                                 href=`/${prefixAdmin}/product-categories/edit/${category.id}`
+                              ) Sửa
+                              button(
+                                 onclick=`event.stopPropagation();`
+                                 class="btn btn-danger btn-sm" 
+                                 button-delete-soft=`/${prefixAdmin}/product-categories/delete/${category.id}`
+                              ) Xoá
 
 
    +pagination-bar(pagination)
