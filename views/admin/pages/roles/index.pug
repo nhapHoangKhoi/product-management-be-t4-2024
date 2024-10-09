@@ -18,7 +18,7 @@ block main
             .col-8
                button(
                   class="btn btn-secondary btn-sm element-hidden"
-                  button-delete-many=`/${prefixAdmin}/roles/change-multi`
+                  button-delete-many-soft=`/${prefixAdmin}/roles/change-multi`
                   value="deleteSoftManyItems"
                ) Xoá
             .col-4.text-right 
@@ -71,4 +71,4 @@ block main
                               ) Xóa
                else
                   tr
-                     td(colspan="4" class="text-center") Chưa có nhóm quyền nào được tạo.
+                     td(colspan="5" class="text-center") Chưa có nhóm quyền nào được tạo.

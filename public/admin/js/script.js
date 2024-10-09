@@ -209,19 +209,135 @@ if(boxUpdate)
 // ----- End box updates multi items
 
 
-// ----- Button delete many records (y tuong tu "Box updates multi items, Button check items")
-const buttonDeleteMany = document.querySelector("[button-delete-many]");
+// ----- Button delete soft 1 record
+const listButtonDeleteSoft = document.querySelectorAll("[button-delete-soft]");
 
-if(buttonDeleteMany)
+if(listButtonDeleteSoft.length > 0)
 {
-   buttonDeleteMany.addEventListener("click", () => 
+   listButtonDeleteSoft.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {  
+            const link = eachButton.getAttribute("button-delete-soft");
+            
+            fetch(link, {
+               method: "PATCH"
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      );
+   });
+}
+// ----- End button delete soft 1 record
+
+
+// ----- Button delete soft many records
+const buttonDeleteManySoft = document.querySelector("[button-delete-many-soft]");
+
+if(buttonDeleteManySoft)
+{
+   buttonDeleteManySoft.addEventListener("click", () => 
       {
          const listCheckedItem = document.querySelectorAll("input[name='checkItem']:checked");
          const listOfIds = [];
-         const link = buttonDeleteMany.getAttribute("button-delete-many");
-         console.log(link);
+         const link = buttonDeleteManySoft.getAttribute("button-delete-many-soft");
          
-         const action = buttonDeleteMany.getAttribute("value");
+         const action = buttonDeleteManySoft.getAttribute("value");
+         
+         listCheckedItem.forEach((eachInput) => 
+            {
+               listOfIds.push(eachInput.value);
+            }
+         );
+
+         if(action != "" && listOfIds.length > 0)
+         {
+            const dataSubmit = {
+               selectedValue: action,
+               listOfIds: listOfIds
+            };
+
+            fetch(link, {
+               method: "PATCH",
+               headers: {
+                  "Content-Type": "application/json"
+               },
+               body: JSON.stringify(dataSubmit)
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      }
+   );
+}
+// ----- End button delete soft many records
+
+
+// ----- Button delete 1 record permanently
+const listButtonDeletePermanent = document.querySelectorAll("[button-delete-permanent]");
+
+if(listButtonDeletePermanent.length > 0)
+{
+   listButtonDeletePermanent.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {  
+            Swal.fire({
+               title: "Bạn có chắc muốn xóa",
+               text: "Hành động này sẽ xóa vĩnh viễn bản ghi",
+               icon: "warning",
+               showCancelButton: true,
+               confirmButtonColor: "#d33",
+               cancelButtonColor: "#3085d6",
+               confirmButtonText: "Vẫn xóa!",
+               cancelButtonText: "Hủy"
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                     const link = eachButton.getAttribute("button-delete-permanent");
+                     
+                     fetch(link, {
+                        method: "DELETE"
+                     })
+                        .then(responseFromController => responseFromController.json())
+                        .then(dataFromController => {
+                           if(dataFromController.code == 200) {
+                              Swal.fire({
+                                 title: "Đã xóa!",
+                                 text: "Bạn đã xóa thành công",
+                                 icon: "success",
+                              })
+                                 .then(noName => window.location.reload())
+                              // window.location.reload()
+                           }
+                        });
+                  }
+               });
+         }
+      );
+   });
+}
+// ----- End button delete 1 record permanently
+
+
+// ----- Button delete many records permanently (y tuong tu "Box updates multi items, Button check items")
+const buttonDeleteManyPermanent = document.querySelector("[button-delete-many-permanent]");
+
+if(buttonDeleteManyPermanent)
+{
+   buttonDeleteManyPermanent.addEventListener("click", () => 
+      {
+         const listCheckedItem = document.querySelectorAll("input[name='checkItem']:checked");
+         const listOfIds = [];
+         const link = buttonDeleteManyPermanent.getAttribute("button-delete-many-permanent");
+         
+         const action = buttonDeleteManyPermanent.getAttribute("value");
          
          listCheckedItem.forEach((eachInput) => 
             {
@@ -272,7 +388,7 @@ if(buttonDeleteMany)
       }
    );
 }
-// ----- End button delete many records
+// ----- End button delete many records permanently
 
 
 // ----- Button recover many records (y tuong tu "Box updates multi items, Button check items")
@@ -318,6 +434,32 @@ if(buttonRecoverMany)
    );
 }
 // ----- End button recover many records
+
+
+// ----- Button recover 1 record
+const listButtonRecovery = document.querySelectorAll("[button-recover]");
+
+if(listButtonRecovery.length > 0)
+{
+   listButtonRecovery.forEach((eachButton) => {
+      eachButton.addEventListener("click", () => 
+         {
+            const link = eachButton.getAttribute("button-recover");
+
+            fetch(link, {
+               method: "PATCH"
+            })
+               .then(responseFromController => responseFromController.json())
+               .then(dataFromController => {
+                  if(dataFromController.code == 200) {
+                     window.location.reload();
+                  }
+               })
+         }
+      );
+   });
+}
+// ----- End button recover 1 record
 
 
 // ----- Change item position
@@ -401,51 +543,6 @@ if(buttonTrash)
 // ----- End get deleted records
 
 
-// ----- Permanent delete record
-const listButtonDeletePermanent = document.querySelectorAll("[button-delete-permanent]");
-
-if(listButtonDeletePermanent.length > 0)
-{
-   listButtonDeletePermanent.forEach((eachButton) => {
-      eachButton.addEventListener("click", () => 
-         {  
-            Swal.fire({
-               title: "Bạn có chắc muốn xóa",
-               text: "Hành động này sẽ xóa vĩnh viễn bản ghi",
-               icon: "warning",
-               showCancelButton: true,
-               confirmButtonColor: "#d33",
-               cancelButtonColor: "#3085d6",
-               confirmButtonText: "Vẫn xóa!",
-               cancelButtonText: "Hủy"
-            }).then((result) => {
-                  if (result.isConfirmed) {
-                     const link = eachButton.getAttribute("button-delete-permanent");
-                     
-                     fetch(link, {
-                        method: "DELETE"
-                     })
-                        .then(responseFromController => responseFromController.json())
-                        .then(dataFromController => {
-                           if(dataFromController.code == 200) {
-                              Swal.fire({
-                                 title: "Đã xóa!",
-                                 text: "Bạn đã xóa thành công",
-                                 icon: "success",
-                              })
-                                 .then(noName => window.location.reload())
-                              // window.location.reload()
-                           }
-                        });
-                  }
-               });
-         }
-      );
-   });
-}
-// ----- End permanent delete record
-
-
 // ----- Pagination
 const listButtonPagination = document.querySelectorAll("[button-pagination]");
 
@@ -493,58 +590,6 @@ if(elementUploadImage)
    );
 }
 // ----- End preview image
-
-
-// ----- Recover record
-const listButtonRecovery = document.querySelectorAll("[button-recover]");
-
-if(listButtonRecovery.length > 0)
-{
-   listButtonRecovery.forEach((eachButton) => {
-      eachButton.addEventListener("click", () => 
-         {
-            const link = eachButton.getAttribute("button-recover");
-
-            fetch(link, {
-               method: "PATCH"
-            })
-               .then(responseFromController => responseFromController.json())
-               .then(dataFromController => {
-                  if(dataFromController.code == 200) {
-                     window.location.reload();
-                  }
-               })
-         }
-      );
-   });
-}
-// ----- End recover record
-
-
-// ----- Soft delete record
-const listButtonDeleteSoft = document.querySelectorAll("[button-delete-soft]");
-
-if(listButtonDeleteSoft.length > 0)
-{
-   listButtonDeleteSoft.forEach((eachButton) => {
-      eachButton.addEventListener("click", () => 
-         {  
-            const link = eachButton.getAttribute("button-delete-soft");
-            
-            fetch(link, {
-               method: "PATCH"
-            })
-               .then(responseFromController => responseFromController.json())
-               .then(dataFromController => {
-                  if(dataFromController.code == 200) {
-                     window.location.reload();
-                  }
-               })
-         }
-      );
-   });
-}
-// ----- End soft delete record
 
 
 // ----- Show notification BE

@@ -44,7 +44,7 @@ module.exports.changeMulti = async (request, response) =>
                deleted: true
             }
          );
-         request.flash("success", "Xoá sản phẩm thành công!"); // chi la dat ten key "success"
+         request.flash("success", "Xoá thành công!"); // chi la dat ten key "success"
          break;
 
       case "recoverManyItems":
@@ -56,7 +56,7 @@ module.exports.changeMulti = async (request, response) =>
                deleted: false
             }
          );
-         request.flash("success", "Khôi phục sản phẩm thành công!"); // chi la dat ten key "success"
+         request.flash("success", "Khôi phục thành công!"); // chi la dat ten key "success"
          break;
       
       default:
