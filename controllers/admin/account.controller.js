@@ -76,3 +76,80 @@ module.exports.createAccountAdmin = async (request, response) =>
    // response.send("OK Frontend");
 }
 // ----------------End []------------------- //
+
+
+// ----------------[]------------------- //
+// [GET] /admin/accounts/edit/:idAccount
+module.exports.getEditPage = async (request, response) => 
+{
+   try {
+      const accountId = request.params.idAccount;
+      const roleFind = {
+         deleted: false
+      };
+      const accountFind = {
+         _id: accountId,
+         deleted: false
+      };
+   
+      const listOfRoles = await RoleModel
+         .find(roleFind)
+         .select(["title"]); // tra ra id (luon luon), truong title
+      
+      const theAccountData = await AccountModel.findOne(accountFind);
+   
+      if(theAccountData) // check != null, vi co render ra giao dien nen them if else cho nay nua
+      {
+         response.render(
+            "admin/pages/accounts/edit.pug",
+            {
+               pageTitle: "Chỉnh sửa tài khoản admin",
+               listOfRoles: listOfRoles,
+               theAccountData: theAccountData
+            }
+         );
+      }
+      else {
+         response.redirect(`/${systemConfigs.prefixAdmin}/accounts`);
+      }
+   }
+   catch(error) {
+      // catch la do nguoi ta hack, pha
+      // console.log(error);
+      request.flash("error", "ID tài khoản không hợp lệ!");
+      response.redirect(`/${systemConfigs.prefixAdmin}/roles`);
+   }
+}
+
+// [PATCH] /admin/accounts/edit/:idAccount
+module.exports.editAccountAdmin = async (request, response) =>
+{
+   try {
+      const accountId = request.params.idAccount;
+         
+      if(request.body.password == "") {
+         delete request.body.password; // delete password field before submitting
+      }
+      else {
+         request.body.password = md5(request.body.password);
+      }
+   
+      await AccountModel.updateOne(
+         {
+            _id: accountId,
+            deleted: false
+         },
+         request.body
+      );
+   
+      request.flash("success", "Cập nhật thành công!");
+   }
+   catch(error) {
+      request.flash("error", "ID tài khoản không hợp lệ!");
+   }
+
+   // console.log(request.body);
+   // response.send("OK Frontend");
+   response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/products/edit
+}
+// ----------------End []------------------- //

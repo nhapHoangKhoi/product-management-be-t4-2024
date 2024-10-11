@@ -21,4 +21,12 @@ router.post(
    controllerAdmin.createAccountAdmin
 );
 
+router.get("/edit/:idAccount", controllerAdmin.getEditPage);
+router.patch(
+   "/edit/:idAccount", 
+   upload.single("avatar"), // de up anh tu frontend len ung dung backend nodejs
+   functionsUploadFileToCloud.uploadSingleFile, // de up anh tu backend nodejs len cloudinary
+   controllerAdmin.editAccountAdmin
+);
+
 module.exports = router;

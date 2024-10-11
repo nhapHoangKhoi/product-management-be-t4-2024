@@ -156,7 +156,7 @@ module.exports.getEditPage = async (request, response) =>
    catch(error) {
       // catch la do nguoi ta hack, pha
       // console.log(error);
-      request.flash("error", "ID sản phẩm không hợp lệ!");
+      request.flash("error", "ID không hợp lệ!");
       response.redirect(`/${systemConfigs.prefixAdmin}/roles`);
    }
 }
