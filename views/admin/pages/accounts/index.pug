@@ -15,3 +15,75 @@ block main
                   href=`/${prefixAdmin}/accounts/create`
                   class="btn btn-outline-info"
                ) + Thêm mới
+
+         table.table.table-hover.table-sm
+            thead
+               tr
+                  th 
+                     label(for="checkALL-box")
+                        input(name="checkAll" id="checkALL-box" type="checkbox")
+                  th STT
+                  th Ảnh đại diện
+                  th Họ tên
+                  th Phân quyền
+                  th Email
+                  th Trạng thái
+                  th Hành động
+            
+            tbody
+               each anAccount, index in listOfAccounts
+                  tr
+                     td 
+                        label(for=`checkItem-${index+1}`)
+                           input(
+                              onclick=`event.stopPropagation();`
+                              name="checkItem"
+                              id=`checkItem-${index+1}` 
+                              type="checkbox" 
+                              value=anAccount.id
+                           )
+
+                     td #{index+1}
+
+                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;")
+                        img(
+                           src=anAccount.avatar
+                           alt=anAccount.title
+                           width="80px"
+                           height="auto"
+                        )
+
+                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;") #{anAccount.fullName}
+
+                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;") #{anAccount.roleTitle}
+                     
+                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;") #{anAccount.email}
+
+                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;")
+                        if(anAccount.status == "active")
+                           button(
+                              onclick=`event.stopPropagation();`
+                              link=`/${prefixAdmin}/accounts/change-status/${anAccount.status}/${anAccount.id}`  
+                              class="btn badge badge-success" 
+                              button-change-status=""
+                           ) Hoạt động
+                        else
+                           button(
+                              onclick=`event.stopPropagation();`
+                              link=`/${prefixAdmin}/accounts/change-status/${anAccount.status}/${anAccount.id}` 
+                              class="btn badge badge-danger"
+                              button-change-status=""
+                           ) Dừng hoạt động 
+                     
+                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;")
+                        div(class="buttons")
+                           a(
+                              onclick=`event.stopPropagation();`
+                              class="btn btn-warning btn-sm"
+                              href=`/${prefixAdmin}/accounts/edit/${anAccount.id}`
+                           ) Sửa
+                           button(
+                              onclick=`event.stopPropagation();`
+                              class="btn btn-danger btn-sm" 
+                              button-delete-soft=`/${prefixAdmin}/accounts/delete/${anAccount.id}`
+                           ) Xoá

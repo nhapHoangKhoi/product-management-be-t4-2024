@@ -7,11 +7,28 @@ const systemConfigs = require("../../config/system.js");
 
 // ----------------[]------------------- //
 // [GET] /admin/accounts/
-module.exports.index = (request, response) => {
+module.exports.index = async (request, response) => 
+{
+   const accountFind = {
+      deleted: false
+   };
+
+   const listOfAccounts = await AccountModel.find(accountFind);
+
+   for(const eachAccount of listOfAccounts) {
+      const roleFind = {
+         _id: eachAccount.role_id,
+         deleted: false
+      };
+      const correspondRole = await RoleModel.findOne(roleFind);
+      eachAccount.roleTitle = correspondRole.title;
+   }
+
    response.render(
       "admin/pages/accounts/index.pug", 
       {
-         pageTitle: "Tài khoản admin"
+         pageTitle: "Tài khoản admin",
+         listOfAccounts: listOfAccounts
       }
    );
 }
