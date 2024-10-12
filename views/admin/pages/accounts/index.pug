@@ -2,88 +2,127 @@ extends ../../layouts/default.pug
 
 block main 
    
-   //- h1(class="mb-4") Trang danh sách tài khoản
-   h1(class="mb-4") Danh sách tài khoản admin
+   - if(correspondRole.permissions.includes("accounts_view"))
+      //- h1(class="mb-4") Trang danh sách tài khoản
+      h1(class="mb-4") Danh sách tài khoản admin
 
-   .card.mb-3
-      .card-header Danh sách 
-      .card-body 
-         .row 
-            .col-8 
-            .col-4.text-right 
-               a(
-                  href=`/${prefixAdmin}/accounts/create`
-                  class="btn btn-outline-info"
-               ) + Thêm mới
+      .card.mb-3
+         .card-header Danh sách 
+         .card-body 
+            .row 
+               .col-8 
+               .col-4.text-right
+                  - if(correspondRole.permissions.includes("accounts_create"))
+                     a(
+                        href=`/${prefixAdmin}/accounts/create`
+                        class="btn btn-outline-info"
+                     ) + Thêm mới
+                  - else
+                     button(
+                        class="btn btn-secondary disabled"
+                        style="cursor: default;"
+                     ) + Thêm mới
 
-         table.table.table-hover.table-sm
-            thead
-               tr
-                  th 
-                     label(for="checkALL-box")
-                        input(name="checkAll" id="checkALL-box" type="checkbox")
-                  th STT
-                  th Ảnh đại diện
-                  th Họ tên
-                  th Phân quyền
-                  th Email
-                  th Trạng thái
-                  th Hành động
-            
-            tbody
-               each anAccount, index in listOfAccounts
+
+            table.table.table-hover.table-sm
+               thead
                   tr
-                     td 
-                        label(for=`checkItem-${index+1}`)
-                           input(
-                              onclick=`event.stopPropagation();`
-                              name="checkItem"
-                              id=`checkItem-${index+1}` 
-                              type="checkbox" 
-                              value=anAccount.id
+                     th 
+                        label(for="checkALL-box")
+                           input(name="checkAll" id="checkALL-box" type="checkbox")
+                     th STT
+                     th Ảnh đại diện
+                     th Họ tên
+                     th Phân quyền
+                     th Email
+                     th Trạng thái
+                     th Hành động
+               
+               tbody
+                  each anAccount, index in listOfAccounts
+                     tr
+                        td 
+                           label(for=`checkItem-${index+1}`)
+                              input(
+                                 onclick=`event.stopPropagation();`
+                                 name="checkItem"
+                                 id=`checkItem-${index+1}` 
+                                 type="checkbox" 
+                                 value=anAccount.id
+                              )
+
+                        td #{index+1}
+
+                        td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;")
+                           img(
+                              src=anAccount.avatar
+                              alt=anAccount.title
+                              width="80px"
+                              height="auto"
                            )
 
-                     td #{index+1}
+                        td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;") #{anAccount.fullName}
 
-                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;")
-                        img(
-                           src=anAccount.avatar
-                           alt=anAccount.title
-                           width="80px"
-                           height="auto"
-                        )
+                        td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;") #{anAccount.roleTitle}
+                        
+                        td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;") #{anAccount.email}
 
-                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;") #{anAccount.fullName}
+                        td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;")
+                           - if(correspondRole.permissions.includes("accounts_edit"))
+                              - if(anAccount.status == "active")
+                                 button(
+                                    onclick=`event.stopPropagation();`
+                                    link=`/${prefixAdmin}/accounts/change-status/${anAccount.status}/${anAccount.id}`  
+                                    class="btn badge badge-success" 
+                                    button-change-status=""
+                                 ) Hoạt động
+                              - else
+                                 button(
+                                    onclick=`event.stopPropagation();`
+                                    link=`/${prefixAdmin}/accounts/change-status/${anAccount.status}/${anAccount.id}` 
+                                    class="btn badge badge-danger"
+                                    button-change-status=""
+                                 ) Dừng hoạt động 
+                           - else 
+                              - if(anAccount.status == "active")
+                                 button(
+                                    onclick=`event.stopPropagation();`
+                                    class="btn badge badge-success disabled"
+                                    style="cursor: default;" 
+                                 ) Hoạt động
+                              - else
+                                 button(
+                                    onclick=`event.stopPropagation();`
+                                    class="btn badge badge-danger disabled"
+                                    style="cursor: default;"
+                                 ) Dừng hoạt động 
+                        
 
-                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;") #{anAccount.roleTitle}
-                     
-                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;") #{anAccount.email}
+                        td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;")
+                           div(class="buttons")
+                              - if(correspondRole.permissions.includes("accounts_edit"))
+                                 a(
+                                    onclick=`event.stopPropagation();`
+                                    class="btn btn-warning btn-sm"
+                                    href=`/${prefixAdmin}/accounts/edit/${anAccount.id}`
+                                 ) Sửa
+                              - else
+                                 button(
+                                    onclick=`event.stopPropagation();`
+                                    class="btn btn-warning btn-sm disabled"
+                                    style="cursor: default;"
+                                 ) Sửa
+                              
+                              - if(correspondRole.permissions.includes("accounts_delete"))
+                                 button(
+                                    onclick=`event.stopPropagation();`
+                                    class="btn btn-danger btn-sm" 
+                                    button-delete-soft=`/${prefixAdmin}/accounts/delete/${anAccount.id}`
+                                 ) Xoá
+                              - else
+                                 button(
+                                    onclick=`event.stopPropagation();`
+                                    class="btn btn-danger btn-sm disabled"
+                                    style="cursor: default;" 
+                                 ) Xoá
 
-                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;")
-                        if(anAccount.status == "active")
-                           button(
-                              onclick=`event.stopPropagation();`
-                              link=`/${prefixAdmin}/accounts/change-status/${anAccount.status}/${anAccount.id}`  
-                              class="btn badge badge-success" 
-                              button-change-status=""
-                           ) Hoạt động
-                        else
-                           button(
-                              onclick=`event.stopPropagation();`
-                              link=`/${prefixAdmin}/accounts/change-status/${anAccount.status}/${anAccount.id}` 
-                              class="btn badge badge-danger"
-                              button-change-status=""
-                           ) Dừng hoạt động 
-                     
-                     td(onclick=`location.href='/${prefixAdmin}/accounts/detail/${anAccount.id}'`, style="cursor: pointer;")
-                        div(class="buttons")
-                           a(
-                              onclick=`event.stopPropagation();`
-                              class="btn btn-warning btn-sm"
-                              href=`/${prefixAdmin}/accounts/edit/${anAccount.id}`
-                           ) Sửa
-                           button(
-                              onclick=`event.stopPropagation();`
-                              class="btn btn-danger btn-sm" 
-                              button-delete-soft=`/${prefixAdmin}/accounts/delete/${anAccount.id}`
-                           ) Xoá

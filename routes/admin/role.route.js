@@ -18,6 +18,7 @@ router.patch("/permissions", controllerAdmin.editPermissions);
 
 router.get("/trash", controllerAdmin.getDeletedRoles);
 router.patch("/recover/:idRole", controllerAdmin.recoverRole);
+router.patch("/recover-many", controllerAdmin.recoverManyRoles);
 router.delete("/delete-permanent/:idRole", controllerAdmin.permanentDeleteRole);
 router.delete("/delete-many-permanent", controllerAdmin.permanentDeleteManyRoles);
 

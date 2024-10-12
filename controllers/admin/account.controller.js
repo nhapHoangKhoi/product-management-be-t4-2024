@@ -59,21 +59,27 @@ module.exports.getCreatePage = async (request, response) =>
 // [POST] /admin/accounts/create
 module.exports.createAccountAdmin = async (request, response) =>
 {
-   // ----- Encrypt password ----- //
-   request.body.password = md5(request.body.password);
-   // ----- End encrypt password ----- //
-
-   // ----- Generate random token ----- //
-   request.body.token = generateHelper.generateToken(30); 
-   // ----- End generate random token ----- // 
-
+   if(response.locals.correspondRole.permissions.includes("accounts_create"))
+   {
+      // ----- Encrypt password ----- //
+      request.body.password = md5(request.body.password);
+      // ----- End encrypt password ----- //
    
-   const newAccountModel = new AccountModel(request.body);
-   await newAccountModel.save();
-
-   request.flash("success", "Tạo tài khoản mới thành công!");
-   response.redirect(`/${systemConfigs.prefixAdmin}/accounts`);
-   // response.send("OK Frontend");
+      // ----- Generate random token ----- //
+      request.body.token = generateHelper.generateToken(30); 
+      // ----- End generate random token ----- // 
+   
+      
+      const newAccountModel = new AccountModel(request.body);
+      await newAccountModel.save();
+   
+      request.flash("success", "Tạo tài khoản mới thành công!");
+      response.redirect(`/${systemConfigs.prefixAdmin}/accounts`);
+      // response.send("OK Frontend");
+   }
+   else {
+      response.send("403");
+   }
 }
 // ----------------End []------------------- //
 
@@ -124,32 +130,38 @@ module.exports.getEditPage = async (request, response) =>
 // [PATCH] /admin/accounts/edit/:idAccount
 module.exports.editAccountAdmin = async (request, response) =>
 {
-   try {
-      const accountId = request.params.idAccount;
-         
-      if(request.body.password == "") {
-         delete request.body.password; // delete password field before submitting
+   if(response.locals.correspondRole.permissions.includes("accounts_edit"))
+   {
+      try {
+         const accountId = request.params.idAccount;
+   
+         if(request.body.password == "") {
+            delete request.body.password; // delete password field before submitting
+         }
+         else {
+            request.body.password = md5(request.body.password);
+         }
+      
+         await AccountModel.updateOne(
+            {
+               _id: accountId,
+               deleted: false
+            },
+            request.body
+         );
+      
+         request.flash("success", "Cập nhật thành công!");
       }
-      else {
-         request.body.password = md5(request.body.password);
+      catch(error) {
+         request.flash("error", "ID tài khoản không hợp lệ!");
       }
    
-      await AccountModel.updateOne(
-         {
-            _id: accountId,
-            deleted: false
-         },
-         request.body
-      );
-   
-      request.flash("success", "Cập nhật thành công!");
+      // console.log(request.body);
+      // response.send("OK Frontend");
+      response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/products/edit
    }
-   catch(error) {
-      request.flash("error", "ID tài khoản không hợp lệ!");
+   else {
+      response.send("403");
    }
-
-   // console.log(request.body);
-   // response.send("OK Frontend");
-   response.redirect("back"); // tuc la quay ve lai trang [GET] /admin/products/edit
 }
 // ----------------End []------------------- //
