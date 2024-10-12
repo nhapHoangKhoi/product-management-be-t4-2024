@@ -6,15 +6,42 @@ const roleRoute = require("./role.route.js");
 const accountRoute = require("./account.route.js");
 const authenRoute = require("./authen.route.js");
 
+const authenMiddleware = require("../../middlewares/admin/authen.middleware.js");
+
 // tao route
 module.exports.index = (app) =>
 {
    const path = `/${systemConfigs.prefixAdmin}`;
 
-   app.use(`${path}/dashboard`, dashboardRoute);
-   app.use(`${path}/products`, productAdminRoute);
-   app.use(`${path}/product-categories`, productCategoryAdminRoute);
-   app.use(`${path}/roles`, roleRoute);
-   app.use(`${path}/accounts`, accountRoute);
+   app.use(
+      `${path}/dashboard`,
+      authenMiddleware.checkAuthen, 
+      dashboardRoute
+   );
+
+   app.use(
+      `${path}/products`, 
+      authenMiddleware.checkAuthen,
+      productAdminRoute
+   );
+
+   app.use(
+      `${path}/product-categories`, 
+      authenMiddleware.checkAuthen,
+      productCategoryAdminRoute
+   );
+
+   app.use(
+      `${path}/roles`,
+      authenMiddleware.checkAuthen, 
+      roleRoute
+   );
+   
+   app.use(
+      `${path}/accounts`, 
+      authenMiddleware.checkAuthen,
+      accountRoute
+   );
+   
    app.use(`${path}/authen`, authenRoute);
 }
