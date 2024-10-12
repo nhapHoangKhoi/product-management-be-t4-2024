@@ -45,6 +45,7 @@ router.patch(
 
 router.get("/trash", controllerProductAdmin.getDeletedProducts); // danh sach san pham da bi xoa
 router.patch("/recover/:idProduct", controllerProductAdmin.recoverProduct);
+router.patch("/recover-many", controllerProductAdmin.recoverManyProducts);
 router.delete("/delete-permanent/:idProduct", controllerProductAdmin.permanentDeleteProduct);
 router.delete("/delete-many-permanent", controllerProductAdmin.permanentDeleteManyProducts);
 

@@ -84,6 +84,23 @@
 /* End element-hidden */
 
 
+/* element-disabled */
+.element-disabled
+{
+   color: #9e9e9e!important;
+   text-decoration: none!important;
+}
+/* End element-disabled */
+
+
+/* select option */
+select
+{
+   cursor: pointer;
+}
+/* End select option */
+
+
 /* show-notification */
 
 .show-notification

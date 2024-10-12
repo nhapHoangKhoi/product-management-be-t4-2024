@@ -2,3 +2,14 @@ extends ../../layouts/default.pug
 
 block main 
    h1 Trang tổng quan
+
+   h2 #{accountAdmin.fullName}
+   div #{accountAdmin.phone}
+   div #{accountAdmin.email}
+   img(
+      src=accountAdmin.avatar
+      width="150px"
+   )
+
+   h2 #{correspondRole.title}
+   div #{correspondRole.permissions}

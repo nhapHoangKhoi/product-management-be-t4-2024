@@ -1,11 +1,12 @@
 extends ../../layouts/default.pug
 
+
 block main 
 
    //- h1(class="mb-4") Trang phân quyền
    h1(class="mb-4") #{pageTitle}
 
-   if(records)
+   - if(records)
       div(class="text-right")
          button(
             type="submit"
@@ -26,51 +27,117 @@ block main
                      role-id=eachRole.id
                   ) #{eachRole.title}
 
+         //- Danh sach san pham
          tbody
+            - 
+               const listProductPermissions = [
+                  { label: "Xem", name: "products_view" },
+                  { label: "Thêm mới", name: "products_create" },
+                  { label: "Chỉnh sửa", name: "products_edit" },
+                  { label: "Xóa", name: "products_delete" }
+               ];
+
+            tr
+               td(colspan="4")
+                  b Danh sách sản phẩm
+            
+            //- tr
+            //-    td Xem
+            //-    each eachRole in records
+            //-       td(class="text-center")
+            //-          input(
+            //-             type="checkbox"
+            //-             permission-name="products_view" 
+            //-             belongs-role-id=eachRole.id
+            //-             checked=(eachRole.permissions.includes("products_view") ? true : false)
+            //-          )
+            each permission in listProductPermissions
+               tr
+                  td #{permission.label}
+                  each eachRole in records
+                     td(class="text-center")
+                        input(
+                           type="checkbox"
+                           permission-name=`${permission.name}` 
+                           belongs-role-id=eachRole.id
+                           checked=(eachRole.permissions.includes(`${permission.name}`) ? true : false)
+                        )
+
+         //- Danh muc san pham
+         tbody 
+            - 
+               const listProductCategoryPermissions = [
+                  { label: "Xem", name: "product-categories_view" },
+                  { label: "Thêm mới", name: "product-categories_create" },
+                  { label: "Chỉnh sửa", name: "product-categories_edit" },
+                  { label: "Xóa", name: "product-categories_delete" }
+               ];
+
             tr
                td(colspan="4")
                   b Danh mục sản phẩm
             
+            each permission in listProductCategoryPermissions
+               tr
+                  td #{permission.label}
+                  each eachRole in records
+                     td(class="text-center")
+                        input(
+                           type="checkbox"
+                           permission-name=`${permission.name}`
+                           belongs-role-id=eachRole.id
+                           checked=(eachRole.permissions.includes(`${permission.name}`) ? true : false)
+                        )
+
+         //- Nhom quyen
+         tbody
+            - 
+               const listRolePermissions = [
+                  { label: "Xem", name: "roles_view" },
+                  { label: "Thêm mới", name: "roles_create" },
+                  { label: "Chỉnh sửa", name: "roles_edit" },
+                  { label: "Xóa", name: "roles_delete" },
+                  { label: "Phân quyền", name: "roles_permissions" }
+               ];
+
             tr
-               td Xem
-               each eachRole in records
-                  td(class="text-center")
-                     input(
-                        type="checkbox"
-                        permission-name="product-categories_view" 
-                        belongs-role-id=eachRole.id
-                        checked=(eachRole.permissions.includes("product-categories_view") ? true : false)
-                     )
-            
+               td(colspan="4")
+                  b Nhóm quyền
+
+            each permission in listRolePermissions
+               tr
+                  td #{permission.label}
+                  each eachRole in records
+                     td(class="text-center")
+                        input(
+                           type="checkbox"
+                           permission-name=`${permission.name}` 
+                           belongs-role-id=eachRole.id
+                           checked=(eachRole.permissions.includes(`${permission.name}`) ? true : false)
+                        )
+
+         //- Tai khoan admin
+         tbody
+            - 
+               const listAccountPermissions = [
+                  { label: "Xem", name: "accounts_view" },
+                  { label: "Thêm mới", name: "accounts_create" },
+                  { label: "Chỉnh sửa", name: "accounts_edit" },
+                  { label: "Xóa", name: "accounts_delete" }
+               ];
+
             tr
-               td Thêm mới
-               each eachRole in records
-                  td(class="text-center")
-                     input(
-                        type="checkbox"
-                        permission-name="product-categories_create" 
-                        belongs-role-id=eachRole.id
-                        checked=(eachRole.permissions.includes("product-categories_create") ? true : false)
-                     )
-            
-            tr
-               td Chỉnh sửa
-               each eachRole in records
-                  td(class="text-center")
-                     input(
-                        type="checkbox"
-                        permission-name="product-categories_edit" 
-                        belongs-role-id=eachRole.id
-                        checked=(eachRole.permissions.includes("product-categories_edit") ? true : false)
-                     )
-            
-            tr
-               td Xóa
-               each eachRole in records
-                  td(class="text-center")
-                     input(
-                        type="checkbox"
-                        permission-name="product-categories_delete" 
-                        belongs-role-id=eachRole.id
-                        checked=(eachRole.permissions.includes("product-categories_delete") ? true : false)
-                     )
+               td(colspan="4")
+                  b Tài khoản admin
+
+            each permission in listAccountPermissions
+               tr
+                  td #{permission.label}
+                  each eachRole in records
+                     td(class="text-center")
+                        input(
+                           type="checkbox"
+                           permission-name=`${permission.name}` 
+                           belongs-role-id=eachRole.id
+                           checked=(eachRole.permissions.includes(`${permission.name}`) ? true : false)
+                        )

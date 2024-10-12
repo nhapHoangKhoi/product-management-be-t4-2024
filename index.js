@@ -44,8 +44,10 @@ app.use(express.static(`${__dirname}/public`));
 
 
 // app global variables for pug only
+// any pug files can use variable "prefixAdmin"
 app.locals.prefixAdmin = systemConfigs.prefixAdmin;
 // End app global variables for pug only
+
 
 routeClient.index(app); // goi den ham index cua file index.route.js
 routeAdmin.index(app);
