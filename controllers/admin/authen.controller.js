@@ -52,3 +52,13 @@ module.exports.login = async (request, response) =>
    // response.send("OK Frontend");
 }
 // ----------------End []------------------- //
+
+
+// ----------------[]------------------- //
+// [GET] /admin/authen/logout
+module.exports.logout = (request, response) =>
+{
+   response.clearCookie("token");
+   response.redirect(`/${systemConfigs.prefixAdmin}/authen/login`);
+}
+// ----------------End []------------------- //
