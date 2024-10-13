@@ -1,6 +1,6 @@
 const ProductModel = require("../../models/product.model.js");
 
-// ----------------[GET]------------------- //
+// ----------------[]------------------- //
 // [GET] /products/
 module.exports.index = async (request, response) => 
 {
@@ -17,9 +17,11 @@ module.exports.index = async (request, response) =>
          }
       )
 
+   // ----- Calculate and add newN key "priceew" ----- //
    for(aProduct of listOfProducts) {
       aProduct.priceNew = (aProduct.price - (aProduct.price * aProduct.discountPercentage/100)).toFixed(0);
    }
+   // ----- End calculate and add new key "priceNew" ----- //
 
    response.render(
       "client/pages/products/index.pug", 
@@ -29,7 +31,10 @@ module.exports.index = async (request, response) =>
       }
    );
 }
+// ----------------End []------------------- //
 
+
+// ----------------[]------------------- //
 // [GET] /products/:slug
 module.exports.getDetailPage = async (request, response) => 
 {
@@ -60,16 +65,4 @@ module.exports.getDetailPage = async (request, response) =>
       response.redirect("/"); // chuyen ve trang chu (trang home) [GET] /
    }
 }
-// ----------------End [GET]------------------- //
-
-
-// ----------------[POST]------------------- //
-// ----------------End [POST]------------------- //
-
-
-// ----------------[PATCH]------------------- //
-// ----------------End [PATCH]------------------- //
-
-
-// ----------------[DELETE]------------------- //
-// ----------------End [DELETE]------------------- //
+// ----------------End []------------------- //

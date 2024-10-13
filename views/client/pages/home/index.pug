@@ -1,4 +1,44 @@
 extends ../../layouts/default.pug
 
+include ../../mixins/box-head.pug
+
 block main 
-   h1 Trang chủ
+
+   //- h1 Trang chủ
+
+   .container.my-3 
+      .row 
+         .col-12
+            +box-head("Sản phẩm nổi bật")
+
+      .row
+         each aProduct in productsFeatured
+            .col-4.mb-3 
+               .product-item
+                     .inner-image
+                        a(href=`/products/${aProduct.slug}`) 
+                           img(src=aProduct.thumbnail, alt="Mascara")
+                     .inner-content
+                        h3.inner-title 
+                           a(href=`/products/${aProduct.slug}`) #{aProduct.title}
+                        .inner-price-new #{aProduct.priceNew}$
+                        .inner-price-old #{aProduct.price}$
+                        .inner-discount -#{aProduct.discountPercentage}%
+
+      .row 
+         .col-12
+            +box-head("Sản phẩm mới nhất")
+
+      .row
+         each aProduct in productsNewest
+            .col-4.mb-3 
+               .product-item
+                     .inner-image
+                        a(href=`/products/${aProduct.slug}`) 
+                           img(src=aProduct.thumbnail, alt="Mascara")
+                     .inner-content
+                        h3.inner-title 
+                           a(href=`/products/${aProduct.slug}`) #{aProduct.title}
+                        .inner-price-new #{aProduct.priceNew}$
+                        .inner-price-old #{aProduct.price}$
+                        .inner-discount -#{aProduct.discountPercentage}%
