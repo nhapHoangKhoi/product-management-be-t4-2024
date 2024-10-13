@@ -333,22 +333,22 @@ module.exports.changeProductPosition = async (request, response) =>
 // ----------------[]------------------- //
 // [GET] /admin/products/create
 module.exports.getCreatePage = async (request, response) =>
-   {
-      // ----- Hierarchy dropdown ----- //
-      const allCategoriesFind = {
-         deleted: false
-      };
-      const listOfCategories = await ProductCategoryModel.find(allCategoriesFind); 
-      
-      const hierarchyCategories = createHierarchyHelper(listOfCategories);
-      // ----- End hierarchy dropdown ----- //
-      
-      
-      response.render(
-         "admin/pages/products/create.pug",
-         {
-            pageTitle: "Thêm mới sản phẩm",
-            listOfCategories: hierarchyCategories
+{
+   // ----- Hierarchy dropdown ----- //
+   const allCategoriesFind = {
+      deleted: false
+   };
+   const listOfCategories = await ProductCategoryModel.find(allCategoriesFind); 
+   
+   const hierarchyCategories = createHierarchyHelper(listOfCategories);
+   // ----- End hierarchy dropdown ----- //
+   
+   
+   response.render(
+      "admin/pages/products/create.pug",
+      {
+         pageTitle: "Thêm mới sản phẩm",
+         listOfCategories: hierarchyCategories
       }
    );
 }

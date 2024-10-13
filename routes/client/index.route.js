@@ -9,9 +9,13 @@
 const homeRoute = require("./home.route.js");
 const productRoute = require("./product.route.js");
 
+const categoryProductMiddleware = require("../../middlewares/client/category-product.middleware.js");
+
 // tao route
 module.exports.index = (app) =>
 {
+   app.use(categoryProductMiddleware.categoryProduct);
+
    app.use("/", homeRoute);
    app.use("/products", productRoute);
 }

@@ -1,9 +1,10 @@
 // [GET] /
-module.exports.index = (request, response) => {
+module.exports.index = (request, response) => 
+{
    response.render(
       "client/pages/home/index.pug", 
       {
-         pageTitle: "Trang chủ"
+         pageTitle: "Trang chủ",
       }
    );
 }
