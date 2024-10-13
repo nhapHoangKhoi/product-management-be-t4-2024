@@ -15,7 +15,7 @@ module.exports.checkAuthen = async (request, response, next) =>
          token: request.cookies.token,
          deleted: false
       }
-   ).select("fullName email phone avatar role_id");
+   ).select("fullName email phone avatar role_id status");
 
    if(!accountAdmin) {
       response.redirect(`/${systemConfigs.prefixAdmin}/authen/login`);

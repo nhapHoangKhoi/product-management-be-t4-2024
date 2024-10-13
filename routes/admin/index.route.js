@@ -5,6 +5,7 @@ const productCategoryAdminRoute = require("./product-category.route.js");
 const roleRoute = require("./role.route.js");
 const accountRoute = require("./account.route.js");
 const authenRoute = require("./authen.route.js");
+const profileRoute = require("./profile.route.js");
 
 const authenMiddleware = require("../../middlewares/admin/authen.middleware.js");
 
@@ -41,6 +42,12 @@ module.exports.index = (app) =>
       `${path}/accounts`, 
       authenMiddleware.checkAuthen,
       accountRoute
+   );
+
+   app.use(
+      `${path}/profile`, 
+      authenMiddleware.checkAuthen,
+      profileRoute
    );
    
    app.use(`${path}/authen`, authenRoute);
