@@ -6,18 +6,18 @@ block main
    .container.my-3 
       .row 
          .col-12
-            +box-head("Danh sách sản phẩm")
+            +box-head(`${pageTitle}`)
 
       .row
          each aProduct in listOfProducts
             .col-4.mb-3 
                .product-item
                      .inner-image
-                        a(href=`/products/${aProduct.slug}`) 
+                        a(href=`/products/detail/${aProduct.slug}`) 
                            img(src=aProduct.thumbnail, alt="Mascara")
                      .inner-content
                         h3.inner-title 
-                           a(href=`/products/${aProduct.slug}`) #{aProduct.title}
+                           a(href=`/products/detail/${aProduct.slug}`) #{aProduct.title}
                         .inner-price-new #{aProduct.priceNew}$
                         .inner-price-old #{aProduct.price}$
                         .inner-discount -#{aProduct.discountPercentage}%
