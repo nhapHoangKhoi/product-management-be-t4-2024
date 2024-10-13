@@ -46,8 +46,8 @@ module.exports.getProductsByCategory = async (request, response) =>
       }
    );
 
-   
-   // ----- Get all sub-categories as possible ----- //
+
+   // ----- Function to get all sub-categories as possible ----- //
    const allSubCategories = [];
 
    const getSubCategories = async (currentCategoryId) => 
@@ -67,18 +67,20 @@ module.exports.getProductsByCategory = async (request, response) =>
    }
 
    await getSubCategories(theCorrespondCategoryData.id);
-   // ----- End get all sub-categories as possible ----- //
+   // ----- End function to get all sub-categories as possible ----- //
    
 
    const listOfProducts = await ProductModel
       .find(
          {
+            // ----- Get all sub-categories as possible ----- //
             product_category_id: {
                $in: [
                   theCorrespondCategoryData.id,
                   ...allSubCategories
                ]
             },
+            // ----- End get all sub-categories as possible ----- //
             status: "active",
             deleted: false
          }
@@ -119,6 +121,11 @@ module.exports.getDetailPage = async (request, response) =>
    };
 
    const theProductData = await ProductModel.findOne(productFind);
+
+   // ----- Calculate and add newN key "priceew" ----- //
+   theProductData.priceNew = (theProductData.price - (theProductData.price * theProductData.discountPercentage/100)).toFixed(0);
+   // ----- End calculate and add new key "priceNew" ----- //
+
 
    // slug la chi co tim duoc hoac khong tim duoc, 
    // chu ko co truong hop bi loi giong id
