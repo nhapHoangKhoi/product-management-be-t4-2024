@@ -73,8 +73,10 @@ module.exports.index = async (request, response) =>
       .skip(pagination.startIndex)
       .sort(productSortBy);
 
+   // Because the field "createdBy", "updatedBy" in database only stores the id of that person 
    for(const eachProduct of listOfProducts) 
    {
+      // -- Person created -- //
       if(eachProduct.createdBy) {
          const accountCreated = await AccountModel.findOne(
             {
@@ -88,9 +90,26 @@ module.exports.index = async (request, response) =>
          eachProduct.createdBy_FullName = "";
       }
 
-      // Format day, time
-      eachProduct.createdAt_Format = moment(eachProduct.createdAt).format("DD/MM/YYYY HH:mm:ss");
-      // End format day, time
+      eachProduct.createdAt_Format = moment(eachProduct.createdAt).format("DD/MM/YYYY HH:mm:ss"); // format day, time
+      // -- End person created -- //
+
+
+      // -- Person updated -- //
+      if(eachProduct.updatedBy) {
+         const accountUpdated = await AccountModel.findOne(
+            {
+               _id: eachProduct.updatedBy
+            }
+         );
+   
+         eachProduct.updatedBy_FullName = accountUpdated.fullName;
+      }
+      else {
+         eachProduct.updatedBy_FullName = "";
+      }
+      
+      eachProduct.updatedAt_Format = moment(eachProduct.updatedAt).format("DD/MM/YYYY HH:mm:ss"); // format day, time
+      // -- End person updated -- //
    }
 
    response.render(
@@ -156,7 +175,8 @@ module.exports.changeStatus = async (request, response) =>
                _id: idProduct
             }, 
             {
-               status: (statusChange == "active") ? "inactive" : "active"
+               status: (statusChange == "active") ? "inactive" : "active",
+               updatedBy: response.locals.accountAdmin.id
             }
          );
       
@@ -201,7 +221,8 @@ module.exports.changeMulti = async (request, response) =>
                      _id: listOfIds
                   }, 
                   {
-                     status: selectedValue
+                     status: selectedValue,
+                     updatedBy: response.locals.accountAdmin.id
                   }
                );
                request.flash("success", "Cập nhật sản phẩm thành công!"); // chi la dat ten key "success"
@@ -215,7 +236,8 @@ module.exports.changeMulti = async (request, response) =>
                      _id: listOfIds
                   },
                   {
-                     deleted: true
+                     deleted: true,
+                     deletedBy: response.locals.accountAdmin.id
                   }
                );
                request.flash("success", "Xoá sản phẩm thành công!"); // chi la dat ten key "success"
@@ -250,7 +272,8 @@ module.exports.softDeleteProduct = async (request, response) =>
                _id: productId
             },
             {
-               deleted: true
+               deleted: true,
+               deletedBy: response.locals.accountAdmin.id
             }
          );
       
@@ -285,7 +308,8 @@ module.exports.changeProductPosition = async (request, response) =>
                _id: productId
             },
             {
-               position: itemPosition
+               position: itemPosition,
+               updatedBy: response.locals.accountAdmin.id
             }
          );
       
@@ -347,7 +371,9 @@ module.exports.createProduct = async (request, response) =>
          request.body.position = numberOfProducts + 1;
       }
 
+      // add field "createdBy"
       request.body.createdBy = response.locals.accountAdmin.id;
+      // End add field "createdBy"
       // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
    
       
@@ -430,6 +456,10 @@ module.exports.editProduct = async (request, response) =>
             const numberOfProducts = await ProductModel.countDocuments({});
             request.body.position = numberOfProducts + 1;
          }
+
+         // add field "createdBy"
+         request.body.updatedBy = response.locals.accountAdmin.id;
+         // End add field "createdBy"
          // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
    
    
@@ -475,6 +505,27 @@ module.exports.getDeletedProducts = async (request, response) =>
       .limit(pagination.itemsLimited)
       .skip(pagination.startIndex);
 
+   // Because the field "deletedBy" in database only stores the id of that person 
+   for(const eachProduct of listOfDeletedProducts) 
+   {
+      // -- Person deleted soft -- //
+      if(eachProduct.deletedBy) {
+         const accountDeleted = await AccountModel.findOne(
+            {
+               _id: eachProduct.deletedBy
+            }
+         );
+   
+         eachProduct.deletedBy_FullName = accountDeleted.fullName;
+      }
+      else {
+         eachProduct.deletedBy_FullName = "";
+      }
+
+      eachProduct.deletedAt_Format = moment(eachProduct.updatedAt).format("DD/MM/YYYY HH:mm:ss"); // format day, time
+      // -- End person deleted soft -- //
+   }
+
    response.render(
       "admin/pages/products/trash.pug",
       {
@@ -497,7 +548,8 @@ module.exports.recoverProduct = async (request, response) =>
                _id: productId
             },
             {
-               deleted: false
+               deleted: false,
+               updatedBy: response.locals.accountAdmin.id
             }
          );
       
@@ -531,7 +583,8 @@ module.exports.recoverManyProducts = async (request, response) =>
                _id: listOfIds
             },
             {
-               deleted: false
+               deleted: false,
+               updatedBy: response.locals.accountAdmin.id
             }
          );
 

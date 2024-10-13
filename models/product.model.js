@@ -14,10 +14,12 @@ const productSchema = new mongoose.Schema(
       status: String,
       position: Number,
       createdBy: String,
+      updatedBy: String,
       deleted: {
          type: Boolean,
          default: false
       },
+      deletedBy: String, // deletedAt === updatedAt
       slug: {
          type: String,
          slug: "title", // tu dong render slug theo truong title

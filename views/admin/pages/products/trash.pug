@@ -35,6 +35,7 @@ block main
                   th Tên sản phẩm
                   th Giá
                   th Trạng thái
+                  th Xoá bởi
                   th Hành động
             tbody
                each aProduct, index in listOfDeletedProducts
@@ -74,14 +75,18 @@ block main
                               button-change-status=""
                            ) Dừng hoạt động 
                      td
-                        button(
-                           class="btn btn-primary btn-sm"
-                           button-recover=`/${prefixAdmin}/products/recover/${aProduct.id}`
-                        ) Khôi phục
-                        button(
-                           class="btn btn-danger btn-sm ml-1" 
-                           button-delete-permanent=`/${prefixAdmin}/products/delete-permanent/${aProduct.id}`
-                        ) Xoá vĩnh viễn
+                        div #{aProduct.deletedBy_FullName}
+                        div #{aProduct.deletedAt_Format}
+                     td
+                        div(class="buttons")
+                           button(
+                              class="btn btn-primary btn-sm"
+                              button-recover=`/${prefixAdmin}/products/recover/${aProduct.id}`
+                           ) Khôi phục
+                           button(
+                              class="btn btn-danger btn-sm" 
+                              button-delete-permanent=`/${prefixAdmin}/products/delete-permanent/${aProduct.id}`
+                           ) Xoá vĩnh viễn
 
 
       +pagination-bar(pagination)
