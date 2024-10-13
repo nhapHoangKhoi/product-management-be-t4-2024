@@ -7,7 +7,7 @@ block main
       //- h1(class="mb-4") Trang phân quyền
       h1(class="mb-4") #{pageTitle}
 
-      - const highestAdminId = "67057d0edc0456abcc23c61b";
+      - const highestRoleId = "67057d0edc0456abcc23c61b";
 
       - if(records)
          div(class="text-right")
@@ -66,8 +66,8 @@ block main
                                  permission-name=`${permission.name}` 
                                  belongs-role-id=eachRole.id
                                  checked=(eachRole.permissions.includes(`${permission.name}`) ? true : false)
-                                 disabled=(eachRole.id == highestAdminId ? true : false)
-                                 style=(eachRole.id == highestAdminId ? "cursor: default;" : "")
+                                 disabled=(eachRole.id == highestRoleId ? true : false)
+                                 style=(eachRole.id == highestRoleId ? "cursor: default;" : "")
                               )
                            - else 
                               input(
@@ -103,8 +103,8 @@ block main
                                  permission-name=`${permission.name}`
                                  belongs-role-id=eachRole.id
                                  checked=(eachRole.permissions.includes(`${permission.name}`) ? true : false)
-                                 disabled=(eachRole.id == highestAdminId ? true : false)
-                                 style=(eachRole.id == highestAdminId ? "cursor: default;" : "")
+                                 disabled=(eachRole.id == highestRoleId ? true : false)
+                                 style=(eachRole.id == highestRoleId ? "cursor: default;" : "")
                               )
                            - else
                               input(
@@ -141,8 +141,8 @@ block main
                                  permission-name=`${permission.name}` 
                                  belongs-role-id=eachRole.id
                                  checked=(eachRole.permissions.includes(`${permission.name}`) ? true : false)
-                                 disabled=(eachRole.id == highestAdminId ? true : false)
-                                 style=(eachRole.id == highestAdminId ? "cursor: default;" : "")
+                                 disabled=(eachRole.id == highestRoleId ? true : false)
+                                 style=(eachRole.id == highestRoleId ? "cursor: default;" : "")
                               )
                            - else 
                               input(
@@ -178,8 +178,8 @@ block main
                                  permission-name=`${permission.name}` 
                                  belongs-role-id=eachRole.id
                                  checked=(eachRole.permissions.includes(`${permission.name}`) ? true : false)
-                                 disabled=(eachRole.id == highestAdminId ? true : false)
-                                 style=(eachRole.id == highestAdminId ? "cursor: default;" : "")
+                                 disabled=(eachRole.id == highestRoleId ? true : false)
+                                 style=(eachRole.id == highestRoleId ? "cursor: default;" : "")
                               )
                            - else 
                               input(

@@ -14,7 +14,7 @@ const roleSchema = new mongoose.Schema(
       },
    },
    {
-      timestamps: true // automatically insert field createAt, updateAt
+      timestamps: true // automatically insert field createdAt, updatedAt
    }
 );
 

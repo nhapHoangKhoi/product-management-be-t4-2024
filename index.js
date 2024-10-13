@@ -18,7 +18,17 @@ const app = express();  // khoi tao ung dung web su dung express
 // const port = 3000;
 const port = process.env.PORT;
 
+// app.set("views", "./views"); // doi voi response.render(), mac dinh di vao folder views
+app.set("views", `${__dirname}/views`);
+app.set("view engine", "pug");
+
+// app.use(express.static("public")); // nhung cac file tinh, tuc la folder public, mac dinh tu di vao folder public
+app.use(express.static(`${__dirname}/public`));
+
+
+// methodOverride
 app.use(methodOverride('_method'));
+// End methodOverride
 
 // Flash
 app.use(cookieParser('chuoigicungduoc'));
@@ -26,22 +36,14 @@ app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 // End flash
 
+// bodyParser
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json, cai nay la FE gui data len thong qua chuoi JSON
-
-// app.set("views", "./views"); // doi voi response.render(), mac dinh di vao folder views
-app.set("views", `${__dirname}/views`);
-app.set("view engine", "pug");
-
+// End bodyParser
 
 // tinyMCE
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 // End tinyMCE
-
-
-// app.use(express.static("public")); // nhung cac file tinh, tuc la folder public, mac dinh tu di vao folder public
-app.use(express.static(`${__dirname}/public`));
-
 
 // app global variables for pug only
 // any pug files can use variable "prefixAdmin"

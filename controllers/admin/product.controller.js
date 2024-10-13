@@ -1,11 +1,13 @@
 const ProductModel = require("../../models/product.model.js");
 const ProductCategoryModel = require("../../models/product-category.model.js");
+const AccountModel = require("../../models/account.model.js");
 
 const systemConfigs = require("../../config/system.js");
 const paginationHelper = require("../../helpers/pagination.helper.js");
 const filterStatusHelper = require("../../helpers/filterByStatus.helper.js");
 const searchCoBanHelper = require("../../helpers/searchCoBan.helper.js");
 const createHierarchyHelper = require("../../helpers/createHierarchy.helper.js");
+const moment = require("moment");
 
 // ----------------[]------------------- //
 // [GET] /admin/products/
@@ -70,6 +72,26 @@ module.exports.index = async (request, response) =>
       .limit(pagination.itemsLimited)
       .skip(pagination.startIndex)
       .sort(productSortBy);
+
+   for(const eachProduct of listOfProducts) 
+   {
+      if(eachProduct.createdBy) {
+         const accountCreated = await AccountModel.findOne(
+            {
+               _id: eachProduct.createdBy
+            }
+         );
+   
+         eachProduct.createdBy_FullName = accountCreated.fullName;
+      }
+      else {
+         eachProduct.createdBy_FullName = "";
+      }
+
+      // Format day, time
+      eachProduct.createdAt_Format = moment(eachProduct.createdAt).format("DD/MM/YYYY HH:mm:ss");
+      // End format day, time
+   }
 
    response.render(
       "admin/pages/products/index.pug", 
@@ -324,6 +346,8 @@ module.exports.createProduct = async (request, response) =>
          const numberOfProducts = await ProductModel.countDocuments({});
          request.body.position = numberOfProducts + 1;
       }
+
+      request.body.createdBy = response.locals.accountAdmin.id;
       // ----- End make sure the data type is correct with the Model : Number, String,... ----- //
    
       

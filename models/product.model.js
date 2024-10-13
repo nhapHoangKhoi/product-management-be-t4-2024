@@ -13,6 +13,7 @@ const productSchema = new mongoose.Schema(
       thumbnail: String,
       status: String,
       position: Number,
+      createdBy: String,
       deleted: {
          type: Boolean,
          default: false
@@ -24,7 +25,7 @@ const productSchema = new mongoose.Schema(
       }
    },
    {
-      timestamps: true // automatically insert field createAt, updateAt
+      timestamps: true // automatically insert field createdAt, updatedAt
    }
 );
 

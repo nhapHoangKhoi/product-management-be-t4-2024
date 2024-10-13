@@ -85,6 +85,7 @@ block main
                      th Giá
                      th Vị trí
                      th Trạng thái
+                     th Tạo bởi
                      th Hành động
                
                tbody
@@ -165,6 +166,9 @@ block main
                                     style="cursor: default;" 
                                  ) Dừng hoạt động 
                         
+                        td 
+                           div #{aProduct.createdBy_FullName}
+                           div #{aProduct.createdAt_Format}
 
                         td(onclick=`location.href='/${prefixAdmin}/products/detail/${aProduct.id}'`, style="cursor: pointer;")
                            div(class="buttons")
