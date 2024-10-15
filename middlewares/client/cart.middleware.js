@@ -17,6 +17,15 @@ module.exports.checkCartId = async (request, response, next) =>
          }
       );
    }
+   else {
+      const theCart = await CartModel.findOne(
+         {
+            _id: request.cookies.cartId
+         }
+      );
+
+      response.locals.totalProductsInCart = theCart.products.length || 0;
+   }
 
    next();
 }
