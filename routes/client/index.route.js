@@ -8,6 +8,7 @@
 
 const homeRoute = require("./home.route.js");
 const productRoute = require("./product.route.js");
+const searchRoute = require("./search.route.js");
 
 const categoryProductMiddleware = require("../../middlewares/client/category-product.middleware.js");
 
@@ -18,4 +19,5 @@ module.exports.index = (app) =>
 
    app.use("/", homeRoute);
    app.use("/products", productRoute);
+   app.use("/search", searchRoute);
 }

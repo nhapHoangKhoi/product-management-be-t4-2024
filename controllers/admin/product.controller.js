@@ -5,7 +5,6 @@ const AccountModel = require("../../models/account.model.js");
 const systemConfigs = require("../../config/system.js");
 const paginationHelper = require("../../helpers/pagination.helper.js");
 const filterStatusHelper = require("../../helpers/filterByStatus.helper.js");
-const searchCoBanHelper = require("../../helpers/searchCoBan.helper.js");
 const createHierarchyHelper = require("../../helpers/createHierarchy.helper.js");
 const moment = require("moment");
 
@@ -40,9 +39,12 @@ module.exports.index = async (request, response) =>
    };
 
    // vi du : sortKey=price&sortValue=desc
-   if(request.query.sortKey && request.query.sortValue) 
+   const sortKey = request.query.sortKey;
+   const sortValue = request.query.sortValue;
+
+   if(sortKey && sortValue) 
    {
-      productSortBy[request.query.sortKey] = request.query.sortValue; // title=desc, price=desc,...
+      productSortBy[sortKey] = sortValue; // title=desc, price=desc,...
    }
    else {
       productSortBy.position = "desc"; // mac dinh neu ko co yeu cau sort khac
@@ -50,15 +52,14 @@ module.exports.index = async (request, response) =>
    // ----- End sort ----- //
 
 
-   // ----- Search products ----- //
-   const objectSearchResult = searchCoBanHelper.search(request, productFind);
+   // ----- Search products (co ban) ----- //
    let keyword = "";
-
-   if(objectSearchResult) {
-      productFind.title = objectSearchResult.itemFindTitle;
-      keyword = objectSearchResult.keyword;
+   if(request.query.inputKeyword) {
+      const regex = new RegExp(request.query.inputKeyword, "i");
+      productFind.title = regex;
+      keyword = request.query.inputKeyword;
    }
-   // ----- End search products ----- //
+   // ----- End search products (co ban) ----- //
 
 
    // ----- Pagination ----- //

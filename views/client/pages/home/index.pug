@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 
 include ../../mixins/box-head.pug
+include ../../mixins/product-item.pug
 
 block main 
 
@@ -13,17 +14,8 @@ block main
 
       .row
          each aProduct in productsFeatured
-            .col-4.mb-3 
-               .product-item
-                     .inner-image
-                        a(href=`/products/detail/${aProduct.slug}`) 
-                           img(src=aProduct.thumbnail, alt="Mascara")
-                     .inner-content
-                        h3.inner-title 
-                           a(href=`/products/${aProduct.slug}`) #{aProduct.title}
-                        .inner-price-new #{aProduct.priceNew}$
-                        .inner-price-old #{aProduct.price}$
-                        .inner-discount -#{aProduct.discountPercentage}%
+            .col-4.mb-3
+               +product-item(aProduct)
 
       .row 
          .col-12
@@ -32,13 +24,4 @@ block main
       .row
          each aProduct in productsNewest
             .col-4.mb-3 
-               .product-item
-                     .inner-image
-                        a(href=`/products/detail/${aProduct.slug}`) 
-                           img(src=aProduct.thumbnail, alt="Mascara")
-                     .inner-content
-                        h3.inner-title 
-                           a(href=`/products/detail/${aProduct.slug}`) #{aProduct.title}
-                        .inner-price-new #{aProduct.priceNew}$
-                        .inner-price-old #{aProduct.price}$
-                        .inner-discount -#{aProduct.discountPercentage}%
+               +product-item(aProduct)
