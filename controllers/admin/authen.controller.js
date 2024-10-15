@@ -46,7 +46,7 @@ module.exports.login = async (request, response) =>
       return;
    }
 
-   response.cookie("token", theAccount.token);
+   response.cookie("token", theAccount.token); // store "token" in the cookie of the user
    response.redirect(`/${systemConfigs.prefixAdmin}/dashboard`);
 
    // response.send("OK Frontend");
