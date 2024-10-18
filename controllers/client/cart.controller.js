@@ -1,4 +1,5 @@
 const CartModel = require("../../models/cart.model");
+const ProductModel = require("../../models/product.model");
 
 // ----------------[]------------------- //
 // [POST] /cart/add/:productId
@@ -62,3 +63,59 @@ module.exports.addToCart = async (request, response) =>
    }
 }
 // ----------------End []------------------- //
+
+
+// ----------------[]------------------- //
+// [GET] /cart/
+module.exports.getCartPage = async (request, response) =>
+{
+   try {
+      const cartId = request.cookies.cartId;
+   
+      const theCart = await CartModel.findOne(
+         {
+            _id: cartId // co tim den ID trong database, quang vo try catch
+         }
+      );
+
+      theCart.totalPrice = 0; // add new key "totalPrice"
+
+      if(theCart.products.length > 0) 
+      {
+         for(const product of theCart.products) {
+            const productInfo = await ProductModel.findOne(
+               {
+                  _id: product.productId
+               }
+            ).select("title thumbnail slug price discountPercentage");
+
+
+            // ----- Calculate and add new key "priceNew" ----- //
+            productInfo.priceNew = (productInfo.price - (productInfo.price * productInfo.discountPercentage/100)).toFixed(0);
+            // ----- End calculate and add new key "priceNew" ----- //
+
+
+            // add new key "productInfo" into each product
+            product.productInfo = productInfo;
+
+            // add new key "totalPrice" into each product
+            product.totalPrice = productInfo.priceNew * product.quantity;
+            
+            theCart.totalPrice = theCart.totalPrice + product.totalPrice;
+         }
+      }
+   
+      response.render(
+         "client/pages/cart/index.pug", 
+         {
+            pageTitle: "Giỏ hàng",
+            cartDetail: theCart
+         }
+      );
+   }
+   catch(error) {
+      request.flash("error", "ID không hợp lệ!");
+      response.redirect("/products");
+   }
+}
+// ----------------End []------------------- /

@@ -46,7 +46,17 @@ module.exports.login = async (request, response) =>
       return;
    }
 
-   response.cookie("token", theAccount.token); // store "token" in the cookie of the user
+
+   const expiredDays = 24 * 60 * 60 * 1000; // 1 day
+
+   // store "token" in the cookie of the user
+   response.cookie(
+      "token", 
+      theAccount.token,
+      { 
+         expires: new Date(Date.now() + expiredDays) 
+      }
+   ); 
    response.redirect(`/${systemConfigs.prefixAdmin}/dashboard`);
 
    // response.send("OK Frontend");
