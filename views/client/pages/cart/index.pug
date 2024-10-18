@@ -58,9 +58,10 @@ block main
                                  class="btn btn-danger"
                               ) Xóa
                   - else
-                     p Chưa có sản phẩm nào trong giỏ hàng.
+                     tr
+                        td(colspan="7" class="text-center") Chưa có sản phẩm nào trong giỏ hàng.
             
-            
+
             - if(cartDetail.products.length > 0)
                h3(class="text-right") Tổng đơn hàng: #{cartDetail.totalPrice}$
 

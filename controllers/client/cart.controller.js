@@ -100,7 +100,7 @@ module.exports.getCartPage = async (request, response) =>
 
             // add new key "totalPrice" into each product
             product.totalPrice = productInfo.priceNew * product.quantity;
-            
+
             theCart.totalPrice = theCart.totalPrice + product.totalPrice;
          }
       }
@@ -112,6 +112,34 @@ module.exports.getCartPage = async (request, response) =>
             cartDetail: theCart
          }
       );
+   }
+   catch(error) {
+      request.flash("error", "ID không hợp lệ!");
+      response.redirect("/products");
+   }
+}
+
+// [GET] /cart/delete/:productId
+module.exports.deleteOutOfCart = async (request, response) => 
+{
+   try {
+      const cartId = request.cookies.cartId;
+      const productId = request.params.productId;
+   
+      await CartModel.updateOne(
+         {
+            _id: cartId,
+         },
+         {
+            $pull: {
+               products: {
+                  productId: productId
+               }
+            }
+         }
+      );
+   
+      response.redirect("back"); // go back to page [GET] /cart
    }
    catch(error) {
       request.flash("error", "ID không hợp lệ!");
