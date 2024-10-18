@@ -87,7 +87,7 @@ module.exports.getCartPage = async (request, response) =>
                {
                   _id: product.productId
                }
-            ).select("title thumbnail slug price discountPercentage");
+            ).select("title thumbnail slug price discountPercentage stock");
 
 
             // ----- Calculate and add new key "priceNew" ----- //
@@ -140,6 +140,64 @@ module.exports.deleteOutOfCart = async (request, response) =>
       );
    
       response.redirect("back"); // go back to page [GET] /cart
+   }
+   catch(error) {
+      request.flash("error", "ID không hợp lệ!");
+      response.redirect("/products");
+   }
+}
+
+// [GET] /cart/update/:productId/:quantity (dung cai duoi day)
+module.exports.updateQuantity_GET = async (request, response) => 
+{
+   try {
+      const cartId = request.cookies.cartId;
+      const productId = request.params.productId;
+      const quantity = parseInt(request.params.quantity);
+
+      await CartModel.updateOne(
+         {
+            _id: cartId,
+            "products.productId": productId
+         },
+         {
+            $set: {
+               "products.$.quantity": quantity
+            }
+         }
+      );
+   
+      response.redirect("back"); // go back to page [GET] /cart
+   }
+   catch(error) {
+      request.flash("error", "ID không hợp lệ!");
+      response.redirect("/products");
+   }
+}
+
+// [PATCH] /cart/update/:productId/:quantity
+module.exports.updateQuantity = async (request, response) => 
+{
+   try {
+      const cartId = request.cookies.cartId;
+      const productId = request.params.productId;
+      const quantity = parseInt(request.params.quantity);
+
+      await CartModel.updateOne(
+         {
+            _id: cartId,
+            "products.productId": productId
+         },
+         {
+            $set: {
+               "products.$.quantity": quantity
+            }
+         }
+      );
+   
+      response.json({
+         code: 200
+      });
    }
    catch(error) {
       request.flash("error", "ID không hợp lệ!");

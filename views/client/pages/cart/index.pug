@@ -10,7 +10,7 @@ block main
 
       .row
          .col-12
-            table(class="table table-bordered")
+            table(class="table table-bordered" table-cart)
                thead
                   tr
                      th STT
@@ -46,7 +46,8 @@ block main
                                  name="quantity"
                                  value=aProduct.quantity
                                  min="1"
-                                 item-id=""
+                                 max=aProduct.productInfo.stock
+                                 product-id=aProduct.productId
                                  style="width: 60px"
                               )
 
