@@ -33,7 +33,7 @@ body
 
 .header .inner-menu > ul > li
 {
-   margin-left: 20px;
+   margin-left: 15px;
 }
 
 /* End header */
@@ -309,3 +309,22 @@ body
 }
 
 /* End sub-menu */
+
+
+/* password-icon */
+
+.password-form
+{
+   position: relative;
+}
+
+.password-form .password-icon
+{
+   position: absolute;
+   font-size: 1.22222em;
+   top: 1.82222em;
+   right: 20px;
+   cursor: pointer;
+}
+
+/* End password-icon */
